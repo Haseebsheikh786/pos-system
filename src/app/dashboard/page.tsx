@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, TrendingUp, CreditCard, Package } from "lucide-react";
 
@@ -12,6 +12,11 @@ export default function DashboardPage() {
     creditBalance: 2800,
     totalProducts: 156,
   });
+
+  useEffect(() => {
+    // prevent unused variable warning
+    void setStats;
+  }, []);
 
   return (
     <div className="p-8">

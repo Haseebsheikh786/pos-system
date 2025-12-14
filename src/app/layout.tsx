@@ -1,11 +1,8 @@
 import type React from "react";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-const robotoMono = Roboto_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "POS System - Professional Point of Sale Solution",

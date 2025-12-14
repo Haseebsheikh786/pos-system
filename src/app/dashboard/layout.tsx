@@ -2,14 +2,11 @@
 
 import type React from "react";
 import { useState } from "react";
-import { Inter, Roboto_Mono } from "next/font/google";
 import { Menu } from "lucide-react";
 import { PosSidebar } from "@/components/sidebar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-const inter = Inter({ subsets: ["latin"] });
-const robotoMono = Roboto_Mono({ subsets: ["latin"] });
 
 export default function DashboardLayout({
   children,

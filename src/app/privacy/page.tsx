@@ -1,9 +1,24 @@
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import Seo from "@/components/seo";
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen flex flex-col">
+      <Seo
+        title="Privacy Policy - POS Software"
+        description="Learn how we collect, use, and protect your data while using our POS software. Your privacy and security are important to us."
+        keywords={[
+          "POS software",
+          "privacy policy",
+          "data protection",
+          "security",
+          "user privacy",
+        ]}
+        url="/privacy-policy"
+        image="/og-pos-privacy.jpg"
+        author="Your Company Name"
+      />
       <Navbar />
 
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">

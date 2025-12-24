@@ -90,24 +90,16 @@ function ResetPassword() {
 
       // Show success state
       // In a real app, you would trigger the success state here
-    } catch (error) {
-      // Handle API errors
-      if (error.message?.includes("user not found")) {
-        setError("email", {
-          type: "manual",
-          message: "No account found with this email address",
-        });
-      } else if (error.message?.includes("rate limit")) {
-        setError("root", {
-          type: "manual",
-          message: "Too many attempts. Please try again in a few minutes.",
-        });
-      } else {
-        setError("root", {
-          type: "manual",
-          message: "Failed to send reset link. Please try again.",
-        });
-      }
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to send reset link. Please try again.";
+
+      setError("root", {
+        type: "manual",
+        message,
+      });
     } finally {
       setIsLoading(false);
     }

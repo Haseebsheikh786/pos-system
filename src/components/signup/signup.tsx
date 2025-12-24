@@ -19,7 +19,6 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
-import Cookies from "js-cookie";
 
 // Define validation schema with Zod
 const signupSchema = z
@@ -87,21 +86,6 @@ function Signup() {
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Set cookies for new user
-      Cookies.set("isLoggedIn", "true", {
-        expires: 7,
-        secure: true,
-        sameSite: "strict",
-      });
-      Cookies.set(
-        "user",
-        JSON.stringify({
-          email: data.email,
-          businessName: data.businessName,
-        }),
-        { expires: 7 }
-      );
 
       // Handle signup logic here
       console.log("Signup successful:", data);

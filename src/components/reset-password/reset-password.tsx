@@ -90,7 +90,7 @@ function ResetPassword() {
 
       // Show success state
       // In a real app, you would trigger the success state here
-    } catch (error: any) {
+    } catch (error) {
       // Handle API errors
       if (error.message?.includes("user not found")) {
         setError("email", {

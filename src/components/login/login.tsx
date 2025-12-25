@@ -100,9 +100,35 @@ function Login() {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    // Handle Google authentication logic here
-    console.log("Google Sign In");
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsLoading(true); // Add loading state
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+
+      if (error) {
+        console.error("Google OAuth error:", error);
+        // Handle error (show toast or set error state)
+        setError("root", {
+          type: "manual",
+          message: "Google sign in failed. Please try again.",
+        });
+      }
+      // No need to redirect manually - Supabase handles it
+    } catch (error) {
+      console.error("Google sign up error:", error);
+      setError("root", {
+        type: "manual",
+        message: "Google sign in failed. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle input change to clear errors

@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import SEO from "@/components/seo";
 import VerifyEmail from "@/components/verify-email/verify-email";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 export default function VerifyEmailPage() {
   return (
@@ -28,7 +30,9 @@ export default function VerifyEmailPage() {
         image="/og-pos-home.jpg"
         author="FreshPrep"
       />
-      <VerifyEmail />
+      <Suspense fallback={<LoadingSpinner />}>
+        <VerifyEmail />
+      </Suspense>
     </div>
   );
 }

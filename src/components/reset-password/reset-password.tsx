@@ -13,11 +13,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ArrowLeft, CheckCircle2, RefreshCw } from "lucide-react";
+import { MailCheck, ShieldCheck, Clock, ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState, useEffect } from "react";
+import { supabase } from "@/supabase-client";
 
 // Define validation schema with Zod
 const resetPasswordSchema = z.object({
@@ -33,6 +34,9 @@ function ResetPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
+  const [successEmail, setSuccessEmail] = useState("");
 
   const {
     register,
@@ -62,34 +66,40 @@ function ResetPassword() {
     return () => clearTimeout(timer);
   }, [countdown, isResendDisabled]);
 
-  // Format countdown to MM:SS
-  const formatCountdown = (seconds: number) => {
+  // Format seconds to MM:SS
+  const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const onSubmit = async (data: ResetPasswordFormData) => {
     try {
       setIsLoading(true);
-
-      // Clear any previous errors
       clearErrors("root");
+      setResendSuccess(false);
 
-      // Simulate API call (will be replaced with Supabase)
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Send password reset email via Supabase
+      const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+        redirectTo: `${window.location.origin}/dashboard/update-password`,
+      });
 
-      // Handle reset password logic here
-      console.log("Reset password link sent to:", data.email);
+      if (error) {
+        if (error.message.includes("rate limit")) {
+          throw new Error(
+            "Too many attempts. Please try again in a few minutes."
+          );
+        } else {
+          // For security, don't reveal if user exists or not
+          console.log("Password reset request processed");
+        }
+      }
 
-      // Start countdown for resend (60 seconds)
+      // Always show success for security (even if user doesn't exist)
+      setSuccessEmail(data.email);
+      setShowSuccess(true);
       setIsResendDisabled(true);
-      setCountdown(60);
-
-      // Show success state
-      // In a real app, you would trigger the success state here
+      setCountdown(60); // 60-second cooldown
     } catch (error: unknown) {
       const message =
         error instanceof Error
@@ -120,21 +130,34 @@ function ResetPassword() {
       setIsLoading(true);
       clearErrors("root");
 
-      // Simulate API call for resend (will be replaced with Supabase)
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Resend password reset email via Supabase
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/dashboard/update-password`,
+      });
 
-      console.log("Resend reset link to:", email);
+      if (error) {
+        if (error.message.includes("rate limit")) {
+          throw new Error(
+            "Too many attempts. Please wait before trying again."
+          );
+        } else {
+          throw new Error("Failed to resend link. Please try again.");
+        }
+      }
 
-      // Restart countdown
+      // Show success and reset timer
+      setResendSuccess(true);
       setIsResendDisabled(true);
       setCountdown(60);
-
-      // Show success message
-      // In a real app, you would show a success toast here
     } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to resend link. Please try again.";
+
       setError("root", {
         type: "manual",
-        message: "Failed to resend link. Please try again.",
+        message,
       });
     } finally {
       setIsLoading(false);
@@ -149,39 +172,16 @@ function ResetPassword() {
     if (errors.root) {
       clearErrors("root");
     }
-  };
-
-  // For demo purposes - track if we should show success
-  const [showSuccess, setShowSuccess] = useState(false);
-  const email = watch("email");
-
-  // Handle form submission (demo version)
-  const handleDemoSubmit = async (data: ResetPasswordFormData) => {
-    try {
-      setIsLoading(true);
-      clearErrors("root");
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Show success state
-      setShowSuccess(true);
-      setIsResendDisabled(true);
-      setCountdown(60);
-
-      console.log("Reset password link sent to:", data.email);
-    } catch (error) {
-      setError("root", {
-        type: "manual",
-        message: "Failed to send reset link. Please try again.",
-      });
-    } finally {
-      setIsLoading(false);
+    // Clear success state if user starts typing again
+    if (showSuccess) {
+      setShowSuccess(false);
+      setResendSuccess(false);
     }
   };
 
   const handleResetForm = () => {
     setShowSuccess(false);
+    setResendSuccess(false);
     reset();
     setIsResendDisabled(false);
     setCountdown(0);
@@ -200,68 +200,80 @@ function ResetPassword() {
 
         <Card className="bg-[#0A0A0A] border-[#D4AF37]">
           <CardHeader className="space-y-1">
+            {showSuccess ? (
+              <div className="flex justify-center">
+                <div className="w-16 h-16 bg-[#D4AF37]/10 rounded-full flex items-center justify-center">
+                  <MailCheck className="text-[#D4AF37]" size={32} />
+                </div>
+              </div>
+            ) : null}
             <CardTitle className="text-2xl font-bold text-white text-center">
-              Reset Password
+              {showSuccess ? "Check Your Email" : "Reset Password"}
             </CardTitle>
             <CardDescription className="text-gray-400 text-center">
               {showSuccess
-                ? "Check your email for reset instructions"
+                ? "Check your inbox for reset instructions"
                 : "Enter your email to receive a reset link"}
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             {showSuccess ? (
-              <div className="space-y-4">
-                <div className="flex justify-center">
-                  <div className="w-16 h-16 bg-[#D4AF37]/10 rounded-full flex items-center justify-center">
-                    <CheckCircle2 className="text-[#D4AF37]" size={32} />
-                  </div>
-                </div>
+              <>
                 <Alert className="bg-[#1A1A1A] border-[#D4AF37]">
-                  <AlertDescription className="text-gray-300 text-center">
-                    We've sent a password reset link to{" "}
-                    <strong className="text-white">{email}</strong>. Please
-                    check your inbox and follow the instructions.
+                  <AlertDescription className="text-gray-300">
+                    If an account exists with{" "}
+                    <strong className="text-white">{successEmail}</strong>,
+                    you'll receive a password reset link shortly. Click the link
+                    in the email to reset your password.
                   </AlertDescription>
                 </Alert>
 
-                <div className="space-y-3">
-                  <p className="text-sm text-gray-400 text-center leading-relaxed">
-                    Didn't receive the email? Check your spam folder or:
-                  </p>
+                <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#D4AF37]/30">
+                  <div className="flex items-center gap-3 mb-3">
+                    <ShieldCheck className="text-[#D4AF37]" size={20} />
+                    <h4 className="font-semibold text-white">What's Next?</h4>
+                  </div>
+                  <ul className="text-sm text-gray-400 space-y-2 list-disc pl-5">
+                    <li>Check your inbox (and spam folder) for our email</li>
+                    <li>Click the password reset link in the email</li>
+                    <li>Create a new secure password</li>
+                    <li>Sign in with your new password</li>
+                  </ul>
+                </div>
+
+                <div className="space-y-4 pt-2">
+                  {countdown > 0 && (
+                    <div className="flex items-center justify-center gap-2 text-gray-400 text-sm">
+                      <Clock className="w-4 h-4" />
+                      <span>Resend available in {formatTime(countdown)}</span>
+                    </div>
+                  )}
 
                   <Button
                     type="button"
                     onClick={handleResendLink}
                     disabled={isResendDisabled || isLoading}
-                    className="w-full bg-[#1A1A1A] border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10"
+                    className="w-full bg-[#8E7525] hover:bg-[#A38A2E] text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <RefreshCw
-                      className={`mr-2 ${isLoading ? "animate-spin" : ""}`}
-                      size={16}
-                    />
                     {isLoading
                       ? "Sending..."
-                      : isResendDisabled
-                      ? `Resend available in ${formatCountdown(countdown)}`
+                      : countdown > 0
+                      ? `Resend in ${formatTime(countdown)}`
                       : "Resend Reset Link"}
                   </Button>
 
-                  <Button
-                    type="button"
-                    onClick={handleResetForm}
-                    variant="ghost"
-                    className="w-full text-gray-400 hover:text-white hover:bg-gray-900"
-                  >
-                    Reset with a different email
-                  </Button>
+                  {resendSuccess && (
+                    <Alert className="bg-green-950/30 border-green-800">
+                      <AlertDescription className="text-green-200">
+                        Password reset email resent successfully! You can resend
+                        again in 1 minute.
+                      </AlertDescription>
+                    </Alert>
+                  )}
                 </div>
-              </div>
+              </>
             ) : (
-              <form
-                onSubmit={handleSubmit(handleDemoSubmit)}
-                className="space-y-4"
-              >
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 {errors.root && (
                   <Alert
                     variant="destructive"
@@ -308,7 +320,27 @@ function ResetPassword() {
               </form>
             )}
           </CardContent>
-          <CardFooter className="flex flex-col space-y-3">
+          <CardFooter className="flex flex-col space-y-4">
+            {showSuccess ? (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={handleResetForm}
+                  className="w-full border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 bg-transparent"
+                >
+                  Try a different email
+                </Button>
+                <div className="relative w-full">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t border-[#D4AF37]/30" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-[#0A0A0A] px-2 text-gray-500">or</span>
+                  </div>
+                </div>
+              </>
+            ) : null}
+
             <Link href="/login" className="w-full">
               <Button
                 variant="ghost"

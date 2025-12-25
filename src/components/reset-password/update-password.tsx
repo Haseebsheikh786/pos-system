@@ -94,16 +94,16 @@ function UpdatePassword() {
       }
 
       reset();
+      router.push("/login");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to update password. Please try again.";
 
-      // Auto-redirect to login after 3 seconds
-      setTimeout(() => {
-        router.push("/login");
-      }, 3000);
-    } catch (error: any) {
       setError("root", {
         type: "manual",
-        message:
-          error.message || "Failed to update password. Please try again.",
+        message: errorMessage,
       });
     } finally {
       setIsLoading(false);

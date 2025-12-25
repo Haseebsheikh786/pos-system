@@ -93,6 +93,7 @@ function Signup() {
           data: {
             business_name: data.businessName,
           },
+          emailRedirectTo: `${window.location.origin}/dashboard`,
         },
       });
 
@@ -131,14 +132,17 @@ function Signup() {
         router.push("/dashboard");
         return;
       }
-    } catch (error: any) {
+    } catch (error) {
       // Handle errors
       console.error("Signup error:", error);
 
       // Set form error
       setError("root", {
         type: "manual",
-        message: error.message || "Signup failed. Please try again.",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Signup failed. Please try again.",
       });
     } finally {
       setIsLoading(false);

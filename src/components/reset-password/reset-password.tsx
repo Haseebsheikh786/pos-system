@@ -81,7 +81,7 @@ function ResetPassword() {
 
       // Send password reset email via Supabase
       const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: `${window.location.origin}/dashboard/update-password`,
+        redirectTo: `${window.location.origin}/reset-password/update`,
       });
 
       if (error) {
@@ -132,7 +132,7 @@ function ResetPassword() {
 
       // Resend password reset email via Supabase
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/dashboard/update-password`,
+        redirectTo: `${window.location.origin}/reset-password/update`,
       });
 
       if (error) {

@@ -19,7 +19,8 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
- 
+import { supabase } from "@/supabase-client";
+
 // Define validation schema with Zod
 const loginSchema = z.object({
   email: z
@@ -60,13 +61,33 @@ function Login() {
     try {
       setIsLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const { data: authData, error: authError } =
+        await supabase.auth.signInWithPassword({
+          email: data.email,
+          password: data.password,
+        });
 
-      // Handle login logic here
-      console.log("Login successful:", data);
+      if (authError) {
+        // Handle specific Supabase errors
+        if (authError.message.includes("Invalid login credentials")) {
+          throw new Error("Invalid email or password. Please try again.");
+        } else if (authError.message.includes("Email not confirmed")) {
+          throw new Error(
+            "Please confirm your email address before logging in."
+          );
+        } else if (authError.message.includes("User not found")) {
+          throw new Error("No account found with this email address.");
+        } else if (authError.message.includes("rate limit")) {
+          throw new Error(
+            "Too many attempts. Please try again in a few minutes."
+          );
+        } else {
+          throw new Error(
+            authError.message || "Login failed. Please try again."
+          );
+        }
+      }
 
-      // Redirect to dashboard
       router.push("/dashboard");
     } catch (error) {
       // Handle API errors

@@ -1,12 +1,13 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
 import { PosSidebar } from "@/components/sidebar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-
+import { supabase } from "@/supabase-client";
+import { useRouter } from "next/navigation";
 
 export default function DashboardLayout({
   children,
@@ -14,6 +15,58 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+   const router = useRouter();
+
+  useEffect(() => {
+    checkAuth();
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        router.push("/");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
+
+  const checkAuth = async () => {
+    try {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
+      if (error) {
+        console.error("Session error:", error);
+        router.push("/");
+        return;
+      }
+
+      if (!session) {
+        router.push("/");
+        return;
+      }
+
+      // Session exists, check if user has profile
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("id", session.user.id)
+        .single();
+
+      if (!profile) {
+        console.warn("User profile not found, but session exists");
+        // You can optionally create profile here or redirect
+      }
+    } catch (error) {
+      console.error("Auth check error:", error);
+      router.push("/");
+    } finally {
+    }
+  };
 
   return (
     <div className="flex h-screen bg-black">

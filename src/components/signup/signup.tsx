@@ -19,6 +19,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { supabase } from "@/supabase-client";
 
 // Define validation schema with Zod
 const signupSchema = z
@@ -84,19 +85,60 @@ function Signup() {
     try {
       setIsLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Sign up with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            business_name: data.businessName,
+          },
+        },
+      });
 
-      // Handle signup logic here
-      console.log("Signup successful:", data);
+      if (authError) {
+        // Handle specific Supabase errors
+        if (authError.message.includes("already registered")) {
+          throw new Error(
+            "An account with this email already exists. Please sign in instead."
+          );
+        } else if (authError.message.includes("password")) {
+          throw new Error(
+            "Password requirements not met. Please try a stronger password."
+          );
+        } else if (authError.message.includes("email")) {
+          throw new Error("Please enter a valid email address.");
+        } else {
+          throw new Error(
+            authError.message || "Signup failed. Please try again."
+          );
+        }
+      }
 
-      // Redirect to dashboard
-      router.push("/dashboard");
-    } catch (error) {
-      // Handle API errors
+      // Check if email confirmation is required
+      if (authData?.user?.identities?.length === 0) {
+        throw new Error(
+          "An account with this email already exists. Please sign in instead."
+        );
+      }
+
+      // Check if user needs to confirm email
+      if (authData.user && !authData.user.email_confirmed_at) {
+        // Email confirmation required - show success message
+        console.log("Email confirmation sent to:", data.email);
+
+        // You can redirect to a confirmation page or show a message
+        router.push("/dashboard");
+        return;
+      }
+    } catch (error: any) {
+      // Handle errors
+      console.error("Signup error:", error);
+
+      // Set form error
       setError("root", {
         type: "manual",
-        message: "Signup failed. Please try again.",
+        message: error.message || "Signup failed. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -117,9 +159,6 @@ function Signup() {
       clearErrors("root");
     }
   };
-
-  // Watch password for real-time validation feedback
-  const password = watch("password");
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-black">

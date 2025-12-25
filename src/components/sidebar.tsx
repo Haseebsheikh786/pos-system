@@ -13,6 +13,7 @@ import {
   Box,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/supabase-client";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -30,6 +31,14 @@ interface PosSidebarProps {
 
 export function PosSidebar({ onNavigate }: PosSidebarProps = {}) {
   const pathname = usePathname();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <div className="flex h-screen w-64 flex-col bg-black border-r border-[#D4AF37]">
@@ -69,10 +78,7 @@ export function PosSidebar({ onNavigate }: PosSidebarProps = {}) {
         <Button
           variant="ghost"
           className="w-full justify-start text-gray-300 hover:bg-[#1a1a1a] hover:text-red-500"
-          onClick={() => {
-            // Handle logout
-            window.location.href = "/login";
-          }}
+          onClick={handleLogout}
         >
           <LogOut className="mr-3 h-5 w-5" />
           Logout

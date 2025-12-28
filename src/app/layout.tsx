@@ -1,6 +1,8 @@
 import type React from "react";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+import StoreProvider from "@/providers/StoreProvider";
+import AuthProvider from "@/components/authProvider";
 
 export default function RootLayout({
   children,
@@ -10,7 +12,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
-        {children}
+        <StoreProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </StoreProvider>
         <Analytics />
       </body>
     </html>

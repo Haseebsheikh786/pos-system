@@ -3,7 +3,7 @@ import { supabase } from '@/supabase-client';
 
 interface User {
     id: string;
-    email: string | undefined;
+    email?: string | null;
 }
 
 interface AuthState {

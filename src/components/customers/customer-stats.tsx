@@ -1,48 +1,52 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
 
-type Customer = {
-  id: number;
-  name: string;
-  phone: string;
-  address: string;
-  creditBalance: number;
-  totalPurchases: number;
-  payments: { date: string; amount: number; type: "paid" | "credit" }[];
-};
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Customer } from "@/types/customer";
 
 interface CustomerStatsProps {
   customers: Customer[];
+  loading?: boolean;
 }
 
-export default function CustomerStats({ customers }: CustomerStatsProps) {
-  const totalCredit = customers.reduce((sum, c) => sum + c.creditBalance, 0);
+export default function CustomerStats({
+  customers,
+  loading = false,
+}: CustomerStatsProps) {
+  const totalCustomers = customers.length;
+  const totalCredit = customers.reduce((sum, c) => sum + c.total_due_amount, 0);
   const customersWithCredit = customers.filter(
-    (c) => c.creditBalance > 0
+    (c) => c.total_due_amount > 0
   ).length;
-
+  const totalPurchases = customers.reduce(
+    (sum, c) => sum + c.total_purchases,
+    0
+  );
   const stats = [
     {
       title: "Total Customers",
-      value: customers.length,
+      value: loading ? "-" : totalCustomers,
       color: "text-white",
       description: "",
     },
     {
       title: "Total Credit (Udhaar)",
-      value: `Rs. ${totalCredit.toLocaleString()}`,
+      value: loading ? "-" : `₹${totalCredit.toLocaleString()}`,
       color: "text-orange-400",
-      description: "",
+      description:
+        customersWithCredit > 0
+          ? `${customersWithCredit} customers with dues`
+          : "",
     },
     {
-      title: "Customers with Credit",
-      value: customersWithCredit,
-      color: "text-white",
+      title: "Total Purchases",
+      value: loading ? "-" : `₹${totalPurchases.toLocaleString()}`,
+      color: "text-green-400",
       description: "",
     },
   ];
 
   return (
-    <div className="grid gap-6 md:grid-cols-3 mb-6">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6">
       {stats.map((stat, index) => (
         <Card key={index} className="bg-[#0a0a0a] border-[#D4AF37]">
           <CardHeader className="pb-2">
@@ -54,6 +58,9 @@ export default function CustomerStats({ customers }: CustomerStatsProps) {
             <div className={`text-2xl font-bold ${stat.color}`}>
               {stat.value}
             </div>
+            {stat.description && (
+              <p className="text-xs text-gray-400 mt-1">{stat.description}</p>
+            )}
           </CardContent>
         </Card>
       ))}

@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -9,95 +11,131 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Trash2 } from "lucide-react";
-
-type Customer = {
-  id: number;
-  name: string;
-  phone: string;
-  address: string;
-  creditBalance: number;
-  totalPurchases: number;
-  payments: { date: string; amount: number; type: "paid" | "credit" }[];
-};
+import { Eye, Trash2, Pencil } from "lucide-react";
+import { Customer } from "@/types/customer";
 
 interface CustomerListProps {
   customers: Customer[];
-  onView: (customer: Customer) => void;
-  onDelete: (id: number) => void;
+  onEdit: (customer: Customer) => void;
+  onDelete: (id: string) => void;
+  loading?: boolean;
 }
 
 export default function CustomerList({
   customers,
-  onView,
+  onEdit,
   onDelete,
+  loading = false,
 }: CustomerListProps) {
+
+  if (loading && customers.length === 0) {
+    return (
+      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+        <CardContent className="pt-6 text-center text-gray-400">
+          Loading customers...
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="bg-[#0a0a0a] border-[#D4AF37]">
       <CardContent className="pt-6">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-[#D4AF37]/30">
-              <TableHead className="text-[#D4AF37]">ID</TableHead>
-              <TableHead className="text-[#D4AF37]">Name</TableHead>
-              <TableHead className="text-[#D4AF37]">Phone</TableHead>
-              <TableHead className="text-[#D4AF37]">Address</TableHead>
-              <TableHead className="text-[#D4AF37]">Credit Balance</TableHead>
-              <TableHead className="text-[#D4AF37]">Total Purchases</TableHead>
-              <TableHead className="text-[#D4AF37] text-right">
-                Actions
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {customers.map((customer) => (
-              <TableRow key={customer.id} className="border-[#D4AF37]/30">
-                <TableCell className="text-gray-300">{customer.id}</TableCell>
-                <TableCell className="text-white font-medium">
-                  {customer.name}
-                </TableCell>
-                <TableCell className="text-gray-300">
-                  {customer.phone}
-                </TableCell>
-                <TableCell className="text-gray-400 text-sm">
-                  {customer.address}
-                </TableCell>
-                <TableCell>
-                  {customer.creditBalance > 0 ? (
-                    <Badge className="bg-orange-500/10 text-orange-400 border-orange-500">
-                      Rs. {customer.creditBalance.toLocaleString()}
-                    </Badge>
-                  ) : (
-                    <Badge className="bg-green-500/10 text-green-400 border-green-500">
-                      Paid
-                    </Badge>
-                  )}
-                </TableCell>
-                <TableCell className="text-gray-300">
-                  Rs. {customer.totalPurchases.toLocaleString()}
-                </TableCell>
-                <TableCell className="text-right">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onView(customer)}
-                    className="text-[#D4AF37] hover:bg-[#1a1a1a]"
-                  >
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onDelete(customer.id)}
-                    className="text-red-400 hover:bg-[#1a1a1a]"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-[#D4AF37]/30">
+                <TableHead className="text-[#D4AF37]">Name</TableHead>
+                <TableHead className="text-[#D4AF37]">Phone</TableHead>
+                <TableHead className="text-[#D4AF37]">Address</TableHead>
+                <TableHead className="text-[#D4AF37]">Due Amount</TableHead>
+                <TableHead className="text-[#D4AF37]">
+                  Total Purchases
+                </TableHead>
+                <TableHead className="text-[#D4AF37] text-right">
+                  Actions
+                </TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {customers.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={7}
+                    className="text-center text-gray-400 py-8"
+                  >
+                    No customers found. Add your first customer!
+                  </TableCell>
+                </TableRow>
+              ) : (
+                customers.map((customer) => (
+                  <TableRow
+                    key={customer.id}
+                    className="border-[#D4AF37]/30 hover:bg-[#1a1a1a]"
+                  >
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="text-white font-medium">
+                          {customer.name}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-gray-300">
+                      {customer.phone}
+                    </TableCell>
+                    <TableCell className="text-gray-400 text-sm">
+                      {customer.address}
+                    </TableCell>
+                    <TableCell>
+                      {customer.total_due_amount > 0 ? (
+                        <Badge className="bg-orange-500/10 text-orange-400 border-orange-500">
+                          {customer.total_due_amount.toLocaleString()}
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-green-500/10 text-green-400 border-green-500">
+                          No Dues
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-gray-300">
+                      {customer.total_purchases.toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-blue-400 hover:bg-blue-500/10"
+                          title="View Details"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onEdit(customer)}
+                          className="text-[#D4AF37] hover:bg-[#D4AF37]/10"
+                          title="Edit"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onDelete(customer.id)}
+                          className="text-red-400 hover:bg-red-500/10"
+                          title="Delete"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );

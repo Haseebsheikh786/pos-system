@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { Product } from '@/types/product';
+import { Product, ProductFormData } from '@/types/product';
 import { ProductService } from '@/services/productService';
 
 interface ProductsState {
@@ -21,30 +21,33 @@ export const fetchProducts = createAsyncThunk(
     async (shopId: string, { rejectWithValue }) => {
         try {
             return await ProductService.getProducts(shopId);
-        } catch (error: any) {
-            return rejectWithValue(error.message);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch products';
+            return rejectWithValue(errorMessage);
         }
     }
 );
 
 export const createProduct = createAsyncThunk(
     'products/createProduct',
-    async ({ shopId, productData }: { shopId: string; productData: any }, { rejectWithValue }) => {
+    async ({ shopId, productData }: { shopId: string; productData: ProductFormData }, { rejectWithValue }) => {
         try {
             return await ProductService.createProduct(shopId, productData);
-        } catch (error: any) {
-            return rejectWithValue(error.message);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to create product';
+            return rejectWithValue(errorMessage);
         }
     }
 );
 
 export const updateProduct = createAsyncThunk(
     'products/updateProduct',
-    async ({ id, shopId, productData }: { id: string; shopId: string; productData: any }, { rejectWithValue }) => {
+    async ({ id, shopId, productData }: { id: string; shopId: string; productData: ProductFormData }, { rejectWithValue }) => {
         try {
             return await ProductService.updateProduct(id, shopId, productData);
-        } catch (error: any) {
-            return rejectWithValue(error.message);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to update product';
+            return rejectWithValue(errorMessage);
         }
     }
 );
@@ -55,8 +58,9 @@ export const deleteProduct = createAsyncThunk(
         try {
             await ProductService.deleteProduct(id, shopId);
             return id;
-        } catch (error: any) {
-            return rejectWithValue(error.message);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to delete product';
+            return rejectWithValue(errorMessage);
         }
     }
 );
@@ -69,8 +73,9 @@ export const searchProducts = createAsyncThunk(
                 return await ProductService.getProducts(shopId);
             }
             return await ProductService.searchProducts(shopId, query);
-        } catch (error: any) {
-            return rejectWithValue(error.message);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to search products';
+            return rejectWithValue(errorMessage);
         }
     }
 );

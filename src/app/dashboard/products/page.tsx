@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import { Button } from "@/components/ui/button";
@@ -18,8 +18,7 @@ import {
   searchProducts,
   setSearchQuery,
 } from "@/store/productSlice";
-import { debounce } from "lodash"; // Make sure to install lodash: npm install lodash
-import { ProductFormData } from "@/types/product";
+import { ProductFormData, Product } from "@/types/product";
 
 export default function ProductsPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +32,7 @@ export default function ProductsPage() {
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   const [formData, setFormData] = useState<ProductFormData>({
@@ -49,6 +48,9 @@ export default function ProductsPage() {
     image_url: "",
   });
 
+  // Use ref for debounce timer
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   // Fetch products on component mount
   useEffect(() => {
     if (user?.id) {
@@ -61,30 +63,35 @@ export default function ProductsPage() {
     setLocalSearchQuery(searchQuery);
   }, [searchQuery]);
 
-  // Create debounced search function
-  const debouncedSearch = useCallback(
-    debounce((query: string) => {
-      if (user?.id) {
-        if (query.trim() === "") {
-          // If query is empty, fetch all products
-          dispatch(fetchProducts(user.id));
-        } else {
-          // Otherwise, search with the query
-          dispatch(searchProducts({ shopId: user.id, query }));
-        }
+  // Debounced search function
+  const handleSearchInput = useCallback(
+    (query: string) => {
+      // Update local state immediately for responsive UI
+      setLocalSearchQuery(query);
+
+      // Clear existing timer
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
       }
-    }, 500), // 500ms delay
+
+      // Set new timer for debounced search
+      debounceTimerRef.current = setTimeout(() => {
+        // Update Redux state
+        dispatch(setSearchQuery(query));
+
+        if (user?.id) {
+          if (query.trim() === "") {
+            // If query is empty, fetch all products
+            dispatch(fetchProducts(user.id));
+          } else {
+            // Otherwise, search with the query
+            dispatch(searchProducts({ shopId: user.id, query }));
+          }
+        }
+      }, 500); // 500ms delay
+    },
     [dispatch, user?.id]
   );
-
-  const handleSearchInput = (query: string) => {
-    // Update local state immediately for responsive UI
-    setLocalSearchQuery(query);
-    // Update Redux state
-    dispatch(setSearchQuery(query));
-    // Trigger debounced search
-    debouncedSearch(query);
-  };
 
   const clearSearch = () => {
     setLocalSearchQuery("");
@@ -194,7 +201,7 @@ export default function ProductsPage() {
     }
   };
 
-  const openEditDialog = (product: any) => {
+  const openEditDialog = (product: Product) => {
     setEditingProduct(product);
     setFormData({
       name: product.name,
@@ -227,12 +234,14 @@ export default function ProductsPage() {
     setIsAddDialogOpen(true);
   };
 
-  // Cleanup debounce on unmount
+  // Cleanup timer on unmount
   useEffect(() => {
     return () => {
-      debouncedSearch.cancel();
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
     };
-  }, [debouncedSearch]);
+  }, []);
 
   // Calculate statistics
   const totalProducts = products.length;
@@ -285,6 +294,8 @@ export default function ProductsPage() {
                 <button
                   onClick={clearSearch}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                  type="button"
+                  aria-label="Clear search"
                 >
                   <X className="h-4 w-4" />
                 </button>

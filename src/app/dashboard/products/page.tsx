@@ -1,97 +1,248 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Dialog } from "@/components/ui/dialog";
-import { Plus, Search } from "lucide-react";
-import ProductModal from "@/components/products/productModal";
+import { Plus, Search, Loader2, X } from "lucide-react";
+import ProductModal from "@/components/products/product-modal";
 import ProductList from "@/components/products/product-list";
-
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  stock: number;
-};
+import {
+  fetchProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  searchProducts,
+  setSearchQuery,
+} from "@/store/productSlice";
+import { debounce } from "lodash"; // Make sure to install lodash: npm install lodash
+import { ProductFormData } from "@/types/product";
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([
-    { id: 1, name: "Rice (5kg)", price: 850, stock: 45 },
-    { id: 2, name: "Cooking Oil (1L)", price: 420, stock: 32 },
-    { id: 3, name: "Sugar (1kg)", price: 120, stock: 67 },
-    { id: 4, name: "Tea Bags (100pcs)", price: 340, stock: 28 },
-    { id: 5, name: "Flour (5kg)", price: 680, stock: 51 },
-  ]);
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.auth);
+  const {
+    items: products,
+    loading,
+    error,
+    searchQuery,
+  } = useSelector((state: RootState) => state.products);
 
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [formData, setFormData] = useState({
+  const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+  const [formData, setFormData] = useState<ProductFormData>({
     name: "",
+    description: "",
     price: "",
+    cost_price: "",
     stock: "",
+    min_stock_level: "",
+    barcode: "",
+    sku: "",
+    category: "",
+    image_url: "",
   });
 
-  const handleAddProduct = () => {
-    if (formData.name && formData.price && formData.stock) {
-      const newProduct: Product = {
-        id: products.length + 1,
-        name: formData.name,
-        price: Number.parseFloat(formData.price),
-        stock: Number.parseInt(formData.stock),
-      };
-      setProducts([...products, newProduct]);
-      setFormData({ name: "", price: "", stock: "" });
-      setIsAddDialogOpen(false);
+  // Fetch products on component mount
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(fetchProducts(user.id));
+    }
+  }, [dispatch, user?.id]);
+
+  // Sync local search query with Redux state
+  useEffect(() => {
+    setLocalSearchQuery(searchQuery);
+  }, [searchQuery]);
+
+  // Create debounced search function
+  const debouncedSearch = useCallback(
+    debounce((query: string) => {
+      if (user?.id) {
+        if (query.trim() === "") {
+          // If query is empty, fetch all products
+          dispatch(fetchProducts(user.id));
+        } else {
+          // Otherwise, search with the query
+          dispatch(searchProducts({ shopId: user.id, query }));
+        }
+      }
+    }, 500), // 500ms delay
+    [dispatch, user?.id]
+  );
+
+  const handleSearchInput = (query: string) => {
+    // Update local state immediately for responsive UI
+    setLocalSearchQuery(query);
+    // Update Redux state
+    dispatch(setSearchQuery(query));
+    // Trigger debounced search
+    debouncedSearch(query);
+  };
+
+  const clearSearch = () => {
+    setLocalSearchQuery("");
+    dispatch(setSearchQuery(""));
+    if (user?.id) {
+      dispatch(fetchProducts(user.id));
     }
   };
 
-  const handleEditProduct = () => {
-    if (editingProduct && formData.name && formData.price && formData.stock) {
-      setProducts(
-        products.map((p) =>
-          p.id === editingProduct.id
-            ? {
-                ...p,
-                name: formData.name,
-                price: Number.parseFloat(formData.price),
-                stock: Number.parseInt(formData.stock),
-              }
-            : p
-        )
-      );
-      setFormData({ name: "", price: "", stock: "" });
+  const handleAddProduct = async () => {
+    if (
+      !user?.id ||
+      !formData.name ||
+      !formData.price ||
+      !formData.stock ||
+      !formData.min_stock_level
+    ) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await dispatch(
+        createProduct({
+          shopId: user.id,
+          productData: formData,
+        })
+      ).unwrap();
+
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        cost_price: "",
+        stock: "",
+        min_stock_level: "5",
+        barcode: "",
+        sku: "",
+        category: "",
+        image_url: "",
+      });
+      setIsAddDialogOpen(false);
+    } catch (error) {
+      console.error("Error adding product:", error);
+      alert("Failed to add product. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEditProduct = async () => {
+    if (
+      !user?.id ||
+      !editingProduct?.id ||
+      !formData.name ||
+      !formData.price ||
+      !formData.stock ||
+      !formData.min_stock_level
+    ) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await dispatch(
+        updateProduct({
+          id: editingProduct.id,
+          shopId: user.id,
+          productData: formData,
+        })
+      ).unwrap();
+
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        cost_price: "",
+        stock: "",
+        min_stock_level: "5",
+        barcode: "",
+        sku: "",
+        category: "",
+        image_url: "",
+      });
       setEditingProduct(null);
       setIsEditDialogOpen(false);
+    } catch (error) {
+      console.error("Error updating product:", error);
+      alert("Failed to update product. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleDeleteProduct = (id: number) => {
+  const handleDeleteProduct = async (id: string) => {
+    if (!user?.id) return;
+
     if (confirm("Are you sure you want to delete this product?")) {
-      setProducts(products.filter((p) => p.id !== id));
+      try {
+        await dispatch(deleteProduct({ id, shopId: user.id })).unwrap();
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        alert("Failed to delete product. Please try again.");
+      }
     }
   };
 
-  const openEditDialog = (product: Product) => {
+  const openEditDialog = (product: any) => {
     setEditingProduct(product);
     setFormData({
       name: product.name,
+      description: product.description || "",
       price: product.price.toString(),
+      cost_price: product.cost_price?.toString() || "",
       stock: product.stock.toString(),
+      min_stock_level: product.min_stock_level.toString(),
+      barcode: product.barcode || "",
+      sku: product.sku || "",
+      category: product.category || "",
+      image_url: product.image_url || "",
     });
     setIsEditDialogOpen(true);
   };
 
   const openAddDialog = () => {
-    setFormData({ name: "", price: "", stock: "" });
+    setFormData({
+      name: "",
+      description: "",
+      price: "",
+      cost_price: "",
+      stock: "",
+      min_stock_level: "5",
+      barcode: "",
+      sku: "",
+      category: "",
+      image_url: "",
+    });
     setIsAddDialogOpen(true);
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  // Cleanup debounce on unmount
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
+
+  // Calculate statistics
+  const totalProducts = products.length;
+  const lowStockProducts = products.filter(
+    (p) => p.stock <= p.min_stock_level
+  ).length;
+  const outOfStockProducts = products.filter((p) => p.stock === 0).length;
+  const totalStockValue = products.reduce(
+    (sum, p) => sum + p.price * p.stock,
+    0
   );
 
   return (
@@ -109,6 +260,7 @@ export default function ProductsPage() {
         <Button
           onClick={openAddDialog}
           className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
+          disabled={loading}
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Product
@@ -123,14 +275,24 @@ export default function ProductsPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+                placeholder="Search by name, SKU, or barcode..."
+                value={localSearchQuery}
+                onChange={(e) => handleSearchInput(e.target.value)}
+                className="pl-10 pr-10 bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+                disabled={loading}
               />
+              {localSearchQuery && (
+                <button
+                  onClick={clearSearch}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
             </div>
           </CardContent>
         </Card>
+
         <Card className="bg-[#0a0a0a] border-[#D4AF37]">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">
@@ -139,18 +301,79 @@ export default function ProductsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">
-              {products.length}
+              {loading ? (
+                <Loader2 className="h-6 w-6 animate-spin" />
+              ) : (
+                totalProducts
+              )}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Products Table */}
-      <ProductList
-        products={filteredProducts}
-        onEdit={openEditDialog}
-        onDelete={handleDeleteProduct}
-      />
+      {/* Stats Cards */}
+      <div className="grid gap-6 md:grid-cols-3 mb-6">
+        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-400">
+              Low Stock
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-400">
+              {loading ? "-" : lowStockProducts}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-400">
+              Out of Stock
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-red-400">
+              {loading ? "-" : outOfStockProducts}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-400">
+              Stock Value
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-400">
+              {loading ? "-" : `₹${totalStockValue.toLocaleString()}`}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+          <p className="text-red-400">Error: {error}</p>
+        </div>
+      )}
+
+      {/* Loading State */}
+      {loading && products.length === 0 ? (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37]" />
+          <span className="ml-3 text-gray-400">Loading products...</span>
+        </div>
+      ) : (
+        /* Products Table */
+        <ProductList
+          products={products}
+          onEdit={openEditDialog}
+          onDelete={handleDeleteProduct}
+        />
+      )}
 
       {/* Add Product Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
@@ -161,6 +384,7 @@ export default function ProductsPage() {
           onCancel={() => setIsAddDialogOpen(false)}
           onSubmit={handleAddProduct}
           submitButtonText="Add Product"
+          isSubmitting={isSubmitting}
         />
       </Dialog>
 
@@ -176,6 +400,7 @@ export default function ProductsPage() {
           }}
           onSubmit={handleEditProduct}
           submitButtonText="Save Changes"
+          isSubmitting={isSubmitting}
         />
       </Dialog>
     </div>

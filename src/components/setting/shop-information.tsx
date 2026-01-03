@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -5,25 +7,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Store } from "lucide-react";
 
 interface ShopInformationProps {
-  shopName: string;
-  setShopName: (value: string) => void;
-  shopAddress: string;
-  setShopAddress: (value: string) => void;
-  shopPhone: string;
-  setShopPhone: (value: string) => void;
-  shopEmail: string;
-  setShopEmail: (value: string) => void;
+  formData: {
+    business_name: string;
+    business_address: string;
+    phone: string;
+    email: string;
+  };
+  onFormChange: (field: string, value: string) => void;
 }
 
 export default function ShopInformation({
-  shopName,
-  setShopName,
-  shopAddress,
-  setShopAddress,
-  shopPhone,
-  setShopPhone,
-  shopEmail,
-  setShopEmail,
+  formData,
+  onFormChange,
 }: ShopInformationProps) {
   return (
     <Card className="bg-[#0a0a0a] border-[#D4AF37]">
@@ -34,13 +29,14 @@ export default function ShopInformation({
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="shop-name" className="text-gray-300">
-            Shop Name
+            Shop Name *
           </Label>
           <Input
             id="shop-name"
-            value={shopName}
-            onChange={(e) => setShopName(e.target.value)}
+            value={formData.business_name}
+            onChange={(e) => onFormChange("business_name", e.target.value)}
             className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+            required
           />
         </div>
         <div className="space-y-2">
@@ -49,35 +45,23 @@ export default function ShopInformation({
           </Label>
           <Textarea
             id="shop-address"
-            value={shopAddress}
-            onChange={(e) => setShopAddress(e.target.value)}
+            value={formData.business_address}
+            onChange={(e) => onFormChange("business_address", e.target.value)}
             className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+            placeholder="Enter your shop address"
           />
         </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="shop-phone" className="text-gray-300">
-              Phone Number
-            </Label>
-            <Input
-              id="shop-phone"
-              value={shopPhone}
-              onChange={(e) => setShopPhone(e.target.value)}
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="shop-email" className="text-gray-300">
-              Email
-            </Label>
-            <Input
-              id="shop-email"
-              type="email"
-              value={shopEmail}
-              onChange={(e) => setShopEmail(e.target.value)}
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
-            />
-          </div>
+        <div className="space-y-2">
+          <Label htmlFor="shop-phone" className="text-gray-300">
+            Phone Number
+          </Label>
+          <Input
+            id="shop-phone"
+            value={formData.phone}
+            onChange={(e) => onFormChange("phone", e.target.value)}
+            className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+            placeholder="03XX-XXXXXXX"
+          />
         </div>
       </CardContent>
     </Card>

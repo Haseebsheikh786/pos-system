@@ -1,56 +1,88 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, TrendingDown, AlertCircle } from "lucide-react";
+"use client";
 
-type InventoryItem = {
-  id: number;
-  name: string;
-  stock: number;
-  minStock: number;
-  lastSold: string;
-  category: string;
-};
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Package,
+  TrendingDown,
+  AlertCircle,
+  DollarSign,
+  MinusCircle,
+  TrendingUp,
+} from "lucide-react";
+import { Product } from "@/types/product";
 
 interface InventoryStatsProps {
-  inventory: InventoryItem[];
-  lowStockItems: InventoryItem[];
-  criticalStockItems: InventoryItem[];
+  stats?: {
+    totalItems: number;
+    lowStockItems: number;
+    criticalStockItems: number;
+    outOfStockItems: number;
+    totalStockValue: number;
+    itemsNeedingRestock: number;
+  };
+  loading?: boolean;
 }
 
 export default function InventoryStats({
-  inventory,
-  lowStockItems,
-  criticalStockItems,
+  stats,
+  loading = false,
 }: InventoryStatsProps) {
-  const stats = [
+  const statCards = [
     {
       title: "Total Items",
-      value: inventory.length,
+      value: loading ? "-" : stats?.totalItems || 0,
       icon: Package,
       iconColor: "text-[#D4AF37]",
       valueColor: "text-white",
-      description: "In inventory",
+      description: "Active products",
     },
     {
-      title: "Low Stock Items",
-      value: lowStockItems.length,
+      title: "Low Stock",
+      value: loading ? "-" : stats?.lowStockItems || 0,
       icon: TrendingDown,
       iconColor: "text-orange-400",
       valueColor: "text-orange-400",
-      description: "Need restock",
+      description: "Below minimum level",
     },
     {
       title: "Critical Stock",
-      value: criticalStockItems.length,
+      value: loading ? "-" : stats?.criticalStockItems || 0,
       icon: AlertCircle,
       iconColor: "text-red-400",
       valueColor: "text-red-400",
-      description: "Urgent attention",
+      description: "Less than 10 units",
+    },
+    {
+      title: "Out of Stock",
+      value: loading ? "-" : stats?.outOfStockItems || 0,
+      icon: MinusCircle,
+      iconColor: "text-red-400",
+      valueColor: "text-red-400",
+      description: "Zero units available",
+    },
+    {
+      title: "Stock Value",
+      value: loading
+        ? "-"
+        : `₹${stats?.totalStockValue?.toLocaleString() || 0}`,
+      icon: DollarSign,
+      iconColor: "text-green-400",
+      valueColor: "text-green-400",
+      description: "Total inventory worth",
+    },
+    {
+      title: "Need Restock",
+      value: loading ? "-" : stats?.itemsNeedingRestock || 0,
+      icon: TrendingUp,
+      iconColor: "text-blue-400",
+      valueColor: "text-blue-400",
+      description: "Items to reorder",
     },
   ];
 
   return (
-    <div className="grid gap-6 md:grid-cols-3 mb-6">
-      {stats.map((stat, index) => {
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6">
+      {statCards.map((stat, index) => {
         const Icon = stat.icon;
         return (
           <Card key={index} className="bg-[#0a0a0a] border-[#D4AF37]">

@@ -16,6 +16,7 @@ import {
   setSearchQuery,
   updateStock,
 } from "@/store/inventorySlice";
+import { Product } from "@/types/product";
 
 export default function InventoryPage() {
   const dispatch = useDispatch<AppDispatch>();

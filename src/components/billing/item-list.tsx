@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -9,13 +11,16 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Trash2, X } from "lucide-react";
+import type { Product } from "@/types/product";
 
 type BillItem = {
   id: number;
+  productId: string;
   productName: string;
   price: number;
   quantity: number;
   total: number;
+  currentStock: number;
 };
 
 interface ItemListProps {
@@ -23,6 +28,7 @@ interface ItemListProps {
   onRemoveItem: (id: number) => void;
   onUpdateQuantity: (id: number, newQty: number) => void;
   onClearBill: () => void;
+  products: Product[];
 }
 
 export default function ItemList({
@@ -30,7 +36,19 @@ export default function ItemList({
   onRemoveItem,
   onUpdateQuantity,
   onClearBill,
+  products,
 }: ItemListProps) {
+  const getStockStatus = (item: BillItem) => {
+    const product = products.find((p) => p.id === item.productId);
+    if (!product) return "unknown";
+
+    const remainingStock = product.stock - item.quantity;
+
+    if (remainingStock <= 0) return "out-of-stock";
+    if (remainingStock <= product.min_stock_level) return "low-stock";
+    return "available";
+  };
+
   return (
     <Card className="bg-[#0a0a0a] border-[#D4AF37]">
       <CardHeader>
@@ -55,69 +73,111 @@ export default function ItemList({
             <p>No items added yet. Start by selecting a product above.</p>
           </div>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow className="border-[#D4AF37]/30">
-                <TableHead className="text-[#D4AF37]">Product</TableHead>
-                <TableHead className="text-[#D4AF37]">Price</TableHead>
-                <TableHead className="text-[#D4AF37]">Quantity</TableHead>
-                <TableHead className="text-[#D4AF37]">Total</TableHead>
-                <TableHead className="text-[#D4AF37]"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {billItems.map((item) => (
-                <TableRow key={item.id} className="border-[#D4AF37]/30">
-                  <TableCell className="text-white font-medium">
-                    {item.productName}
-                  </TableCell>
-                  <TableCell className="text-gray-300">
-                    Rs. {item.price}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() =>
-                          onUpdateQuantity(item.id, item.quantity - 1)
-                        }
-                        className="h-6 w-6 p-0 text-gray-400 hover:text-white"
-                      >
-                        -
-                      </Button>
-                      <span className="text-white w-8 text-center">
-                        {item.quantity}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() =>
-                          onUpdateQuantity(item.id, item.quantity + 1)
-                        }
-                        className="h-6 w-6 p-0 text-gray-400 hover:text-white"
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-white font-medium">
-                    Rs. {item.total.toLocaleString()}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onRemoveItem(item.id)}
-                      className="text-red-400 hover:bg-red-500/10"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-[#D4AF37]/30">
+                  <TableHead className="text-[#D4AF37]">Product</TableHead>
+                  <TableHead className="text-[#D4AF37]">Price</TableHead>
+                  <TableHead className="text-[#D4AF37]">Quantity</TableHead>
+                  <TableHead className="text-[#D4AF37]">Total</TableHead>
+                  <TableHead className="text-[#D4AF37]">Stock Status</TableHead>
+                  <TableHead className="text-[#D4AF37]"></TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {billItems.map((item) => {
+                  const stockStatus = getStockStatus(item);
+                  const product = products.find((p) => p.id === item.productId);
+
+                  return (
+                    <TableRow
+                      key={item.id}
+                      className="border-[#D4AF37]/30 hover:bg-[#1a1a1a]"
+                    >
+                      <TableCell className="text-white font-medium">
+                        <div className="flex flex-col">
+                          <span>{item.productName}</span>
+                          {product?.sku && (
+                            <span className="text-xs text-gray-400">
+                              SKU: {product.sku}
+                            </span>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-gray-300">
+                        ₹{item.price.toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              onUpdateQuantity(item.id, item.quantity - 1)
+                            }
+                            className="h-6 w-6 p-0 text-gray-400 hover:text-white disabled:opacity-30"
+                            disabled={item.quantity <= 1}
+                          >
+                            -
+                          </Button>
+                          <span className="text-white w-8 text-center">
+                            {item.quantity}
+                          </span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              onUpdateQuantity(item.id, item.quantity + 1)
+                            }
+                            className="h-6 w-6 p-0 text-gray-400 hover:text-white"
+                            disabled={product && item.quantity >= product.stock}
+                          >
+                            +
+                          </Button>
+                        </div>
+                        {product && (
+                          <p className="text-xs text-gray-400 mt-1">
+                            Max: {product.stock}
+                          </p>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-white font-medium">
+                        ₹{item.total.toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        <span
+                          className={`text-xs px-2 py-1 rounded ${
+                            stockStatus === "out-of-stock"
+                              ? "bg-red-500/10 text-red-400"
+                              : stockStatus === "low-stock"
+                              ? "bg-orange-500/10 text-orange-400"
+                              : "bg-green-500/10 text-green-400"
+                          }`}
+                        >
+                          {stockStatus === "out-of-stock"
+                            ? "No Stock"
+                            : stockStatus === "low-stock"
+                            ? "Low Stock"
+                            : "Available"}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onRemoveItem(item.id)}
+                          className="text-red-400 hover:bg-red-500/10"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
         )}
       </CardContent>
     </Card>

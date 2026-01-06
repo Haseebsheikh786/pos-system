@@ -3,7 +3,7 @@ import { Invoice, InvoiceItem, InvoiceFormData, InvoiceItemInput } from '@/types
 import { Payment } from '@/types/payment';
 
 export class InvoiceService {
-    static async createInvoice(shopId: string, invoiceData: InvoiceFormData): Promise<{ invoice: Invoice; items: InvoiceItem[]; payment?: any }> {
+    static async createInvoice(shopId: string, invoiceData: InvoiceFormData): Promise<{ invoice: Invoice; items: InvoiceItem[]; payment?: Payment }> {
         let createdInvoice: Invoice | null = null;
         let createdPayment: Payment | null = null;
 
@@ -87,7 +87,7 @@ export class InvoiceService {
             return {
                 invoice: createdInvoice,
                 items: items || [],
-                payment: createdPayment
+                payment: createdPayment ?? undefined,
             };
 
         } catch (error) {

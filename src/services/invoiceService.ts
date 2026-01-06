@@ -1,10 +1,11 @@
 import { supabase } from '@/supabase-client';
 import { Invoice, InvoiceItem, InvoiceFormData, InvoiceItemInput } from '@/types/invoice';
+import { Payment } from '@/types/payment';
 
 export class InvoiceService {
     static async createInvoice(shopId: string, invoiceData: InvoiceFormData): Promise<{ invoice: Invoice; items: InvoiceItem[]; payment?: any }> {
-        let createdInvoice: any = null;
-        let createdPayment: any = null;
+        let createdInvoice: Invoice | null = null;
+        let createdPayment: Payment | null = null;
 
         try {
             // Calculate payment status
@@ -77,6 +78,11 @@ export class InvoiceService {
 
             // 4. Update product stock
             await this.updateProductStock(shopId, invoiceData.items);
+
+            if (!createdInvoice) {
+                throw new Error('Invoice creation failed');
+            }
+
 
             return {
                 invoice: createdInvoice,

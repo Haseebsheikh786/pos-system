@@ -182,6 +182,10 @@ export default function BillingPage() {
     }
   };
 
+  const selectedCustomerData = customers?.find(
+    (c) => c.id === selectedCustomer
+  );
+
   const subtotal = billItems.reduce((sum, item) => sum + item.total, 0);
   const tax = 0; // No tax for MVP
   const total = subtotal + tax;
@@ -390,8 +394,7 @@ export default function BillingPage() {
                       {customers.find((c) => c.id === selectedCustomer)
                         ?.phone || ""}
                     </p>
-                    {customers?.find((c) => c.id === selectedCustomer)
-                      ?.total_due_amount > 0 && (
+                    {(selectedCustomerData?.total_due_amount ?? 0) > 0 && (
                       <p className="text-orange-400 text-sm mt-1">
                         Outstanding: ₹
                         {customers

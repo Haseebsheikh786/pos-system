@@ -38,7 +38,7 @@ export class PaymentService {
         // Get invoice total
         const { data: invoice } = await supabase
             .from('invoices')
-            .select('total_amount')
+            .select('total')
             .eq('id', invoiceId)
             .eq('shop_id', shopId)
             .single();
@@ -46,7 +46,7 @@ export class PaymentService {
         if (!invoice) return;
 
         // Calculate new payment status
-        const paymentStatus = InvoiceService.calculatePaymentStatus(invoice.total_amount, totalPaid);
+        const paymentStatus = InvoiceService.calculatePaymentStatus(invoice.total, totalPaid);
 
         // Update invoice
         await supabase
@@ -54,17 +54,17 @@ export class PaymentService {
             .update({
                 payment_status: paymentStatus,
                 amount_paid: totalPaid,
-                due_amount: invoice.total_amount - totalPaid,
                 updated_at: new Date().toISOString(),
             })
             .eq('id', invoiceId)
             .eq('shop_id', shopId);
     }
 
-    static async getPayments(shopId: string): Promise<Payment[]> {
+    static async getInvoicePayments(invoiceId: string, shopId: string): Promise<Payment[]> {
         const { data, error } = await supabase
             .from('payments')
             .select('*')
+            .eq('invoice_id', invoiceId)
             .eq('shop_id', shopId)
             .order('created_at', { ascending: false });
 

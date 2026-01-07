@@ -4,7 +4,7 @@ export type Payment = {
     invoice_id: string;
     customer_id: string | null;
     amount: number;
-    payment_method: 'cash' | 'card' | 'upi' | 'bank_transfer';
+    method: 'cash' | 'card' | 'upi' | 'bank_transfer';
     transaction_id: string | null;
     notes: string | null;
     status: 'completed' | 'refunded';
@@ -15,7 +15,5 @@ export type PaymentFormData = {
     invoice_id: string;
     customer_id: string;
     amount: number;
-    payment_method: 'cash' | 'card' | 'upi' | 'bank_transfer';
-    transaction_id: string;
-    notes: string;
+    method: 'cash' | 'card' | 'upi' | 'bank_transfer';
 };

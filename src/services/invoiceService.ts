@@ -10,7 +10,7 @@ export class InvoiceService {
         try {
             // Calculate payment status
             const paymentStatus = this.calculatePaymentStatus(
-                invoiceData.total_amount,
+                invoiceData.total,
                 invoiceData.payment_amount
             );
 
@@ -22,7 +22,7 @@ export class InvoiceService {
                     customer_id: invoiceData.customer_id,
                     customer_name: invoiceData.customer_name || null,
                     customer_phone: null,
-                    total: invoiceData.total_amount,
+                    total: invoiceData.total,
                     invoice_number: invoiceData.invoice_number,
                     payment_status: paymentStatus,
                     amount_paid: invoiceData.payment_amount,

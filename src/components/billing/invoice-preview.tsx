@@ -140,7 +140,7 @@ export default function InvoicePreview({
         subtotal: subtotal,
         discount_amount: 0,
         tax_amount: 0,
-        total_amount: total,
+        total: total,
         payment_amount: payment,
         invoice_number: invoiceNumber,
       };

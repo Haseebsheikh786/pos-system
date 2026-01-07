@@ -30,13 +30,13 @@ export const createPayment = createAsyncThunk(
     }
 );
 
-export const fetchPayments = createAsyncThunk(
-    'payments/fetchPayments',
-    async (shopId: string, { rejectWithValue }) => {
+export const fetchInvoicePayments = createAsyncThunk(
+    'payments/fetchInvoicePayments',
+    async ({ invoiceId, shopId }: { invoiceId: string; shopId: string }, { rejectWithValue }) => {
         try {
-            return await PaymentService.getPayments(shopId);
+            return await PaymentService.getInvoicePayments(invoiceId, shopId);
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch payments';
+            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch invoice payments';
             return rejectWithValue(errorMessage);
         }
     }
@@ -50,6 +50,9 @@ const paymentSlice = createSlice({
             state.error = null;
             state.saveError = null;
         },
+        clearInvoicePayments: (state) => {
+            state.payments = [];
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -61,26 +64,30 @@ const paymentSlice = createSlice({
             .addCase(createPayment.fulfilled, (state, action) => {
                 state.saving = false;
                 state.payments.unshift(action.payload);
+                // Also add to invoice payments if it matches the current invoice
+                if (state.payments.some(p => p.invoice_id === action.payload.invoice_id)) {
+                    state.payments.unshift(action.payload);
+                }
             })
             .addCase(createPayment.rejected, (state, action) => {
                 state.saving = false;
                 state.saveError = action.payload as string;
             })
-            // Fetch Payments
-            .addCase(fetchPayments.pending, (state) => {
+            // Fetch Invoice Payments
+            .addCase(fetchInvoicePayments.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchPayments.fulfilled, (state, action) => {
+            .addCase(fetchInvoicePayments.fulfilled, (state, action) => {
                 state.loading = false;
                 state.payments = action.payload;
             })
-            .addCase(fetchPayments.rejected, (state, action) => {
+            .addCase(fetchInvoicePayments.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });
     },
 });
 
-export const { clearErrors } = paymentSlice.actions;
+export const { clearErrors, clearInvoicePayments } = paymentSlice.actions;
 export default paymentSlice.reducer;

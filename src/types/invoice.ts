@@ -9,7 +9,7 @@ export type Invoice = {
     subtotal: number;
     discount_amount: number;
     tax_amount: number;
-    total_amount: number;
+    total: number;
     payment_status: 'pending' | 'partial' | 'paid' | 'cancelled';
     amount_paid: number;
     due_amount: number;
@@ -26,7 +26,7 @@ export type InvoiceItem = {
     product_name: string;
     product_price: number;
     quantity: number;
-    total_price: number;
+    price: number;
     created_at: string;
 };
 
@@ -38,7 +38,7 @@ export type InvoiceFormData = {
     subtotal: number;
     discount_amount: number;
     tax_amount: number;
-    total_amount: number;
+    total: number;
     payment_amount: number;
 };
 

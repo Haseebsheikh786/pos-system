@@ -49,6 +49,17 @@ export const fetchInvoices = createAsyncThunk(
         }
     }
 );
+export const fetchInvoiceDetails = createAsyncThunk(
+    'invoices/fetchInvoiceDetails',
+    async ({ id, shopId }: { id: string; shopId: string }, { rejectWithValue }) => {
+        try {
+            return await InvoiceService.getInvoice(id, shopId);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch invoice details';
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
 
 const invoiceSlice = createSlice({
     name: 'invoices',
@@ -95,6 +106,21 @@ const invoiceSlice = createSlice({
                 state.invoices = action.payload;
             })
             .addCase(fetchInvoices.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(fetchInvoiceDetails.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchInvoiceDetails.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentInvoice = {
+                    invoice: action.payload.invoice,
+                    items: action.payload.items,
+                };
+            })
+            .addCase(fetchInvoiceDetails.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });

@@ -11,6 +11,7 @@ import {
   Settings,
   LogOut,
   Box,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/supabase-client";
@@ -20,6 +21,7 @@ const navigation = [
   { name: "Products", href: "/dashboard/products", icon: Package },
   { name: "Customers", href: "/dashboard/customers", icon: Users },
   { name: "Billing", href: "/dashboard/billing", icon: ShoppingCart },
+  { name: "Invoices", href: "/dashboard/invoices", icon: FileText },
   { name: "Inventory", href: "/dashboard/inventory", icon: Box },
   { name: "Reports", href: "/dashboard/reports", icon: BarChart3 },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },

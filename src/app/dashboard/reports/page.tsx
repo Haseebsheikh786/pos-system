@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -9,62 +10,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import ProductSalesReport from "@/components/reports/product-sales-report";
-import SalesReport from "@/components/reports/sales-report";
-import ReportsStats from "@/components/reports/reports-stats";
-
-type SaleData = {
-  date: string;
-  sales: number;
-  profit: number;
-  transactions: number;
-};
-
-type ProductSale = {
-  product: string;
-  quantity: number;
-  revenue: number;
-};
+import { Download, Calendar } from "lucide-react";
+import SalesProfitTab from "@/components/reports/sales-profit-tab";
+import PaymentsDuesTab from "@/components/reports/payments-dues-tab";
+import InventoryTab from "@/components/reports/inventory-tab";
 
 export default function ReportsPage() {
-  const [reportType, setReportType] = useState<string>("daily");
+  const [dateRange, setDateRange] = useState("today");
+  const [activeTab, setActiveTab] = useState("sales-profit");
 
-  // Mock data
-  const dailySales: SaleData[] = [
-    { date: "2024-01-15", sales: 15240, profit: 4320, transactions: 42 },
-    { date: "2024-01-14", sales: 13560, profit: 3890, transactions: 38 },
-    { date: "2024-01-13", sales: 16780, profit: 4920, transactions: 45 },
-    { date: "2024-01-12", sales: 14320, profit: 4100, transactions: 41 },
-    { date: "2024-01-11", sales: 12890, profit: 3650, transactions: 36 },
-  ];
-
-  const monthlySales: SaleData[] = [
-    { date: "January 2024", sales: 420000, profit: 125000, transactions: 1240 },
-    {
-      date: "December 2023",
-      sales: 398000,
-      profit: 118000,
-      transactions: 1180,
-    },
-    {
-      date: "November 2023",
-      sales: 385000,
-      profit: 112000,
-      transactions: 1150,
-    },
-    { date: "October 2023", sales: 410000, profit: 121000, transactions: 1220 },
-  ];
-
-  const productSales: ProductSale[] = [
-    { product: "Rice (5kg)", quantity: 145, revenue: 123250 },
-    { product: "Cooking Oil (1L)", quantity: 298, revenue: 125160 },
-    { product: "Sugar (1kg)", quantity: 467, revenue: 56040 },
-    { product: "Tea Bags (100pcs)", quantity: 189, revenue: 64260 },
-    { product: "Flour (5kg)", quantity: 234, revenue: 159120 },
-  ];
-
-  const salesData = reportType === "daily" ? dailySales : monthlySales;
+  const handleExport = (format: "pdf" | "excel") => {
+    console.log(`Exporting ${activeTab} report as ${format}`);
+    alert(`Exporting ${activeTab} report as ${format.toUpperCase()}`);
+  };
 
   return (
     <div className="p-8">
@@ -74,35 +34,92 @@ export default function ReportsPage() {
           Reports & Analytics
         </h1>
         <p className="text-gray-400">
-          View sales reports and business performance.
+          View sales, profit, payments, and inventory insights.
         </p>
       </div>
 
-      {/* Report Type Selector */}
+      {/* Global Controls */}
       <Card className="bg-[#0a0a0a] border-[#D4AF37] mb-6">
         <CardContent className="pt-6">
-          <div className="flex items-center gap-4">
-            <Label className="text-gray-300">Report Type:</Label>
-            <Select value={reportType} onValueChange={setReportType}>
-              <SelectTrigger className="w-64 bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-[#0a0a0a] border-[#D4AF37]">
-                <SelectItem value="daily" className="text-white">
-                  Daily Sales Report
-                </SelectItem>
-                <SelectItem value="monthly" className="text-white">
-                  Monthly Sales Report
-                </SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            {/* Left Side: Date Range */}
+            <div className="flex flex-col md:flex-row md:items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-[#D4AF37]" />
+                <Label className="text-gray-300">Date Range:</Label>
+              </div>
+              <Select value={dateRange} onValueChange={setDateRange}>
+                <SelectTrigger className="w-64 bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+                  <SelectValue placeholder="Select date range" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] text-white">
+                  <SelectItem value="today">Today</SelectItem>
+                  <SelectItem value="yesterday">Yesterday</SelectItem>
+                  <SelectItem value="last-7-days">Last 7 Days</SelectItem>
+                  <SelectItem value="this-month">This Month</SelectItem>
+                  <SelectItem value="custom-range">Custom Range</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Right Side: Export Buttons */}
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={() => handleExport("pdf")}
+                className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export PDF
+              </Button>
+              
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      <ReportsStats salesData={salesData} reportType={reportType} />
-      <SalesReport salesData={salesData} reportType={reportType} />
-      <ProductSalesReport productSales={productSales} />
+      {/* Tab Structure */}
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
+        <TabsList className="bg-[#0a0a0a] border  border-[#D4AF37]/30 p-1">
+          <TabsTrigger
+            value="sales-profit"
+            className="data-[state=active]:bg-[#D4AF37] data-[state=active]:text-black text-gray-300"
+          >
+            Sales & Profit
+          </TabsTrigger>
+          <TabsTrigger
+            value="payments-dues"
+            className="data-[state=active]:bg-[#D4AF37] data-[state=active]:text-black text-gray-300"
+          >
+            Payments & Dues
+          </TabsTrigger>
+          <TabsTrigger
+            value="inventory"
+            className="data-[state=active]:bg-[#D4AF37] data-[state=active]:text-black text-gray-300"
+          >
+            Inventory Report
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Tab 1: Sales & Profit */}
+        <TabsContent value="sales-profit">
+          <SalesProfitTab dateRange={dateRange} />
+        </TabsContent>
+
+        {/* Tab 2: Payments & Dues */}
+        <TabsContent value="payments-dues">
+          <PaymentsDuesTab dateRange={dateRange} />
+        </TabsContent>
+
+        {/* Tab 3: Inventory */}
+        <TabsContent value="inventory">
+          <InventoryTab dateRange={dateRange} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

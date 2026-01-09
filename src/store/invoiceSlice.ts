@@ -4,6 +4,7 @@ import { InvoiceService } from '@/services/invoiceService';
 
 interface InvoiceState {
     invoices: Invoice[];
+    todayInvoices: Invoice[];
     currentInvoice: {
         invoice: Invoice | null;
         items: InvoiceItem[];
@@ -16,6 +17,7 @@ interface InvoiceState {
 
 const initialState: InvoiceState = {
     invoices: [],
+    todayInvoices: [],
     currentInvoice: {
         invoice: null,
         items: [],
@@ -43,6 +45,17 @@ export const fetchInvoices = createAsyncThunk(
     async (shopId: string, { rejectWithValue }) => {
         try {
             return await InvoiceService.getInvoices(shopId);
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch invoices';
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+export const fetchTodayInvoices = createAsyncThunk(
+    'invoices/fetchTodayInvoices',
+    async (shopId: string, { rejectWithValue }) => {
+        try {
+            return await InvoiceService.getTodayInvoices(shopId);
         } catch (error: unknown) {
             const errorMessage = error instanceof Error ? error.message : 'Failed to fetch invoices';
             return rejectWithValue(errorMessage);
@@ -106,6 +119,18 @@ const invoiceSlice = createSlice({
                 state.invoices = action.payload;
             })
             .addCase(fetchInvoices.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            .addCase(fetchTodayInvoices.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchTodayInvoices.fulfilled, (state, action) => {
+                state.loading = false;
+                state.todayInvoices = action.payload;
+            })
+            .addCase(fetchTodayInvoices.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })

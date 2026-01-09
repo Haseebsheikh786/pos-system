@@ -1,22 +1,76 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import StatsCards from "@/components/dashboard/stats-cards";
 import ActivityAndAlerts from "@/components/dashboard/activity-and-alerts";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import { fetchProducts } from "@/store/productSlice";
+import { fetchTodayInvoices } from "@/store/invoiceSlice";
 
 export default function DashboardPage() {
-  // Mock data stored in state
-  const [stats, setStats] = useState({
-    todaysSales: 15240,
-    todaysProfit: 4320,
-    creditBalance: 2800,
-    totalProducts: 156,
-  });
+  const dispatch = useDispatch<AppDispatch>();
+  const { items: products } = useSelector((state: RootState) => state.products);
+  const { todayInvoices } = useSelector((state: RootState) => state.invoices);
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const stats = useMemo(() => {
+    // Calculate today's sales
+    const todaysSales = todayInvoices.reduce((total, invoice) => {
+      return total + (invoice.total || 0);
+    }, 0);
+
+    // Calculate today's actual profit using invoice items and product cost
+    const todaysProfit = todayInvoices.reduce((totalProfit, invoice) => {
+      // Check if invoice has items
+      if (!invoice.items || invoice.items.length === 0) return totalProfit;
+
+      // Calculate profit for each item in this invoice
+      const invoiceProfit = invoice.items.reduce((invoiceTotal, item) => {
+        // Find the product to get its cost price
+        const product = products.find((p) => p.id === item.product_id);
+        if (!product) return invoiceTotal;
+
+        // Get cost price (default to 0 if not available)
+        const costPrice = product.cost_price || 0;
+
+        // Get selling price from invoice item
+        const sellingPrice = item.price || item.product_price || 0;
+
+        // Get quantity
+        const quantity = item.quantity || 1;
+
+        // Calculate profit for this item: (selling price - cost price) × quantity
+        const itemProfit = (sellingPrice - costPrice) * quantity;
+
+        return invoiceTotal + itemProfit;
+      }, 0);
+
+      return totalProfit + invoiceProfit;
+    }, 0);
+
+    // Calculate credit balance (total outstanding due amounts)
+    const creditBalance = todayInvoices.reduce((total, invoice) => {
+      return total + (invoice.due_amount || 0);
+    }, 0);
+
+    // Total products
+    const totalProducts = products.length;
+
+    return {
+      todaysSales,
+      todaysProfit: Math.round(todaysProfit),
+      creditBalance,
+      totalProducts,
+    };
+  }, [todayInvoices, products]);
 
   useEffect(() => {
-    // prevent unused variable warning
-    void setStats;
-  }, []);
+    if (user?.id) {
+      dispatch(fetchProducts(user.id));
+      dispatch(fetchTodayInvoices(user.id));
+    }
+  }, [dispatch, user?.id]);
 
   return (
     <div className="p-8">
@@ -30,7 +84,7 @@ export default function DashboardPage() {
 
       {/* Stats Grid */}
       <StatsCards stats={stats} />
-      <ActivityAndAlerts />
+      <ActivityAndAlerts invoices={todayInvoices} products={products} />
     </div>
   );
 }

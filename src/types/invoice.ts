@@ -15,6 +15,7 @@ export type Invoice = {
     due_amount: number;
     status: 'pending' | 'completed' | 'cancelled';
     notes: string | null;
+    items: Array<InvoiceItem> | null;
     created_at: string;
     updated_at: string;
 };

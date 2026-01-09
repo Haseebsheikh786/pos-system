@@ -28,7 +28,6 @@ const StatsCards = ({ stats }: StatsProps) => {
             <div className="text-2xl font-bold text-white">
               Rs. {stats.todaysSales.toLocaleString()}
             </div>
-            <p className="text-xs text-green-500 mt-1">+12.5% from yesterday</p>
           </CardContent>
         </Card>
 
@@ -44,7 +43,6 @@ const StatsCards = ({ stats }: StatsProps) => {
             <div className="text-2xl font-bold text-white">
               Rs. {stats.todaysProfit.toLocaleString()}
             </div>
-            <p className="text-xs text-green-500 mt-1">+8.2% from yesterday</p>
           </CardContent>
         </Card>
 
@@ -60,7 +58,6 @@ const StatsCards = ({ stats }: StatsProps) => {
             <div className="text-2xl font-bold text-orange-400">
               Rs. {stats.creditBalance.toLocaleString()}
             </div>
-            <p className="text-xs text-gray-500 mt-1">Outstanding payments</p>
           </CardContent>
         </Card>
 
@@ -76,7 +73,6 @@ const StatsCards = ({ stats }: StatsProps) => {
             <div className="text-2xl font-bold text-white">
               {stats.totalProducts}
             </div>
-            <p className="text-xs text-gray-500 mt-1">In inventory</p>
           </CardContent>
         </Card>
       </div>

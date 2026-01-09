@@ -161,4 +161,44 @@ export class InvoiceService {
 
         return { invoice, items: items || [] };
     }
+
+    static async getTodayInvoices(shopId: string): Promise<Invoice[]> {
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+
+        const startOfTomorrow = new Date(startOfToday);
+        startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
+
+        const { data, error } = await supabase
+            .from('invoices')
+            .select(`
+            *,
+            invoice_items (
+                id,
+                product_id,
+                product_name,
+                product_price,
+                price,
+                quantity,
+                created_at
+            )
+        `)
+            .eq('shop_id', shopId)
+            .gte('created_at', startOfToday.toISOString())
+            .lt('created_at', startOfTomorrow.toISOString())
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        // Transform to match your Invoice type with items
+        return (data || []).map(invoice => {
+            // Remove the invoice_items property and add items
+            const { invoice_items, ...invoiceData } = invoice;
+            return {
+                ...invoiceData,
+                items: invoice_items || []
+            };
+        });
+    }
+
 }

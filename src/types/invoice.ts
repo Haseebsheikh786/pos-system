@@ -34,6 +34,7 @@ export type InvoiceItem = {
 export type InvoiceFormData = {
     customer_id: string | null;
     customer_name: string;
+    customer_phone: string;
     invoice_number: string;
     items: InvoiceItemInput[];
     subtotal: number;

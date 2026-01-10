@@ -52,6 +52,7 @@ export default function BillingPage() {
   const [quantity, setQuantity] = useState<string>("1");
   const [selectedCustomer, setSelectedCustomer] = useState<string>("");
   const [customerName, setCustomerName] = useState<string>("");
+  const [customerPhone, setCustomerPhone] = useState<string>("");
   const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
 
   // Fetch products and customers on component mount
@@ -161,6 +162,7 @@ export default function BillingPage() {
       setBillItems([]);
       setSelectedCustomer("");
       setCustomerName("");
+      setCustomerPhone("");
     }
   };
 
@@ -177,8 +179,10 @@ export default function BillingPage() {
     const customer = customers.find((c) => c.id === customerId);
     if (customer) {
       setCustomerName(customer.name);
+      setCustomerPhone(customer.phone);
     } else {
       setCustomerName("");
+      setCustomerPhone("");
     }
   };
 
@@ -481,6 +485,7 @@ export default function BillingPage() {
           billItems={billItems}
           customerId={selectedCustomer !== "walk-in" ? selectedCustomer : null}
           customerName={customerName}
+          customerPhone={customerPhone}
           subtotal={subtotal}
           total={total}
           onPrint={handlePrint}
@@ -491,6 +496,7 @@ export default function BillingPage() {
             setBillItems([]);
             setSelectedCustomer("");
             setCustomerName("");
+            setCustomerPhone("");
             alert("Invoice saved successfully!");
           }}
         />

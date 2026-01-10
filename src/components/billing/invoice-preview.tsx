@@ -38,6 +38,7 @@ interface InvoicePreviewProps {
   billItems: BillItem[];
   customerId: string | null;
   customerName: string;
+  customerPhone: string;
   subtotal: number;
   total: number;
   onPrint: () => void;
@@ -50,6 +51,7 @@ export default function InvoicePreview({
   billItems,
   customerId,
   customerName,
+  customerPhone,
   subtotal,
   total,
   onDownload,
@@ -88,7 +90,11 @@ export default function InvoicePreview({
   };
 
   const invoiceNumber = generateInvoiceNumber(user?.id);
-  const invoiceDate = new Date().toLocaleDateString();
+  const invoiceDate = new Date().toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
   // Calculate change for cash payments
   useEffect(() => {
@@ -130,6 +136,7 @@ export default function InvoicePreview({
       const invoiceData: InvoiceFormData = {
         customer_id: customerId,
         customer_name: customerName,
+        customer_phone: customerPhone,
         items: billItems.map((item) => ({
           product_id: item.productId,
           product_name: item.productName,

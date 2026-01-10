@@ -20,6 +20,7 @@ export class InvoiceService {
 
             // Handle customer name - use "Walk-in Customer" if null/empty
             const customerName = invoiceData.customer_name?.trim() || "Walk-in Customer";
+            const customerPhone = invoiceData.customer_phone?.trim() || "";
 
             // 1. Create invoice
             const { data: invoice, error: invoiceError } = await supabase
@@ -28,7 +29,7 @@ export class InvoiceService {
                     shop_id: shopId,
                     customer_id: customerId,
                     customer_name: customerName,
-                    customer_phone: null,
+                    customer_phone: customerPhone,
                     total: invoiceData.total,
                     invoice_number: invoiceData.invoice_number,
                     payment_status: paymentStatus,

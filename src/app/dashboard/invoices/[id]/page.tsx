@@ -41,12 +41,14 @@ import {
   FileText,
   Receipt,
   Hash,
+  Download,
 } from "lucide-react";
 import { format } from "date-fns";
 import PaymentModal from "@/components/invoices/payment-modal";
 import { fetchInvoiceDetails, clearCurrentInvoice } from "@/store/invoiceSlice";
 import { fetchInvoicePayments } from "@/store/paymentSlice";
 import { fetchProfile } from "@/store/profileSlice";
+import { useInvoiceDownloader } from "@/hooks/useInvoiceDownloader";
 
 export default function InvoiceDetailPage() {
   const params = useParams();
@@ -55,21 +57,41 @@ export default function InvoiceDetailPage() {
 
   const { user } = useSelector((state: RootState) => state.auth);
   const { profile } = useSelector((state: RootState) => state.profile);
-  const { currentInvoice, loading, error } = useSelector(
+  const { currentInvoice, error } = useSelector(
     (state: RootState) => state.invoices
   );
   const { payments } = useSelector((state: RootState) => state.payment);
+  const { downloadInvoice } = useInvoiceDownloader({
+    invoice: currentInvoice.invoice,
+    items: currentInvoice.items,
+    profile,
+    payments,
+  });
+
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   const shopId = user?.id;
   const invoiceId = params.id as string;
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   useEffect(() => {
-    if (invoiceId && shopId) {
-      dispatch(fetchInvoiceDetails({ id: invoiceId, shopId }));
-      dispatch(fetchInvoicePayments({ invoiceId, shopId }));
-      dispatch(fetchProfile(user.id));
-    }
+    if (!invoiceId || !shopId) return;
+
+    const fetchData = async () => {
+      try {
+        setIsInitialLoading(true);
+
+        await Promise.all([
+          dispatch(fetchInvoiceDetails({ id: invoiceId, shopId })).unwrap(),
+          dispatch(fetchInvoicePayments({ invoiceId, shopId })).unwrap(),
+          dispatch(fetchProfile(user.id)).unwrap(),
+        ]);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchData();
 
     return () => {
       dispatch(clearCurrentInvoice());
@@ -123,10 +145,6 @@ export default function InvoiceDetailPage() {
     return format(date, "hh:mm a");
   };
 
-  const handlePrintInvoice = () => {
-    window.print();
-  };
-
   const handlePaymentSuccess = () => {
     if (shopId) {
       dispatch(fetchInvoiceDetails({ id: invoiceId, shopId }));
@@ -134,7 +152,16 @@ export default function InvoiceDetailPage() {
     }
   };
 
-  if (loading) {
+  const handleDownloadInvoice = () => {
+    if (!currentInvoice.invoice) {
+      alert("No invoice data available");
+      return;
+    }
+
+    downloadInvoice();
+  };
+
+  if (isInitialLoading) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] p-8 flex items-center justify-center">
         <div className="text-center">
@@ -235,12 +262,13 @@ export default function InvoiceDetailPage() {
               </Button>
             )}
             <Button
-              onClick={handlePrintInvoice}
+              onClick={handleDownloadInvoice}
+              disabled={!currentInvoice.invoice}
               variant="outline"
               className="border-[#D4AF37]/30 text-gray-300 hover:text-white hover:bg-[#D4AF37]/30/50 "
             >
-              <Printer className="h-4 w-4 mr-2" />
-              Print
+              <Download className="h-4 w-4 mr-2" />
+              Downlaod PDF
             </Button>
           </div>
         </div>
@@ -369,13 +397,13 @@ export default function InvoiceDetailPage() {
                               </div>
                             </TableCell>
                             <TableCell className="text-gray-300 text-right">
-                              ₹{item.price}
+                              {item.price}
                             </TableCell>
                             <TableCell className="text-gray-300 text-right">
                               {item.quantity}
                             </TableCell>
                             <TableCell className="text-white font-medium text-right">
-                              ₹{item.price * item.quantity}
+                              {item.price * item.quantity}
                             </TableCell>
                           </TableRow>
                         ))
@@ -439,7 +467,7 @@ export default function InvoiceDetailPage() {
                         </div>
                         <div className="text-right">
                           <p className="text-green-400 font-bold text-lg">
-                            ₹{payment.amount}
+                            {payment.amount}
                           </p>
                         </div>
                       </div>
@@ -463,7 +491,7 @@ export default function InvoiceDetailPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400">Subtotal</span>
-                    <span className="text-white">₹{grandTotal}</span>
+                    <span className="text-white">{grandTotal}</span>
                   </div>
 
                   <Separator className="bg-[#D4AF37]/30" />
@@ -473,7 +501,7 @@ export default function InvoiceDetailPage() {
                       Grand Total
                     </span>
                     <span className="text-white font-bold text-xl">
-                      ₹{grandTotal}
+                      {grandTotal}
                     </span>
                   </div>
 
@@ -482,7 +510,7 @@ export default function InvoiceDetailPage() {
                   <div className="flex justify-between items-center pt-2">
                     <span className="text-gray-400">Amount Paid</span>
                     <span className="text-green-400 font-medium">
-                      ₹{amountPaid}
+                      {amountPaid}
                     </span>
                   </div>
 
@@ -493,7 +521,7 @@ export default function InvoiceDetailPage() {
                         balanceDue > 0 ? "text-amber-400" : "text-green-400"
                       }`}
                     >
-                      ₹{balanceDue}
+                      {balanceDue}
                     </span>
                   </div>
 
@@ -530,10 +558,11 @@ export default function InvoiceDetailPage() {
                 <Button
                   variant="outline"
                   className="w-full justify-start border-[#D4AF37]/30 "
-                  onClick={handlePrintInvoice}
+                  onClick={handleDownloadInvoice}
+                  disabled={!currentInvoice.invoice}
                 >
-                  <Printer className="h-4 w-4 mr-3" />
-                  Print Invoice
+                  <Download className="h-4 w-4 mr-3" />
+                  Downlaod PDF
                 </Button>
 
                 <Button

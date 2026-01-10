@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { Invoice, InvoiceItem, InvoiceFormData } from '@/types/invoice';
+import { Invoice, InvoiceItem, InvoiceFormData, InvoiceFilters } from '@/types/invoice';
 import { InvoiceService } from '@/services/invoiceService';
 
 interface InvoiceState {
     invoices: Invoice[];
-    todayInvoices: Invoice[];
     currentInvoice: {
         invoice: Invoice | null;
         items: InvoiceItem[];
@@ -17,7 +16,6 @@ interface InvoiceState {
 
 const initialState: InvoiceState = {
     invoices: [],
-    todayInvoices: [],
     currentInvoice: {
         invoice: null,
         items: [],
@@ -42,26 +40,16 @@ export const createInvoice = createAsyncThunk(
 
 export const fetchInvoices = createAsyncThunk(
     'invoices/fetchInvoices',
-    async (shopId: string, { rejectWithValue }) => {
+    async (filters: InvoiceFilters, { rejectWithValue }) => {
         try {
-            return await InvoiceService.getInvoices(shopId);
+            return await InvoiceService.getInvoices(filters);
         } catch (error: unknown) {
             const errorMessage = error instanceof Error ? error.message : 'Failed to fetch invoices';
             return rejectWithValue(errorMessage);
         }
     }
 );
-export const fetchTodayInvoices = createAsyncThunk(
-    'invoices/fetchTodayInvoices',
-    async (shopId: string, { rejectWithValue }) => {
-        try {
-            return await InvoiceService.getTodayInvoices(shopId);
-        } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Failed to fetch invoices';
-            return rejectWithValue(errorMessage);
-        }
-    }
-);
+ 
 export const fetchInvoiceDetails = createAsyncThunk(
     'invoices/fetchInvoiceDetails',
     async ({ id, shopId }: { id: string; shopId: string }, { rejectWithValue }) => {
@@ -119,18 +107,6 @@ const invoiceSlice = createSlice({
                 state.invoices = action.payload;
             })
             .addCase(fetchInvoices.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload as string;
-            })
-            .addCase(fetchTodayInvoices.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchTodayInvoices.fulfilled, (state, action) => {
-                state.loading = false;
-                state.todayInvoices = action.payload;
-            })
-            .addCase(fetchTodayInvoices.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })

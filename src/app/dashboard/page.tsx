@@ -6,22 +6,22 @@ import ActivityAndAlerts from "@/components/dashboard/activity-and-alerts";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import { fetchProducts } from "@/store/productSlice";
-import { fetchTodayInvoices } from "@/store/invoiceSlice";
+import { fetchInvoices } from "@/store/invoiceSlice";
 
 export default function DashboardPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { items: products } = useSelector((state: RootState) => state.products);
-  const { todayInvoices } = useSelector((state: RootState) => state.invoices);
+  const { invoices } = useSelector((state: RootState) => state.invoices);
   const { user } = useSelector((state: RootState) => state.auth);
 
   const stats = useMemo(() => {
     // Calculate today's sales
-    const todaysSales = todayInvoices.reduce((total, invoice) => {
+    const todaysSales = invoices.reduce((total, invoice) => {
       return total + (invoice.total || 0);
     }, 0);
 
     // Calculate today's actual profit using invoice items and product cost
-    const todaysProfit = todayInvoices.reduce((totalProfit, invoice) => {
+    const todaysProfit = invoices.reduce((totalProfit, invoice) => {
       // Check if invoice has items
       if (!invoice.items || invoice.items.length === 0) return totalProfit;
 
@@ -50,7 +50,7 @@ export default function DashboardPage() {
     }, 0);
 
     // Calculate credit balance (total outstanding due amounts)
-    const creditBalance = todayInvoices.reduce((total, invoice) => {
+    const creditBalance = invoices.reduce((total, invoice) => {
       return total + (invoice.due_amount || 0);
     }, 0);
 
@@ -63,12 +63,17 @@ export default function DashboardPage() {
       creditBalance,
       totalProducts,
     };
-  }, [todayInvoices, products]);
+  }, [invoices, products]);
 
   useEffect(() => {
     if (user?.id) {
       dispatch(fetchProducts(user.id));
-      dispatch(fetchTodayInvoices(user.id));
+      dispatch(
+        fetchInvoices({
+          shopId: user.id,
+          dateRange: "today",
+        })
+      );
     }
   }, [dispatch, user?.id]);
 
@@ -84,7 +89,7 @@ export default function DashboardPage() {
 
       {/* Stats Grid */}
       <StatsCards stats={stats} />
-      <ActivityAndAlerts invoices={todayInvoices} products={products} />
+      <ActivityAndAlerts invoices={invoices} products={products} />
     </div>
   );
 }

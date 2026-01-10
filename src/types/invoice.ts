@@ -50,3 +50,22 @@ export type InvoiceItemInput = {
     quantity: number;
     total: number;
 };
+
+export interface InvoiceFilters {
+    shopId: string;
+    // Date filters - can use either dateRange OR startDate/endDate
+    dateRange?: 'today' | 'yesterday' | 'last-7-days' | 'this-month' | 'all';
+    startDate?: Date;
+    endDate?: Date;
+    // Status filters
+    paymentStatus?: 'paid' | 'partial' | 'pending' | 'all';
+    customerId?: string;
+    // Pagination
+    page?: number;
+    limit?: number;
+    // Search
+    searchQuery?: string;
+    // Sorting
+    sortBy?: 'created_at' | 'total' | 'invoice_number';
+    sortOrder?: 'asc' | 'desc';
+}

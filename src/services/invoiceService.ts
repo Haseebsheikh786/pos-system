@@ -1,5 +1,5 @@
 import { supabase } from '@/supabase-client';
-import { Invoice, InvoiceItem, InvoiceFormData, InvoiceItemInput } from '@/types/invoice';
+import { Invoice, InvoiceItem, InvoiceFormData, InvoiceItemInput, InvoiceFilters } from '@/types/invoice';
 import { Payment } from '@/types/payment';
 
 export class InvoiceService {
@@ -130,17 +130,6 @@ export class InvoiceService {
         return 'pending';
     }
 
-    static async getInvoices(shopId: string): Promise<Invoice[]> {
-        const { data, error } = await supabase
-            .from('invoices')
-            .select('*')
-            .eq('shop_id', shopId)
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        return data || [];
-    }
-
     static async getInvoice(id: string, shopId: string): Promise<{ invoice: Invoice; items: InvoiceItem[] }> {
         const { data: invoice, error: invoiceError } = await supabase
             .from('invoices')
@@ -162,14 +151,23 @@ export class InvoiceService {
         return { invoice, items: items || [] };
     }
 
-    static async getTodayInvoices(shopId: string): Promise<Invoice[]> {
-        const startOfToday = new Date();
-        startOfToday.setHours(0, 0, 0, 0);
+    static async getInvoices(filters: InvoiceFilters): Promise<Invoice[]> {
+        const {
+            shopId,
+            dateRange = 'all',
+            startDate,
+            endDate,
+            paymentStatus,
+            customerId,
+            page = 1,
+            limit,
+            searchQuery,
+            sortBy = 'created_at',
+            sortOrder = 'desc',
+        } = filters;
 
-        const startOfTomorrow = new Date(startOfToday);
-        startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
-
-        const { data, error } = await supabase
+        // Build query
+        let query = supabase
             .from('invoices')
             .select(`
             *,
@@ -183,16 +181,103 @@ export class InvoiceService {
                 created_at
             )
         `)
-            .eq('shop_id', shopId)
-            .gte('created_at', startOfToday.toISOString())
-            .lt('created_at', startOfTomorrow.toISOString())
-            .order('created_at', { ascending: false });
+            .eq('shop_id', shopId);
+
+        // Apply date filters
+        if (dateRange !== 'all' || startDate || endDate) {
+            let finalStartDate: Date | undefined;
+            let finalEndDate: Date | undefined;
+            const now = new Date();
+
+            switch (dateRange) {
+                case 'today':
+                    finalStartDate = new Date(now);
+                    finalStartDate.setHours(0, 0, 0, 0);
+                    finalEndDate = new Date(now);
+                    finalEndDate.setHours(23, 59, 59, 999);
+                    break;
+
+                case 'yesterday':
+                    finalStartDate = new Date(now);
+                    finalStartDate.setDate(finalStartDate.getDate() - 1);
+                    finalStartDate.setHours(0, 0, 0, 0);
+                    finalEndDate = new Date(finalStartDate);
+                    finalEndDate.setHours(23, 59, 59, 999);
+                    break;
+
+                case 'last-7-days':
+                    finalStartDate = new Date(now);
+                    finalStartDate.setDate(finalStartDate.getDate() - 7);
+                    finalStartDate.setHours(0, 0, 0, 0);
+                    finalEndDate = new Date(now);
+                    finalEndDate.setHours(23, 59, 59, 999);
+                    break;
+
+                case 'this-month':
+                    finalStartDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                    finalStartDate.setHours(0, 0, 0, 0);
+                    finalEndDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                    finalEndDate.setHours(23, 59, 59, 999);
+                    break;
+
+                case 'all':
+                    // For 'all', use custom dates if provided
+                    finalStartDate = startDate;
+                    finalEndDate = endDate;
+                    break;
+
+                default:
+                    // For any other value, check if start/end dates were provided
+                    finalStartDate = startDate;
+                    finalEndDate = endDate;
+                    break;
+            }
+
+            // Use provided custom dates if available (overrides dateRange logic)
+            if (startDate) finalStartDate = startDate;
+            if (endDate) finalEndDate = endDate;
+
+            // Apply date filters to query
+            if (finalStartDate) {
+                query = query.gte('created_at', finalStartDate.toISOString());
+            }
+            if (finalEndDate) {
+                query = query.lte('created_at', finalEndDate.toISOString());
+            }
+        }
+
+        // Apply status filters
+        if (paymentStatus && paymentStatus !== 'all') {
+            query = query.eq('payment_status', paymentStatus);
+        }
+
+        // Apply customer filter
+        if (customerId && customerId !== 'all') {
+            query = query.eq('customer_id', customerId);
+        }
+
+        // Apply search filter
+        if (searchQuery) {
+            query = query.or(
+                `invoice_number.ilike.%${searchQuery}%,customer_name.ilike.%${searchQuery}%,customer_phone.ilike.%${searchQuery}%`
+            );
+        }
+
+        // Apply sorting
+        query = query.order(sortBy, { ascending: sortOrder === 'asc' });
+
+        // Apply pagination
+        if (limit) {
+            const offset = (page - 1) * limit;
+            query = query.range(offset, offset + limit - 1);
+        }
+
+        const { data, error } = await query;
 
         if (error) throw error;
 
         // Transform to match your Invoice type with items
         return (data || []).map(invoice => {
-            // Remove the invoice_items property and add items
             const { invoice_items, ...invoiceData } = invoice;
             return {
                 ...invoiceData,
@@ -200,5 +285,4 @@ export class InvoiceService {
             };
         });
     }
-
 }

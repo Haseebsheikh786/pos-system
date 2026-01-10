@@ -13,7 +13,7 @@ export type Payment = {
 
 export type PaymentFormData = {
     invoice_id: string;
-    customer_id: string;
+    customer_id: string | null;
     amount: number;
     method: 'cash' | 'card' | 'upi' | 'bank_transfer';
 };

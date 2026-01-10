@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Trash2, Pencil } from "lucide-react";
+import { Trash2, Pencil } from "lucide-react";
 import { Customer } from "@/types/customer";
 
 interface CustomerListProps {
@@ -102,14 +102,6 @@ export default function CustomerList({
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-blue-400 hover:bg-blue-500/10"
-                          title="View Details"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"

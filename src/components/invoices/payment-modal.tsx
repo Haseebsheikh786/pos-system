@@ -104,10 +104,6 @@ export default function PaymentModal({
       return;
     }
 
-    if (!invoice.customer_id) {
-      throw new Error("Invoice is missing customer_id");
-    }
-
     const amount = parseFloat(paymentAmount);
     if (isNaN(amount)) {
       setValidationError("Please enter a valid amount");

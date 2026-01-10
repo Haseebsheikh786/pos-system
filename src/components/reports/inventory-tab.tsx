@@ -52,7 +52,7 @@ export default function InventoryTab({
         }
 
         // Calculate stock value (stock × cost price, fallback to selling price)
-        const price = product.cost_price || product.price || 0;
+        const price =  product.price || 0;
         totalValue += product.stock * price;
       });
 

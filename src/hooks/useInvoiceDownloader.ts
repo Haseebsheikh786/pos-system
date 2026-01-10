@@ -12,6 +12,14 @@ interface UseInvoiceDownloaderProps {
     payments?: Payment[];
 }
 
+interface JsPDFWithAutoTable extends jsPDF {
+    lastAutoTable?: {
+        finalY: number;
+        [key: string]: any;
+    };
+}
+
+
 export const useInvoiceDownloader = ({
     invoice,
     items,
@@ -57,7 +65,7 @@ export const useInvoiceDownloader = ({
             orientation: 'portrait',
             unit: 'mm',
             format: 'a4',
-        });
+        }) as JsPDFWithAutoTable;
 
         const pageWidth = doc.internal.pageSize.getWidth();
         const margin = 15;
@@ -185,7 +193,10 @@ export const useInvoiceDownloader = ({
                 },
             });
 
-            yPos = (doc as any).lastAutoTable.finalY + 10;
+            // With this:
+            if (doc.lastAutoTable) {
+                yPos = doc.lastAutoTable.finalY + 10;
+            }
         } else {
             yPos += 15;
             doc.setFontSize(10);
@@ -288,7 +299,9 @@ export const useInvoiceDownloader = ({
                 },
             });
 
-            yPos = (doc as any).lastAutoTable.finalY;
+            if (doc.lastAutoTable) {
+                yPos = doc.lastAutoTable.finalY;
+            }
         }
 
         // Footer Section

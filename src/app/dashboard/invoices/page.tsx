@@ -140,7 +140,11 @@ export default function InvoicePage() {
 
   const handlePaymentSuccess = () => {
     if (!user) return;
-    dispatch(fetchInvoices(user.id));
+    dispatch(
+      fetchInvoices({
+        shopId: user.id,
+      })
+    );
     dispatch(fetchCustomers(user.id));
   };
 

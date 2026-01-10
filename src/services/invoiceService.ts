@@ -14,13 +14,20 @@ export class InvoiceService {
                 invoiceData.payment_amount
             );
 
+            const customerId = invoiceData.customer_id && invoiceData.customer_id.trim() !== ""
+                ? invoiceData.customer_id
+                : null;
+
+            // Handle customer name - use "Walk-in Customer" if null/empty
+            const customerName = invoiceData.customer_name?.trim() || "Walk-in Customer";
+
             // 1. Create invoice
             const { data: invoice, error: invoiceError } = await supabase
                 .from('invoices')
                 .insert([{
                     shop_id: shopId,
-                    customer_id: invoiceData.customer_id,
-                    customer_name: invoiceData.customer_name || null,
+                    customer_id: customerId,
+                    customer_name: customerName,
                     customer_phone: null,
                     total: invoiceData.total,
                     invoice_number: invoiceData.invoice_number,
@@ -62,7 +69,7 @@ export class InvoiceService {
                     .insert([{
                         shop_id: shopId,
                         invoice_id: invoice.id,
-                        customer_id: invoiceData.customer_id,
+                        customer_id: customerId,
                         amount: invoiceData.payment_amount,
                         method: 'cash',
                     }])

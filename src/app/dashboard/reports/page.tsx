@@ -32,10 +32,8 @@ export default function ReportsPage() {
   const [activeTab, setActiveTab] = useState("sales-profit");
 
   const handleExport = (format: "pdf" | "excel") => {
-    alert(`Exporting ${activeTab} report as ${format.toUpperCase()}`);
+    alert(`This feature will be enable soon`);
   };
-  console.log(products, "products");
-  console.log(invoices, "inv");
 
   useEffect(() => {
     if (user?.id) {
@@ -83,7 +81,7 @@ export default function ReportsPage() {
                   <SelectItem value="yesterday">Yesterday</SelectItem>
                   <SelectItem value="last-7-days">Last 7 Days</SelectItem>
                   <SelectItem value="this-month">This Month</SelectItem>
-                  <SelectItem value="custom-range">Custom Range</SelectItem>
+                  {/* <SelectItem value="custom-range">Custom Range</SelectItem> */}
                 </SelectContent>
               </Select>
             </div>

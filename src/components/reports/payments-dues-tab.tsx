@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -20,147 +20,37 @@ import {
 } from "@/components/ui/select";
 import { DollarSign, CreditCard, CheckCircle, AlertCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { Invoice } from "@/types/invoice";
 
 interface PaymentsDuesTabProps {
   dateRange: string;
+  invoices: Invoice[];
 }
 
-export default function PaymentsDuesTab({ dateRange }: PaymentsDuesTabProps) {
-  // Mock data
-  const summaryCards = [
-    {
-      title: "Total Collected",
-      value: "Rs. 1,450,000",
-      icon: DollarSign,
-      description: "Cash & other payments",
-      color: "border-green-500",
-    },
-    {
-      title: "Total Due (Udhaar)",
-      value: "Rs. 163,000",
-      icon: CreditCard,
-      description: "Outstanding payments",
-      color: "border-orange-500",
-    },
-    {
-      title: "Paid Invoices",
-      value: "3,842",
-      icon: CheckCircle,
-      description: "Fully paid orders",
-      color: "border-blue-500",
-    },
-    {
-      title: "Pending Invoices",
-      value: "948",
-      icon: AlertCircle,
-      description: "Partial + Due payments",
-      color: "border-red-500",
-    },
-  ];
-
-  const allPayments = [
-    {
-      invoiceNumber: "INV-001234",
-      customerName: "John Doe",
-      invoiceTotal: 15000,
-      paidAmount: 5000,
-      dueAmount: 10000,
-      invoiceDate: "2024-01-15",
-      status: "partial",
-      paymentMethod: "Cash",
-    },
-    {
-      invoiceNumber: "INV-001233",
-      customerName: "Jane Smith",
-      invoiceTotal: 8500,
-      paidAmount: 0,
-      dueAmount: 8500,
-      invoiceDate: "2024-01-14",
-      status: "due",
-      paymentMethod: "Credit",
-    },
-    {
-      invoiceNumber: "INV-001232",
-      customerName: "Raj Kumar",
-      invoiceTotal: 12000,
-      paidAmount: 12000,
-      dueAmount: 0,
-      invoiceDate: "2024-01-13",
-      status: "paid",
-      paymentMethod: "Card",
-    },
-    {
-      invoiceNumber: "INV-001231",
-      customerName: "Priya Sharma",
-      invoiceTotal: 5600,
-      paidAmount: 5600,
-      dueAmount: 0,
-      invoiceDate: "2024-01-12",
-      status: "paid",
-      paymentMethod: "Cash",
-    },
-    {
-      invoiceNumber: "INV-001230",
-      customerName: "Amit Patel",
-      invoiceTotal: 9800,
-      paidAmount: 3000,
-      dueAmount: 6800,
-      invoiceDate: "2024-01-11",
-      status: "partial",
-      paymentMethod: "UPI",
-    },
-    {
-      invoiceNumber: "INV-001229",
-      customerName: "Rohan Mehta",
-      invoiceTotal: 7500,
-      paidAmount: 7500,
-      dueAmount: 0,
-      invoiceDate: "2024-01-10",
-      status: "paid",
-      paymentMethod: "Cash",
-    },
-    {
-      invoiceNumber: "INV-001228",
-      customerName: "Sneha Reddy",
-      invoiceTotal: 12500,
-      paidAmount: 0,
-      dueAmount: 12500,
-      invoiceDate: "2024-01-09",
-      status: "due",
-      paymentMethod: "Credit",
-    },
-    {
-      invoiceNumber: "INV-001227",
-      customerName: "Vikram Singh",
-      invoiceTotal: 6800,
-      paidAmount: 6800,
-      dueAmount: 0,
-      invoiceDate: "2024-01-08",
-      status: "paid",
-      paymentMethod: "Card",
-    },
-  ];
-
+export default function PaymentsDuesTab({
+  dateRange,
+  invoices,
+}: PaymentsDuesTabProps) {
   const [customerFilter, setCustomerFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [paymentTypeFilter, setPaymentTypeFilter] = useState("all");
 
-  // Filter payments based on selections
-  const filteredPayments = allPayments.filter((payment) => {
-    if (customerFilter !== "all" && payment.customerName !== customerFilter)
-      return false;
+  // Extract unique customers for filter dropdown
+  const uniqueCustomers = useMemo(() => {
+    const customers = new Set<string>();
+    invoices.forEach((invoice) => {
+      if (invoice.customer_name) {
+        customers.add(invoice.customer_name);
+      }
+    });
+    return Array.from(customers).sort();
+  }, [invoices]);
 
-    if (statusFilter !== "all" && payment.status !== statusFilter) return false;
+  // Format currency
+  const formatCurrency = (amount: number) => {
+    return `Rs. ${amount.toLocaleString()}`;
+  };
 
-    if (
-      paymentTypeFilter !== "all" &&
-      payment.paymentMethod !== paymentTypeFilter
-    )
-      return false;
-
-    return true;
-  });
-
+  // Get status badge
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "paid":
@@ -175,7 +65,7 @@ export default function PaymentsDuesTab({ dateRange }: PaymentsDuesTabProps) {
             Partial
           </Badge>
         );
-      case "due":
+      case "pending":
         return (
           <Badge className="bg-red-500/20 text-red-400 border-red-500">
             Due
@@ -190,90 +80,137 @@ export default function PaymentsDuesTab({ dateRange }: PaymentsDuesTabProps) {
     }
   };
 
-  // Calculate totals
-  const totalCollected = filteredPayments.reduce(
-    (sum, p) => sum + p.paidAmount,
-    0
-  );
-  const totalDue = filteredPayments.reduce((sum, p) => sum + p.dueAmount, 0);
-  const paidInvoices = filteredPayments.filter(
-    (p) => p.status === "paid"
-  ).length;
-  const pendingInvoices = filteredPayments.filter(
-    (p) => p.status !== "paid"
-  ).length;
+  // Calculate summary statistics from invoices
+  const summaryStats = useMemo(() => {
+    let totalCollected = 0;
+    let totalDue = 0;
+    let paidInvoices = 0;
+    let pendingInvoices = 0;
+
+    invoices.forEach((invoice) => {
+      const paidAmount = invoice.amount_paid || 0;
+      const dueAmount = invoice.due_amount || 0;
+      const totalAmount = invoice.total || 0;
+
+      totalCollected += paidAmount;
+      totalDue += dueAmount;
+
+      if (invoice.payment_status === "paid") {
+        paidInvoices++;
+      } else {
+        pendingInvoices++;
+      }
+    });
+
+    return {
+      totalCollected,
+      totalDue,
+      paidInvoices,
+      pendingInvoices,
+    };
+  }, [invoices]);
+
+  // Filter invoices based on selections
+  const filteredInvoices = useMemo(() => {
+    return invoices.filter((invoice) => {
+      // Filter by customer
+      if (customerFilter !== "all" && customerFilter !== "walk-in") {
+        if (invoice.customer_name !== customerFilter) return false;
+      }
+
+      if (customerFilter === "walk-in") {
+        if (
+          invoice.customer_name &&
+          invoice.customer_name !== "Walk-in Customer"
+        )
+          return false;
+      }
+
+      // Filter by status
+      if (statusFilter !== "all") {
+        if (statusFilter === "due" && invoice.payment_status !== "pending")
+          return false;
+        if (statusFilter === "partial" && invoice.payment_status !== "partial")
+          return false;
+        if (statusFilter === "paid" && invoice.payment_status !== "paid")
+          return false;
+      }
+
+      return true;
+    });
+  }, [invoices, customerFilter, statusFilter]);
+
+  // Format date for display
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  // Summary cards data (dynamic)
+  const summaryCards = [
+    {
+      title: "Total Collected",
+      value: formatCurrency(summaryStats.totalCollected),
+      icon: DollarSign,
+      description: "Cash & other payments",
+      color: "border-green-500",
+    },
+    {
+      title: "Total Due (Udhaar)",
+      value: formatCurrency(summaryStats.totalDue),
+      icon: CreditCard,
+      description: "Outstanding payments",
+      color:
+        summaryStats.totalDue > 0 ? "border-orange-500" : "border-green-500",
+    },
+    {
+      title: "Paid Invoices",
+      value: summaryStats.paidInvoices.toString(),
+      icon: CheckCircle,
+      description: "Fully paid orders",
+      color: "border-blue-500",
+    },
+    {
+      title: "Pending Invoices",
+      value: summaryStats.pendingInvoices.toString(),
+      icon: AlertCircle,
+      description: "Partial + Due payments",
+      color:
+        summaryStats.pendingInvoices > 0
+          ? "border-red-500"
+          : "border-green-500",
+    },
+  ];
 
   return (
     <div className="space-y-6">
-      {/* Summary Cards - Now dynamic */}
+      {/* Summary Cards - Dynamic */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400">
-              Total Collected
-            </CardTitle>
-            <div className="p-2 rounded-full bg-[#1a1a1a]">
-              <DollarSign className="h-4 w-4 text-[#D4AF37]" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-white mb-1">
-              Rs. {totalCollected.toLocaleString()}
-            </div>
-            <p className="text-sm text-gray-400">Cash & other payments</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400">
-              Total Due (Udhaar)
-            </CardTitle>
-            <div className="p-2 rounded-full bg-[#1a1a1a]">
-              <CreditCard className="h-4 w-4 text-[#D4AF37]" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-white mb-1">
-              Rs. {totalDue.toLocaleString()}
-            </div>
-            <p className="text-sm text-gray-400">Outstanding payments</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400">
-              Paid Invoices
-            </CardTitle>
-            <div className="p-2 rounded-full bg-[#1a1a1a]">
-              <CheckCircle className="h-4 w-4 text-[#D4AF37]" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-white mb-1">
-              {paidInvoices}
-            </div>
-            <p className="text-sm text-gray-400">Fully paid orders</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400">
-              Pending Invoices
-            </CardTitle>
-            <div className="p-2 rounded-full bg-[#1a1a1a]">
-              <AlertCircle className="h-4 w-4 text-[#D4AF37]" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-white mb-1">
-              {pendingInvoices}
-            </div>
-            <p className="text-sm text-gray-400">Partial + Due payments</p>
-          </CardContent>
-        </Card>
+        {summaryCards.map((card, index) => {
+          const Icon = card.icon;
+          return (
+            <Card key={index} className={`bg-[#0a0a0a] border-[#D4AF37]`}>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-gray-400">
+                  {card.title}
+                </CardTitle>
+                <div className="p-2 rounded-full bg-[#1a1a1a]">
+                  <Icon className="h-4 w-4 text-[#D4AF37]" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white mb-1">
+                  {card.value}
+                </div>
+                <p className="text-sm text-gray-400">{card.description}</p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
       {/* Filters */}
@@ -287,11 +224,15 @@ export default function PaymentsDuesTab({ dateRange }: PaymentsDuesTabProps) {
                   <SelectValue placeholder="All Customers" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] text-white">
-                  <SelectItem value="all">All Customers</SelectItem>
-                  <SelectItem value="John Doe">John Doe</SelectItem>
-                  <SelectItem value="Jane Smith">Jane Smith</SelectItem>
-                  <SelectItem value="Raj Kumar">Raj Kumar</SelectItem>
-                  <SelectItem value="Priya Sharma">Priya Sharma</SelectItem>
+                  <SelectItem value="all">
+                    All Customers ({invoices.length})
+                  </SelectItem>
+                  <SelectItem value="walk-in">Walk-in Customers</SelectItem>
+                  {uniqueCustomers.map((customer) => (
+                    <SelectItem key={customer} value={customer}>
+                      {customer}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -303,29 +244,28 @@ export default function PaymentsDuesTab({ dateRange }: PaymentsDuesTabProps) {
                   <SelectValue placeholder="All Status" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] text-white">
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="paid">Paid</SelectItem>
-                  <SelectItem value="partial">Partial</SelectItem>
-                  <SelectItem value="due">Due</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Label className="text-gray-300">Payment Type:</Label>
-              <Select
-                value={paymentTypeFilter}
-                onValueChange={setPaymentTypeFilter}
-              >
-                <SelectTrigger className="w-48 bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
-                  <SelectValue placeholder="All Types" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] text-white">
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="Cash">Cash</SelectItem>
-                  <SelectItem value="Card">Card</SelectItem>
-                  <SelectItem value="UPI">UPI</SelectItem>
-                  <SelectItem value="Credit">Credit</SelectItem>
+                  <SelectItem value="all">
+                    All Status ({invoices.length})
+                  </SelectItem>
+                  <SelectItem value="paid">
+                    Paid ({summaryStats.paidInvoices})
+                  </SelectItem>
+                  <SelectItem value="partial">
+                    Partial (
+                    {
+                      invoices.filter((i) => i.payment_status === "partial")
+                        .length
+                    }
+                    )
+                  </SelectItem>
+                  <SelectItem value="due">
+                    Due (
+                    {
+                      invoices.filter((i) => i.payment_status === "pending")
+                        .length
+                    }
+                    )
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -333,81 +273,95 @@ export default function PaymentsDuesTab({ dateRange }: PaymentsDuesTabProps) {
         </CardContent>
       </Card>
 
-      {/* Payments Table (All Payments) */}
+      {/* Payments Table (All Invoices) */}
       <Card className="bg-[#0a0a0a] border-[#D4AF37]">
         <CardHeader>
           <CardTitle className="text-white">
-            All Payments{" "}
-            {filteredPayments.length > 0 && `(${filteredPayments.length})`}
+            {statusFilter === "all"
+              ? "All Invoices"
+              : statusFilter === "paid"
+              ? "Paid Invoices"
+              : statusFilter === "partial"
+              ? "Partial Payments"
+              : "Pending Payments"}
+            {filteredInvoices.length > 0 && ` (${filteredInvoices.length})`}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-[#D4AF37]/30">
-                  <TableHead className="text-[#D4AF37]">Invoice #</TableHead>
-                  <TableHead className="text-[#D4AF37]">
-                    Customer Name
-                  </TableHead>
-                  <TableHead className="text-[#D4AF37]">
-                    Invoice Total
-                  </TableHead>
-                  <TableHead className="text-[#D4AF37]">Paid Amount</TableHead>
-                  <TableHead className="text-[#D4AF37]">Due Amount</TableHead>
-                  <TableHead className="text-[#D4AF37]">Invoice Date</TableHead>
-                  <TableHead className="text-[#D4AF37]">
-                    Payment Method
-                  </TableHead>
-                  <TableHead className="text-[#D4AF37]">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredPayments.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={8}
-                      className="text-center text-gray-400 py-8"
-                    >
-                      No payments found with the selected filters
-                    </TableCell>
+            {filteredInvoices.length === 0 ? (
+              <div className="text-center py-8 text-gray-400">
+                {statusFilter === "paid"
+                  ? "🎉 No paid invoices in the selected period"
+                  : statusFilter === "partial"
+                  ? "No partially paid invoices found"
+                  : statusFilter === "due"
+                  ? "🎉 No pending payments! All invoices are cleared"
+                  : "No invoices found with the selected filters"}
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-[#D4AF37]/30">
+                    <TableHead className="text-[#D4AF37]">Invoice #</TableHead>
+                    <TableHead className="text-[#D4AF37]">
+                      Customer Name
+                    </TableHead>
+                    <TableHead className="text-[#D4AF37]">
+                      Invoice Total
+                    </TableHead>
+                    <TableHead className="text-[#D4AF37]">
+                      Paid Amount
+                    </TableHead>
+                    <TableHead className="text-[#D4AF37]">Due Amount</TableHead>
+                    <TableHead className="text-[#D4AF37]">
+                      Invoice Date
+                    </TableHead>
+                    <TableHead className="text-[#D4AF37]">Status</TableHead>
                   </TableRow>
-                ) : (
-                  filteredPayments.map((payment, index) => (
-                    <TableRow key={index} className="border-[#D4AF37]/30">
+                </TableHeader>
+                <TableBody>
+                  {filteredInvoices.map((invoice) => (
+                    <TableRow
+                      key={invoice.id}
+                      className="border-[#D4AF37]/30 hover:bg-[#1a1a1a] cursor-pointer"
+                      onClick={() => {
+                        window.location.href = `/dashboard/invoices/${invoice.id}`;
+                      }}
+                    >
                       <TableCell className="text-white font-medium">
-                        {payment.invoiceNumber}
+                        {invoice.invoice_number ||
+                          `INV-${invoice.id.slice(0, 8)}`}
                       </TableCell>
                       <TableCell className="text-gray-300">
-                        {payment.customerName}
+                        {invoice.customer_name || "Walk-in Customer"}
                       </TableCell>
                       <TableCell className="text-gray-300">
-                        Rs. {payment.invoiceTotal.toLocaleString()}
+                        {formatCurrency(invoice.total || 0)}
                       </TableCell>
                       <TableCell className="text-green-400">
-                        Rs. {payment.paidAmount.toLocaleString()}
+                        {formatCurrency(invoice.amount_paid || 0)}
                       </TableCell>
                       <TableCell
                         className={
-                          payment.dueAmount > 0
+                          invoice.due_amount > 0
                             ? "text-orange-400 font-medium"
                             : "text-gray-400"
                         }
                       >
-                        Rs. {payment.dueAmount.toLocaleString()}
+                        {formatCurrency(invoice.due_amount || 0)}
                       </TableCell>
                       <TableCell className="text-gray-300">
-                        {payment.invoiceDate}
+                        {formatDate(invoice.created_at)}
                       </TableCell>
-                      <TableCell className="text-gray-300">
-                        {payment.paymentMethod}
+                      <TableCell>
+                        {getStatusBadge(invoice.payment_status)}
                       </TableCell>
-                      <TableCell>{getStatusBadge(payment.status)}</TableCell>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </div>
         </CardContent>
       </Card>

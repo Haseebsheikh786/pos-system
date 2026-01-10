@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -16,15 +16,38 @@ import { Download, Calendar } from "lucide-react";
 import SalesProfitTab from "@/components/reports/sales-profit-tab";
 import PaymentsDuesTab from "@/components/reports/payments-dues-tab";
 import InventoryTab from "@/components/reports/inventory-tab";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import { fetchProducts } from "@/store/productSlice";
+import { fetchInvoices } from "@/store/invoiceSlice";
+import { DateRange } from "@/types/invoice";
 
 export default function ReportsPage() {
-  const [dateRange, setDateRange] = useState("today");
+  const dispatch = useDispatch<AppDispatch>();
+  const { items: products } = useSelector((state: RootState) => state.products);
+  const { invoices } = useSelector((state: RootState) => state.invoices);
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const [dateRange, setDateRange] = useState<DateRange>("today");
   const [activeTab, setActiveTab] = useState("sales-profit");
 
   const handleExport = (format: "pdf" | "excel") => {
-    console.log(`Exporting ${activeTab} report as ${format}`);
     alert(`Exporting ${activeTab} report as ${format.toUpperCase()}`);
   };
+  console.log(products, "products");
+  console.log(invoices, "inv");
+
+  useEffect(() => {
+    if (user?.id) {
+      dispatch(fetchProducts(user.id));
+      dispatch(
+        fetchInvoices({
+          shopId: user.id,
+          dateRange,
+        })
+      );
+    }
+  }, [dispatch, user?.id, dateRange]);
 
   return (
     <div className="p-8">
@@ -48,7 +71,10 @@ export default function ReportsPage() {
                 <Calendar className="h-5 w-5 text-[#D4AF37]" />
                 <Label className="text-gray-300">Date Range:</Label>
               </div>
-              <Select value={dateRange} onValueChange={setDateRange}>
+              <Select
+                value={dateRange}
+                onValueChange={(value) => setDateRange(value as DateRange)}
+              >
                 <SelectTrigger className="w-64 bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
                   <SelectValue placeholder="Select date range" />
                 </SelectTrigger>
@@ -72,7 +98,6 @@ export default function ReportsPage() {
                 <Download className="h-4 w-4 mr-2" />
                 Export PDF
               </Button>
-              
             </div>
           </div>
         </CardContent>
@@ -107,17 +132,21 @@ export default function ReportsPage() {
 
         {/* Tab 1: Sales & Profit */}
         <TabsContent value="sales-profit">
-          <SalesProfitTab dateRange={dateRange} />
+          <SalesProfitTab
+            dateRange={dateRange}
+            invoices={invoices}
+            products={products}
+          />
         </TabsContent>
 
         {/* Tab 2: Payments & Dues */}
         <TabsContent value="payments-dues">
-          <PaymentsDuesTab dateRange={dateRange} />
+          <PaymentsDuesTab dateRange={dateRange} invoices={invoices} />
         </TabsContent>
 
         {/* Tab 3: Inventory */}
         <TabsContent value="inventory">
-          <InventoryTab dateRange={dateRange} />
+          <InventoryTab dateRange={dateRange} products={products} />
         </TabsContent>
       </Tabs>
     </div>

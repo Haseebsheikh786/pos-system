@@ -54,7 +54,7 @@ export type InvoiceItemInput = {
 export interface InvoiceFilters {
     shopId: string;
     // Date filters - can use either dateRange OR startDate/endDate
-    dateRange?: 'today' | 'yesterday' | 'last-7-days' | 'this-month' | 'all';
+    dateRange?: 'today' | 'yesterday' | 'last-7-days' | 'this-month' | 'custom-range';
     startDate?: Date;
     endDate?: Date;
     // Status filters
@@ -69,3 +69,10 @@ export interface InvoiceFilters {
     sortBy?: 'created_at' | 'total' | 'invoice_number';
     sortOrder?: 'asc' | 'desc';
 }
+
+export type DateRange =
+  | "today"
+  | "yesterday"
+  | "last-7-days"
+  | "this-month"
+  | "custom-range";

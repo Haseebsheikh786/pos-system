@@ -38,7 +38,11 @@ export default function InvoicePage() {
   // Fetch invoices and customers on component mount
   useEffect(() => {
     if (user?.id) {
-      dispatch(fetchInvoices(user.id));
+      dispatch(
+        fetchInvoices({
+          shopId: user.id,
+        })
+      );
       dispatch(fetchCustomers(user.id));
     }
   }, [dispatch, user?.id]);

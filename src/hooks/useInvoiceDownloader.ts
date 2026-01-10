@@ -15,10 +15,8 @@ interface UseInvoiceDownloaderProps {
 interface JsPDFWithAutoTable extends jsPDF {
     lastAutoTable?: {
         finalY: number;
-        [key: string]: any;
     };
 }
-
 
 export const useInvoiceDownloader = ({
     invoice,

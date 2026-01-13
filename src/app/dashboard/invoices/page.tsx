@@ -12,20 +12,24 @@ import { fetchInvoices } from "@/store/invoiceSlice";
 import { fetchCustomers } from "@/store/customerSlice";
 import type { Invoice } from "@/types/invoice";
 import PaymentModal from "@/components/invoices/payment-modal";
+import useInvoiceDownloader from "@/hooks/useInvoiceDownloader";
+import { fetchProfile } from "@/store/profileSlice";
 
 export default function InvoicePage() {
   const dispatch = useDispatch<AppDispatch>();
+  const { downloadInvoice } = useInvoiceDownloader();
   const { user } = useSelector((state: RootState) => state.auth);
 
   // Get invoices from Redux store
   const { invoices, loading: invoicesLoading } = useSelector(
     (state: RootState) => state.invoices
   );
-
+  const { profile } = useSelector((state: RootState) => state.profile);
   // Get customers from Redux store
   const { items: customers, loading: customersLoading } = useSelector(
     (state: RootState) => state.customers
   );
+
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState("");
@@ -43,7 +47,8 @@ export default function InvoicePage() {
           shopId: user.id,
         })
       );
-      dispatch(fetchCustomers(user.id));
+      dispatch(fetchProfile(user.id)).unwrap(),
+        dispatch(fetchCustomers(user.id));
     }
   }, [dispatch, user?.id]);
 
@@ -127,10 +132,9 @@ export default function InvoicePage() {
   };
 
   const handlePrintInvoice = (invoice: Invoice) => {
-    console.log("Print invoice:", invoice);
-    alert(
-      `Printing invoice: ${invoice.invoice_number}\nWe'll implement print functionality later.`
-    );
+    if (invoice && invoice.items && profile) {
+      downloadInvoice({ invoice, items: invoice.items, profile });
+    }
   };
 
   const handleAddPayment = (invoice: Invoice) => {

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Printer, PlusCircle, MoreVertical } from "lucide-react";
+import { Eye, Printer, PlusCircle, MoreVertical, Download } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
 import {
   DropdownMenu,
@@ -205,31 +205,18 @@ export default function InvoiceList({
                             <PlusCircle className="h-4 w-4" />
                           </Button>
                         )}
-
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-gray-400 hover:text-white"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent
-                            className="bg-[#0a0a0a] border-[#D4AF37] text-white"
-                            align="end"
-                          >
-                            <DropdownMenuItem
-                              onClick={() => onPrintInvoice(invoice)}
-                              className="cursor-pointer hover:bg-[#1a1a1a]"
-                            >
-                              <Printer className="mr-2 h-4 w-4" />
-                              Print Invoice
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onPrintInvoice(invoice);
+                          }}
+                          className="text-[#D4AF37] hover:bg-#D4AF37/30"
+                          title="View Details"
+                        >
+                          <Download className="h-4 w-4" />
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>

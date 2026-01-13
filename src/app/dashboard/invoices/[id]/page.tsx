@@ -61,12 +61,7 @@ export default function InvoiceDetailPage() {
     (state: RootState) => state.invoices
   );
   const { payments } = useSelector((state: RootState) => state.payment);
-  const { downloadInvoice } = useInvoiceDownloader({
-    invoice: currentInvoice.invoice,
-    items: currentInvoice.items,
-    profile,
-    payments,
-  });
+  const { downloadInvoice } = useInvoiceDownloader();
 
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 
@@ -153,12 +148,13 @@ export default function InvoiceDetailPage() {
   };
 
   const handleDownloadInvoice = () => {
-    if (!currentInvoice.invoice) {
-      alert("No invoice data available");
-      return;
-    }
+    if (!currentInvoice.invoice || !profile) return;
 
-    downloadInvoice();
+    downloadInvoice({
+      invoice: currentInvoice.invoice,
+      items: currentInvoice.items ?? [],
+      profile,
+    });
   };
 
   if (isInitialLoading) {

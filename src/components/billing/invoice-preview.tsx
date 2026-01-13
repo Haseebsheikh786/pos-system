@@ -41,6 +41,7 @@ interface InvoicePreviewProps {
   customerPhone: string;
   subtotal: number;
   total: number;
+  invoiceNumber: string;
   onPrint: () => void;
   onDownload: () => void;
   onClose: () => void;
@@ -54,6 +55,7 @@ export default function InvoicePreview({
   customerPhone,
   subtotal,
   total,
+  invoiceNumber,
   onDownload,
   onClose,
   onSaveSuccess,
@@ -67,29 +69,6 @@ export default function InvoicePreview({
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  const generateInvoiceNumber = (shopId?: string): string => {
-    const prefix = "INV-";
-
-    const shopCode = shopId
-      ? shopId.slice(0, 2).toUpperCase()
-      : Math.random().toString(36).substring(2, 4).toUpperCase();
-
-    const now = new Date();
-    const seconds = now.getSeconds().toString().padStart(2, "0");
-    const milliseconds = now
-      .getMilliseconds()
-      .toString()
-      .padStart(3, "0")
-      .slice(0, 2);
-
-    const random = Math.floor(Math.random() * 100)
-      .toString()
-      .padStart(2, "0");
-
-    return `${prefix}${shopCode}${seconds}${milliseconds}${random}`;
-  };
-
-  const invoiceNumber = generateInvoiceNumber(user?.id);
   const invoiceDate = new Date().toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",

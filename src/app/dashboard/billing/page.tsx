@@ -22,6 +22,9 @@ import { fetchProducts } from "@/store/productSlice";
 import { fetchCustomers } from "@/store/customerSlice";
 import type { Product } from "@/types/product";
 import type { Customer } from "@/types/customer";
+import useInvoiceDownloader from "@/hooks/useInvoiceDownloader";
+import { fetchProfile } from "@/store/profileSlice";
+import { Invoice, InvoiceItem } from "@/types/invoice";
 
 type BillItem = {
   id: number;
@@ -35,7 +38,10 @@ type BillItem = {
 
 export default function BillingPage() {
   const dispatch = useDispatch<AppDispatch>();
+  const { downloadInvoice } = useInvoiceDownloader();
+
   const { user } = useSelector((state: RootState) => state.auth);
+  const { profile } = useSelector((state: RootState) => state.profile);
 
   // Get products from Redux store
   const { items: products, loading: productsLoading } = useSelector(
@@ -54,12 +60,36 @@ export default function BillingPage() {
   const [customerName, setCustomerName] = useState<string>("");
   const [customerPhone, setCustomerPhone] = useState<string>("");
   const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+  const generateInvoiceNumber = (shopId?: string): string => {
+    const prefix = "INV-";
+
+    const shopCode = shopId
+      ? shopId.slice(0, 2).toUpperCase()
+      : Math.random().toString(36).substring(2, 4).toUpperCase();
+
+    const now = new Date();
+    const seconds = now.getSeconds().toString().padStart(2, "0");
+    const milliseconds = now
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0")
+      .slice(0, 2);
+
+    const random = Math.floor(Math.random() * 100)
+      .toString()
+      .padStart(2, "0");
+
+    return `${prefix}${shopCode}${seconds}${milliseconds}${random}`;
+  };
+
+  const invoiceNumber = generateInvoiceNumber(user?.id);
 
   // Fetch products and customers on component mount
   useEffect(() => {
     if (user?.id) {
       dispatch(fetchProducts(user.id));
       dispatch(fetchCustomers(user.id));
+      dispatch(fetchProfile(user.id));
     }
   }, [dispatch, user?.id]);
 
@@ -184,6 +214,63 @@ export default function BillingPage() {
       setCustomerName("");
       setCustomerPhone("");
     }
+  };
+
+  const generateTempInvoice = (): Invoice => {
+    const now = new Date();
+
+    const tempInvoiceItems: InvoiceItem[] = billItems.map((item) => ({
+      id: String(item.id), // unique identifier
+      invoice_id: `TMP-${Date.now()}`,
+      product_id: item.productId,
+      product_name: item.productName,
+      price: item.price,
+      product_price: item.price,
+      quantity: item.quantity,
+      created_at: now.toISOString(),
+    }));
+
+    const totalAmount = tempInvoiceItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+
+    return {
+      id: String(Date.now()),
+      shop_id: profile?.id || "shop-temp",
+      customer_id: selectedCustomer || "guest",
+      invoice_number: invoiceNumber,
+      invoice_date: now.toISOString(),
+      customer_name: customerName || "Walk-in Customer",
+      customer_phone: customerPhone || "N/A",
+      subtotal: totalAmount,
+      discount_amount: 0,
+      tax_amount: 0,
+      total: totalAmount,
+      payment_status: "pending",
+      amount_paid: 0,
+      due_amount: totalAmount,
+      status: "pending",
+      notes: null,
+      items: tempInvoiceItems,
+      created_at: now.toISOString(),
+      updated_at: now.toISOString(),
+    };
+  };
+
+  const handlePrintInvoice = () => {
+    if (!profile || billItems.length === 0) {
+      alert("Please add items to the bill first");
+      return;
+    }
+
+    const invoice = generateTempInvoice();
+
+    downloadInvoice({
+      invoice,
+      items: invoice.items || [],
+      profile,
+    });
   };
 
   const selectedCustomerData = customers?.find(
@@ -488,8 +575,9 @@ export default function BillingPage() {
           customerPhone={customerPhone}
           subtotal={subtotal}
           total={total}
+          invoiceNumber={invoiceNumber}
           onPrint={handlePrint}
-          onDownload={() => alert("Download feature coming soon")}
+          onDownload={handlePrintInvoice}
           onClose={() => setIsInvoiceOpen(false)}
           onSaveSuccess={() => {
             // Clear the bill after successful save

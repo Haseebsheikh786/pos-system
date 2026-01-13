@@ -30,7 +30,6 @@ export default function InvoicePage() {
     (state: RootState) => state.customers
   );
 
-
   // Filter states
   const [searchQuery, setSearchQuery] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("all");
@@ -47,7 +46,7 @@ export default function InvoicePage() {
           shopId: user.id,
         })
       );
-      dispatch(fetchProfile(user.id)).unwrap(),
+      dispatch(fetchProfile(user.id)).unwrap();
         dispatch(fetchCustomers(user.id));
     }
   }, [dispatch, user?.id]);

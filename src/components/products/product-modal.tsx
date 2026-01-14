@@ -52,12 +52,25 @@ export default function ProductModal({
               required
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="name" className="text-gray-300">
+              Barcode *
+            </Label>
+            <Input
+              id="name"
+              placeholder="Enter barcode"
+              value={formData.barcode}
+              onChange={(e) => handleInputChange("barcode", e.target.value)}
+              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              required
+            />
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="price" className="text-gray-300">
-              Selling Price 
+              Selling Price
             </Label>
             <Input
               id="price"
@@ -73,7 +86,7 @@ export default function ProductModal({
           </div>
           <div className="space-y-2">
             <Label htmlFor="cost_price" className="text-gray-300">
-              Cost Price 
+              Cost Price
             </Label>
             <Input
               id="cost_price"
@@ -88,10 +101,10 @@ export default function ProductModal({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="stock" className="text-gray-300">
-              Current Stock 
+              Current Stock
             </Label>
             <Input
               id="stock"
@@ -106,7 +119,7 @@ export default function ProductModal({
           </div>
           <div className="space-y-2">
             <Label htmlFor="min_stock_level" className="text-gray-300">
-              Minimum Stock Level 
+              Minimum Stock Level
             </Label>
             <Input
               id="min_stock_level"

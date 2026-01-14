@@ -39,6 +39,7 @@ export default function ProductList({
                 <TableHead className="text-[#D4AF37]">Name</TableHead>
                 <TableHead className="text-[#D4AF37]">Price</TableHead>
                 <TableHead className="text-[#D4AF37]">Cost</TableHead>
+                <TableHead className="text-[#D4AF37]">Barcode</TableHead>
                 <TableHead className="text-[#D4AF37]">Stock</TableHead>
                 <TableHead className="text-[#D4AF37] text-right">
                   Actions
@@ -66,11 +67,6 @@ export default function ProductList({
                         <span className="text-white font-medium">
                           {product.name}
                         </span>
-                        {product.description && (
-                          <span className="text-xs text-gray-400 truncate max-w-[200px]">
-                            {product.description}
-                          </span>
-                        )}
                       </div>
                     </TableCell>
                     <TableCell className="text-gray-300">
@@ -80,6 +76,13 @@ export default function ProductList({
                       {product.cost_price
                         ? `${product.cost_price.toFixed(2)}`
                         : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="text-white font-medium">
+                          {product.barcode || "-"}
+                        </span>
+                      </div>
                     </TableCell>
                     <TableCell>
                       <div className="">

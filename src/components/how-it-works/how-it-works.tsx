@@ -8,30 +8,24 @@ import {
   UserPlus,
 } from "lucide-react";
 import Link from "next/link";
+import VideoDemo from "../video-demo";
+
 const features = [
   {
-    title: "Dashboard Overview",
-    description: "Real-time insights and key metrics at a glance",
+    title: "Daily sales tracking",
+    description: "See today's sales, profit, and top products at a glance",
   },
   {
-    title: "Product Management",
-    description: "Easy product catalog and inventory control",
+    title: "Stock alerts on phone",
+    description: "Get WhatsApp notifications when stock is low",
   },
   {
-    title: "Sales Processing",
-    description: "Fast, secure transaction processing",
+    title: "Customer due reminders",
+    description: "Track who owes you money automatically",
   },
   {
-    title: "Inventory Tracking",
-    description: "Automated stock management and alerts",
-  },
-  {
-    title: "Analytics & Reports",
-    description: "Comprehensive reporting and insights",
-  },
-  {
-    title: "Settings & Configuration",
-    description: "Customize your system to fit your needs",
+    title: "All bills saved digitally",
+    description: "Access all past invoices anytime, anywhere",
   },
 ];
 
@@ -40,9 +34,10 @@ function HowItWorksPage() {
     <>
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-4xl mx-auto mb-20">
+          <div className="text-center max-w-4xl mx-auto mb-8">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
-              How <span className="text-[#D4AF37]">It Works</span>
+              Start in <span className="text-[#D4AF37]">10 Minutes</span>, Not
+              10 Days
             </h1>
             <p className="text-xl text-gray-400 leading-relaxed text-pretty">
               Get started in minutes with our simple three-step process. No
@@ -50,8 +45,14 @@ function HowItWorksPage() {
             </p>
           </div>
 
+          {/* Video Demo Section - Add your 2-min demo video here */}
+          <div className="mb-16 max-w-4xl mx-auto">
+            <VideoDemo />
+          </div>
+
           {/* Steps */}
           <div className="space-y-12 mb-20">
+            {/* Step 1 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="order-2 md:order-1">
                 <div className="flex items-center gap-4 mb-4">
@@ -59,13 +60,12 @@ function HowItWorksPage() {
                     <span className="text-black font-bold text-xl">1</span>
                   </div>
                   <h2 className="text-3xl font-bold text-white">
-                    Sign Up & Create Account
+                    Sign Up Free
                   </h2>
                 </div>
                 <p className="text-gray-400 text-lg leading-relaxed ml-16">
-                  Create your account in seconds. No credit card required for
-                  the free trial. Simply enter your business details and you're
-                  ready to go.
+                  Just enter your name and email. Start your 14-day free trial
+                  instantly.
                 </p>
               </div>
               <Card className="bg-[#0A0A0A] border-[#D4AF37] order-1 md:order-2">
@@ -77,11 +77,18 @@ function HowItWorksPage() {
               </Card>
             </div>
 
+            {/* Step 2 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <Card className="bg-[#0A0A0A] border-[#D4AF37]">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-center">
-                    <Settings className="text-[#D4AF37]" size={80} />
+                    <svg
+                      className="w-20 h-20 text-[#D4AF37]"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 12H7c-.55 0-1-.45-1-1s.45-1 1-1h10c.55 0 1 .45 1 1s-.45 1-1 1zm0-3H7c-.55 0-1-.45-1-1s.45-1 1-1h10c.55 0 1 .45 1 1s-.45 1-1 1zm0-3H7c-.55 0-1-.45-1-1s.45-1 1-1h10c.55 0 1 .45 1 1s-.45 1-1 1z" />
+                    </svg>
                   </div>
                 </CardContent>
               </Card>
@@ -91,17 +98,17 @@ function HowItWorksPage() {
                     <span className="text-black font-bold text-xl">2</span>
                   </div>
                   <h2 className="text-3xl font-bold text-white">
-                    Configure Your System
+                    Setup Your Shop
                   </h2>
                 </div>
                 <p className="text-gray-400 text-lg leading-relaxed ml-16">
-                  Add your products, set up inventory, configure payment
-                  methods, and customize settings to match your business needs.
-                  Our intuitive interface makes it easy.
+                  Add shop name, phone, address, and logo. These will appear on
+                  all your bills and invoices.
                 </p>
               </div>
             </div>
 
+            {/* Step 3 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="order-2 md:order-1">
                 <div className="flex items-center gap-4 mb-4">
@@ -109,29 +116,53 @@ function HowItWorksPage() {
                     <span className="text-black font-bold text-xl">3</span>
                   </div>
                   <h2 className="text-3xl font-bold text-white">
-                    Start Selling
+                    Add Your Products
                   </h2>
                 </div>
                 <p className="text-gray-400 text-lg leading-relaxed ml-16">
-                  You're all set! Start processing transactions, tracking sales,
-                  and managing your business. Access real-time analytics and
-                  reports to make informed decisions.
+                  Type product names and prices. Or upload Excel if you have
+                  many.
                 </p>
               </div>
               <Card className="bg-[#0A0A0A] border-[#D4AF37] order-1 md:order-2">
+                <CardContent className="p-8">
+                  <div className="flex items-center justify-center">
+                    <Settings className="text-[#D4AF37]" size={80} />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Step 4 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <Card className="bg-[#0A0A0A] border-[#D4AF37]">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-center">
                     <Rocket className="text-[#D4AF37]" size={80} />
                   </div>
                 </CardContent>
               </Card>
+              <div>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-black font-bold text-xl">4</span>
+                  </div>
+                  <h2 className="text-3xl font-bold text-white">
+                    Create First Bill
+                  </h2>
+                </div>
+                <p className="text-gray-400 text-lg leading-relaxed ml-16">
+                  Click products → Set quantity → Add customer → Print/Send
+                  bill.
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Features Overview */}
           <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8 md:p-12 mb-12">
             <h2 className="text-3xl font-bold text-white mb-8 text-center">
-              What You'll Get
+              What You Get Immediately
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {features.map((feature, index) => (
@@ -150,6 +181,18 @@ function HowItWorksPage() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* FAQ Teaser */}
+            <div className="mt-10 pt-6 border-t border-gray-800">
+              <div className="text-center">
+                <p className="text-gray-300 mb-2 font-medium">
+                  "Common question: 'Can my assistant also use it?'"
+                </p>
+                <p className="text-[#D4AF37] font-semibold">
+                  Answer: Yes! Add multiple users free.
+                </p>
+              </div>
             </div>
           </div>
 

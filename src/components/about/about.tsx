@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Award, Heart, Target, Users } from "lucide-react";
+import { Award, Zap, Shield, Users, Clock, Smartphone } from "lucide-react";
 
 function About() {
   return (
@@ -8,54 +8,88 @@ function About() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto mb-16">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
-              About <span className="text-[#D4AF37]">POS System</span>
+              Made for <span className="text-[#D4AF37]">Shop Owners</span>,
+              <br />
+              By Tech Experts Who Understand Shops
             </h1>
             <p className="text-xl text-gray-400 leading-relaxed text-pretty">
-              We're on a mission to empower businesses with modern, intuitive
-              point of sale technology that drives growth and success.
+              We visited 100+ shops and saw the same problems: billing takes too
+              long, stock gets mismatched, and credit tracking is messy. So we
+              built the simplest POS that just works.
             </p>
           </div>
 
-          {/* Mission & Vision */}
+          {/* Our Story */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
             <Card className="bg-[#0A0A0A] border-[#D4AF37]">
               <CardContent className="p-8">
                 <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4">
-                  <Target className="text-[#D4AF37]" size={24} />
+                  <Zap className="text-[#D4AF37]" size={24} />
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-4">
-                  Our Mission
+                  Why We're Different
                 </h2>
-                <p className="text-gray-400 leading-relaxed">
-                  To provide businesses of all sizes with enterprise-grade point
-                  of sale technology that's simple to use, powerful in features,
-                  and designed to scale with your growth.
-                </p>
+                <ul className="space-y-3 text-gray-400">
+                  <li className="flex items-start">
+                    <span className="text-[#D4AF37] mr-2">•</span>
+                    <span>
+                      <strong>Built for Small Shops</strong> – Not confusing
+                      like big enterprise software
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-[#D4AF37] mr-2">•</span>
+                    <span>
+                      <strong>Credit Focused</strong> – Track customer
+                      credit easily
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-[#D4AF37] mr-2">•</span>
+                    <span>
+                      <strong>Works Offline</strong> – Internet down? No problem
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-[#D4AF37] mr-2">•</span>
+                    <span>
+                      <strong>Local Support</strong> – Call/WhatsApp support in
+                      your language
+                    </span>
+                  </li>
+                </ul>
               </CardContent>
             </Card>
 
             <Card className="bg-[#0A0A0A] border-[#D4AF37]">
               <CardContent className="p-8">
                 <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4">
-                  <Heart className="text-[#D4AF37]" size={24} />
+                  <Shield className="text-[#D4AF37]" size={24} />
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-4">
-                  Our Vision
+                  Simple & Reliable
                 </h2>
+                <p className="text-gray-400 leading-relaxed mb-4">
+                  We believe running a shop should be about serving customers,
+                  not fighting complicated software. Our POS is designed to be
+                  intuitive from day one, with no training needed.
+                </p>
                 <p className="text-gray-400 leading-relaxed">
-                  To become the most trusted and innovative POS platform
-                  globally, helping millions of businesses streamline operations
-                  and deliver exceptional customer experiences.
+                  Everything from billing to inventory to customer credit is
+                  just a tap away—no menus to dig through, no confusing settings
+                  to adjust.
                 </p>
               </CardContent>
             </Card>
           </div>
 
-          {/* Values */}
+          {/* What Makes Us Different */}
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">Our Values</h2>
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Designed for Real Shop Owners
+            </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              The principles that guide everything we do
+              Every feature solves actual problems we saw in shops
             </p>
           </div>
 
@@ -63,14 +97,14 @@ function About() {
             <Card className="bg-black border-[#D4AF37] hover:border-[#D4AF37]/70 transition-colors">
               <CardContent className="p-6 text-center">
                 <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                  <Award className="text-[#D4AF37]" size={24} />
+                  <Clock className="text-[#D4AF37]" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">
-                  Excellence
+                  Lightning-Fast Billing
                 </h3>
                 <p className="text-gray-400 leading-relaxed">
-                  We strive for excellence in every feature, every interaction,
-                  and every customer experience.
+                  Create bills in 2 minutes flat. Scan, add, and print—no
+                  complicated steps slowing down your counter.
                 </p>
               </CardContent>
             </Card>
@@ -81,11 +115,11 @@ function About() {
                   <Users className="text-[#D4AF37]" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">
-                  Customer First
+                  Smart Credit Tracking
                 </h3>
                 <p className="text-gray-400 leading-relaxed">
-                  Our customers' success is our success. We listen, adapt, and
-                  continuously improve.
+                  Built-in credit system that remembers who owes what,
+                  sends gentle reminders, and keeps your cashflow clear.
                 </p>
               </CardContent>
             </Card>
@@ -93,45 +127,67 @@ function About() {
             <Card className="bg-black border-[#D4AF37] hover:border-[#D4AF37]/70 transition-colors">
               <CardContent className="p-6 text-center">
                 <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                  <Target className="text-[#D4AF37]" size={24} />
+                  <Smartphone className="text-[#D4AF37]" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">
-                  Innovation
+                  Works Anywhere
                 </h3>
                 <p className="text-gray-400 leading-relaxed">
-                  We embrace new technologies and ideas to stay ahead of
-                  industry trends.
+                  Use it on your phone, tablet, or computer. Works offline,
+                  syncs when you're back online. Never lose a sale.
                 </p>
               </CardContent>
             </Card>
           </div>
 
-          {/* Stats */}
+          {/* Stats - Now Feature-Focused */}
           <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8 md:p-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <h3 className="text-2xl font-bold text-white text-center mb-8">
+              Numbers That Matter to Shop Owners
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
               <div>
                 <div className="text-4xl md:text-5xl font-bold text-[#D4AF37] mb-2">
-                  10,000+
+                  2 Minutes
                 </div>
-                <div className="text-gray-400">Active Businesses</div>
+                <div className="text-gray-400">Average first bill created</div>
               </div>
               <div>
                 <div className="text-4xl md:text-5xl font-bold text-[#D4AF37] mb-2">
-                  99.9%
+                  0 Skills
                 </div>
-                <div className="text-gray-400">Uptime Guarantee</div>
+                <div className="text-gray-400">Technical knowledge needed</div>
               </div>
               <div>
                 <div className="text-4xl md:text-5xl font-bold text-[#D4AF37] mb-2">
                   24/7
                 </div>
-                <div className="text-gray-400">Customer Support</div>
+                <div className="text-gray-400">Local language support</div>
+              </div>
+              <div>
+                <div className="text-4xl md:text-5xl font-bold text-[#D4AF37] mb-2">
+                  100+ Shops
+                </div>
+                <div className="text-gray-400">Helped and counting</div>
               </div>
             </div>
+          </div>
+
+          {/* Closing Statement */}
+          <div className="text-center mt-16 max-w-3xl mx-auto">
+            <h3 className="text-3xl font-bold text-white mb-6">
+              Ready to Simplify Your Shop?
+            </h3>
+            <p className="text-xl text-gray-400 leading-relaxed">
+              Join thousands of shop owners who switched from manual registers
+              and complicated software to a POS system that actually understands
+              how shops work.
+            </p>
           </div>
         </div>
       </section>
     </>
   );
 }
+
 export default About;

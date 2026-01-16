@@ -7,10 +7,9 @@ function About() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto mb-16">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
-              Made for <span className="text-[#D4AF37]">Shop Owners</span>,
-              <br />
-              By Tech Experts Who Understand Shops
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Shop Software Built by
+              <span className="text-[#D4AF37]"> Shop Experts</span>
             </h1>
             <p className="text-xl text-gray-400 leading-relaxed text-pretty">
               We visited 100+ shops and saw the same problems: billing takes too
@@ -40,8 +39,8 @@ function About() {
                   <li className="flex items-start">
                     <span className="text-[#D4AF37] mr-2">•</span>
                     <span>
-                      <strong>Credit Focused</strong> – Track customer
-                      credit easily
+                      <strong>Credit Focused</strong> – Track customer credit
+                      easily
                     </span>
                   </li>
                   <li className="flex items-start">
@@ -118,8 +117,8 @@ function About() {
                   Smart Credit Tracking
                 </h3>
                 <p className="text-gray-400 leading-relaxed">
-                  Built-in credit system that remembers who owes what,
-                  sends gentle reminders, and keeps your cashflow clear.
+                  Built-in credit system that remembers who owes what, sends
+                  gentle reminders, and keeps your cashflow clear.
                 </p>
               </CardContent>
             </Card>

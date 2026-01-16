@@ -8,93 +8,80 @@ import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MessageCircle } from "lucide-react";
+
 const faqs = [
   {
     category: "Getting Started",
     questions: [
       {
-        question: "How do I get started with POS System?",
-        answer:
-          "Getting started is easy! Simply sign up for a free account, configure your products and payment methods, and you're ready to start processing transactions. Our setup wizard will guide you through each step.",
+        question: "Do I need computer knowledge?",
+        answer: "No. If you can use WhatsApp, you can use this.",
       },
       {
-        question: "Is there a free trial available?",
-        answer:
-          "Yes! We offer a 14-day free trial with full access to all features. No credit card required. You can upgrade to a paid plan at any time during or after the trial period.",
+        question: "What do I need to start?",
+        answer: "Just a smartphone or computer. Printer optional.",
       },
       {
-        question: "What equipment do I need?",
-        answer:
-          "Our POS system works on any modern device with a web browser - desktop, laptop, tablet, or smartphone. For payment processing, you'll need a compatible card reader. We can recommend hardware based on your business needs.",
+        question: "Is there setup help?",
+        answer: "Yes! We'll call you within 1 hour of signup to help setup.",
       },
     ],
   },
   {
-    category: "Features & Functionality",
+    category: "Features",
     questions: [
       {
-        question: "Can I manage inventory with this system?",
+        question: "How do I track credit?",
         answer:
-          "Our system includes comprehensive inventory management features. Track stock levels, set low-stock alerts, manage multiple locations, and get detailed reports on your inventory performance.",
+          "When saving an invoice, enter '0' or a partial payment amount. The remaining balance becomes credit for that customer. All credits are tracked automatically in the Customer section.",
       },
       {
-        question: "Does it work offline?",
-        answer:
-          "Yes, our POS system includes offline mode. You can continue processing transactions even without an internet connection, and all data will sync automatically when you're back online.",
+        question: "What if internet stops?",
+        answer: "Works completely offline. Syncs when internet returns.",
       },
       {
-        question: "Can I accept multiple payment methods?",
-        answer:
-          "Yes! Our system supports credit cards, debit cards, mobile payments (Apple Pay, Google Pay), cash, and more. You can also split payments across multiple methods for a single transaction.",
+        question: "Can I use on mobile and computer?",
+        answer: "Yes! Access from anywhere.",
       },
       {
-        question: "What kind of reports can I generate?",
-        answer:
-          "We offer comprehensive reporting including sales reports, inventory reports, employee performance, customer analytics, tax reports, and custom reports. All reports can be exported to CSV or PDF.",
+        question: "How do stock alerts work?",
+        answer: "Get WhatsApp notification when stock is low.",
       },
     ],
   },
   {
-    category: "Pricing & Billing",
+    category: "Pricing",
     questions: [
       {
-        question: "How much does it cost?",
+        question: "What happens after 14 days?",
         answer:
-          "We offer flexible pricing plans to fit businesses of all sizes. Pricing starts at $49/month for our Basic plan. Contact our sales team for custom enterprise pricing or to discuss your specific needs.",
+          "If you like it: $5/month (billed monthly) or $50/year (save $10). If not, cancel free.",
       },
       {
-        question: "Are there any setup fees?",
-        answer:
-          "No, there are no setup fees or hidden costs. You only pay the monthly subscription fee for your chosen plan. Hardware costs are separate if you need physical equipment.",
+        question: "Are there hidden charges?",
+        answer: "No. No setup fee, no per-transaction fee.",
       },
       {
-        question: "Can I cancel anytime?",
-        answer:
-          "Yes, you can cancel your subscription at any time. There are no long-term contracts or cancellation fees. Your service will remain active until the end of your current billing period.",
+        question: "Can I cancel?",
+        answer: "Yes, anytime. No questions asked.",
       },
     ],
   },
   {
-    category: "Support & Security",
+    category: "Data & Security",
     questions: [
       {
-        question: "What kind of support do you offer?",
-        answer:
-          "We provide 24/7 customer support via email, chat, and phone. All plans include access to our comprehensive knowledge base, video tutorials, and dedicated onboarding assistance.",
+        question: "Is my data safe?",
+        answer: "Daily backups. Your data never deleted even if you cancel.",
       },
       {
-        question: "Is my data secure?",
-        answer:
-          "Security is our top priority. We use bank-level encryption, comply with PCI DSS standards, and conduct regular security audits. Your data is backed up daily and stored in secure, redundant data centers.",
-      },
-      {
-        question: "Can I export my data?",
-        answer:
-          "Yes! You own your data and can export it at any time. We provide easy data export tools in various formats including CSV, Excel, and JSON.",
+        question: "Can I download my bills?",
+        answer: "Yes, download all bills as PDF anytime.",
       },
     ],
   },
 ];
+
 const FAQ = () => {
   return (
     <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">

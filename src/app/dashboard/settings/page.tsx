@@ -37,6 +37,8 @@ export default function SettingsPage() {
     email: "",
     invoice_footer_text: "",
     shop_logo_url: "",
+    currency: "",
+    business_type: "",
   });
 
   // Fetch profile on component mount
@@ -56,6 +58,8 @@ export default function SettingsPage() {
         email: profile.email || "",
         invoice_footer_text: profile.invoice_footer_text || "",
         shop_logo_url: profile.shop_logo_url || "",
+        currency: profile.currency || "",
+        business_type: profile.business_type || "",
       });
     }
   }, [profile]);
@@ -215,6 +219,7 @@ export default function SettingsPage() {
             businessName={formData.business_name}
             businessAddress={formData.business_address}
             businessPhone={formData.phone}
+            businessCurrency={formData.currency}
             invoiceFooterText={formData.invoice_footer_text}
             nextInvoiceNumber={profile?.next_invoice_number || 1}
           />

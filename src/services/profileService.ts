@@ -22,6 +22,8 @@ export class ProfileService {
                 email: profileData.email || null,
                 invoice_footer_text: profileData.invoice_footer_text || null,
                 shop_logo_url: profileData.shop_logo_url || null,
+                business_type: profileData.business_type || null,
+                currency: profileData.currency || null,
                 updated_at: new Date().toISOString(),
             })
             .eq('id', userId)

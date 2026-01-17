@@ -7,6 +7,8 @@ export type Profile = {
     shop_logo_url?: string;
     next_invoice_number: number;
     invoice_footer_text?: string;
+    currency: string;
+    business_type?: string;
     created_at: string;
     updated_at: string;
 };
@@ -18,6 +20,8 @@ export type ProfileFormData = {
     email: string;
     invoice_footer_text: string;
     shop_logo_url?: string;
+    currency: string;
+    business_type?: string;
 };
 
 export type LogoUploadData = {

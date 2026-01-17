@@ -15,7 +15,6 @@ const ActivityAndAlerts = ({
   invoices,
   products = [],
 }: ActivityAndAlertsProps) => {
-
   const formatTime = (dateString: string) => {
     return new Date(dateString).toLocaleTimeString([], {
       hour: "2-digit",
@@ -71,8 +70,8 @@ const ActivityAndAlerts = ({
                           invoice.payment_status === "paid"
                             ? "bg-green-500/20 text-green-400"
                             : invoice.payment_status === "partial"
-                            ? "bg-orange-500/20 text-orange-400"
-                            : "bg-red-500/20 text-red-400"
+                              ? "bg-orange-500/20 text-orange-400"
+                              : "bg-red-500/20 text-red-400"
                         }`}
                       >
                         {invoice.payment_status}
@@ -88,11 +87,11 @@ const ActivityAndAlerts = ({
                   </div>
                   <div className="text-right">
                     <div className="text-green-400 font-bold text-lg">
-                      { (invoice.total || 0)}
+                      {invoice.total || 0}
                     </div>
                     {invoice.due_amount > 0 && (
                       <div className="text-xs text-orange-400">
-                        Due: {  (invoice.due_amount)}
+                        Due: {invoice.due_amount}
                       </div>
                     )}
                   </div>
@@ -122,11 +121,9 @@ const ActivityAndAlerts = ({
         <CardHeader>
           <CardTitle className="text-white flex justify-between items-center">
             <span>Stock Alerts</span>
-            {lowStockProducts.length > 0 && (
-              <span className="text-sm font-normal text-gray-400">
-                {lowStockProducts.length} alert(s)
-              </span>
-            )}
+            <span className="text-sm font-normal text-gray-400">
+              {lowStockProducts.length} alerts
+            </span>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -134,6 +131,10 @@ const ActivityAndAlerts = ({
             <div className="text-center py-8 text-gray-400">
               <div className="mb-2">No products found</div>
               <div className="text-sm">Add products to track inventory</div>
+            </div>
+          ) : lowStockProducts.length === 0 ? (
+            <div className="text-center py-8 text-gray-400">
+              <div className="mb-2">No alerts found</div>
             </div>
           ) : (
             <div className="space-y-4">
@@ -160,7 +161,7 @@ const ActivityAndAlerts = ({
                         </span>
                       </div>
                       <div className="flex items-center gap-4 text-xs text-gray-400 mt-2">
-                        <span>Price: { (product.price || 0)}</span>
+                        <span>Price: {product.price || 0}</span>
                         <span>•</span>
                         <span>
                           Stock Level: {product.min_stock_level || 5} min

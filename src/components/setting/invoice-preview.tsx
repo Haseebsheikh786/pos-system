@@ -1,12 +1,17 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  getCurrencySymbol,
+  getCurrencyName,
+} from "@/lib/currency";
 
 interface InvoicePreviewProps {
   logoUrl?: string;
   businessName: string;
   businessAddress?: string;
   businessPhone?: string;
+  businessCurrency?: string;
   invoiceFooterText?: string;
   nextInvoiceNumber: number;
 }
@@ -16,6 +21,7 @@ export default function InvoicePreview({
   businessName,
   businessAddress,
   businessPhone,
+  businessCurrency = "pkr",
   invoiceFooterText,
   nextInvoiceNumber,
 }: InvoicePreviewProps) {
@@ -25,7 +31,9 @@ export default function InvoicePreview({
   ];
 
   const subtotal = sampleItems.reduce((sum, item) => sum + item.price, 0);
-  const invoiceNumber = `$${String(nextInvoiceNumber).padStart(4, "0")}`;
+  const invoiceNumber = `INV-${String(nextInvoiceNumber).padStart(6, "0")}`;
+  const currencySymbol = getCurrencySymbol(businessCurrency);
+  const currencyName = getCurrencyName(businessCurrency);
 
   return (
     <Card className="bg-[#0a0a0a] border-[#D4AF37]">
@@ -34,6 +42,7 @@ export default function InvoicePreview({
       </CardHeader>
       <CardContent>
         <div className="bg-white p-4 rounded-lg space-y-3 text-xs">
+          {/* Header */}
           <div className="text-center border-b border-gray-300 pb-2">
             {logoUrl ? (
               <img
@@ -59,6 +68,7 @@ export default function InvoicePreview({
             )}
           </div>
 
+          {/* Invoice Info */}
           <div className="flex justify-between items-center border-b border-gray-200 pb-2">
             <div>
               <p className="font-semibold text-black">INVOICE</p>
@@ -68,9 +78,13 @@ export default function InvoicePreview({
               <p className="text-gray-600">
                 Date: {new Date().toLocaleDateString()}
               </p>
+              <p className="text-gray-600 text-xs">
+                Currency: {currencyName} ({currencySymbol})
+              </p>
             </div>
           </div>
 
+          {/* Items Table */}
           <div className="space-y-1">
             <div className="grid grid-cols-12 text-gray-700 font-semibold text-xs border-b border-gray-200 pb-1">
               <div className="col-span-8">Description</div>
@@ -81,15 +95,27 @@ export default function InvoicePreview({
               <div key={index} className="grid grid-cols-12 text-gray-700">
                 <div className="col-span-8">{item.name}</div>
                 <div className="col-span-2 text-right">1</div>
-                <div className="col-span-2 text-right">{item.price}</div>
+                <div className="col-span-2 text-right">
+                  {currencySymbol}
+                  {item.price.toLocaleString()}
+                </div>
               </div>
             ))}
           </div>
 
+          {/* Total */}
           <div className="border-t border-gray-300 pt-2">
             <div className="flex justify-between font-bold text-black">
               <span>Total:</span>
-              <span>{subtotal.toLocaleString()}</span>
+              <span>
+                {currencySymbol}
+                {subtotal.toLocaleString()}
+              </span>
+            </div>
+            {/* Optional: Show currency name */}
+            <div className="flex justify-between text-gray-500 text-xs mt-1">
+              <span>Currency:</span>
+              <span>{currencyName}</span>
             </div>
           </div>
 
@@ -98,6 +124,11 @@ export default function InvoicePreview({
               {invoiceFooterText}
             </div>
           )}
+
+          {/* Currency Info Note */}
+          <div className="text-center text-gray-400 text-[10px] mt-2">
+            Note: All prices shown in {currencyName} ({currencySymbol})
+          </div>
         </div>
       </CardContent>
     </Card>

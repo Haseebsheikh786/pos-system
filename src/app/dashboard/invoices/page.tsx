@@ -14,20 +14,23 @@ import type { Invoice } from "@/types/invoice";
 import PaymentModal from "@/components/invoices/payment-modal";
 import useInvoiceDownloader from "@/hooks/useInvoiceDownloader";
 import { fetchProfile } from "@/store/profileSlice";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function InvoicePage() {
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
   const { downloadInvoice } = useInvoiceDownloader();
   const { user } = useSelector((state: RootState) => state.auth);
 
   // Get invoices from Redux store
   const { invoices, loading: invoicesLoading } = useSelector(
-    (state: RootState) => state.invoices
+    (state: RootState) => state.invoices,
   );
   const { profile } = useSelector((state: RootState) => state.profile);
   // Get customers from Redux store
   const { items: customers, loading: customersLoading } = useSelector(
-    (state: RootState) => state.customers
+    (state: RootState) => state.customers,
   );
 
   // Filter states
@@ -44,10 +47,10 @@ export default function InvoicePage() {
       dispatch(
         fetchInvoices({
           shopId: user.id,
-        })
+        }),
       );
       dispatch(fetchProfile(user.id)).unwrap();
-        dispatch(fetchCustomers(user.id));
+      dispatch(fetchCustomers(user.id));
     }
   }, [dispatch, user?.id]);
 
@@ -127,7 +130,7 @@ export default function InvoicePage() {
   };
 
   const handleViewInvoice = (invoice: Invoice) => {
-    window.location.href = `/dashboard/invoices/${invoice.id}`;
+    router.push(`/dashboard/invoices/${invoice.id}`);
   };
 
   const handlePrintInvoice = (invoice: Invoice) => {
@@ -146,13 +149,9 @@ export default function InvoicePage() {
     dispatch(
       fetchInvoices({
         shopId: user.id,
-      })
+      }),
     );
     dispatch(fetchCustomers(user.id));
-  };
-
-  const navigateToBilling = () => {
-    window.location.href = "/dashboard/billing";
   };
 
   const loading = invoicesLoading || customersLoading;
@@ -169,14 +168,19 @@ export default function InvoicePage() {
             View and manage all invoices and payments.
           </p>
         </div>
-        <Button
-          onClick={navigateToBilling}
-          className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
-          disabled={loading}
+        <Link
+          href={`/dashboard/billing`}
+          prefetch={true}
+          className="font-medium text-white hover:text-[#D4AF37] transition-colors"
         >
-          <Plus className="mr-2 h-4 w-4" />
-          Create New Invoice
-        </Button>
+          <Button
+            className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
+            disabled={loading}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Create New Invoice
+          </Button>
+        </Link>
       </div>
 
       {/* Stats Grid */}
@@ -251,13 +255,19 @@ export default function InvoicePage() {
               ? "Try changing your filters or search term"
               : "Create your first invoice to get started"}
           </p>
-          <Button
-            onClick={navigateToBilling}
-            className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
+          <Link
+            href={`/dashboard/billing`}
+            prefetch={true}
+            className="font-medium text-white hover:text-[#D4AF37] transition-colors"
           >
-            <Plus className="mr-2 h-4 w-4" />
-            Create First Invoice
-          </Button>
+            <Button
+              className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
+              disabled={loading}
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Create First Invoice
+            </Button>
+          </Link>
         </div>
       )}
     </div>

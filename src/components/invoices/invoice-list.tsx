@@ -11,14 +11,9 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Printer, PlusCircle, MoreVertical, Download } from "lucide-react";
+import { Eye, PlusCircle,  Download } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 interface InvoiceListProps {
   invoices: Invoice[];
@@ -178,18 +173,24 @@ export default function InvoiceList({
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onViewInvoice(invoice);
-                          }}
-                          className="text-blue-400 hover:bg-blue-500/10"
-                          title="View Details"
+                        <Link
+                          href={`/dashboard/invoices/${invoice.id}`}
+                          prefetch={true}
                         >
-                          <Eye className="h-4 w-4" />
-                        </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault(); 
+                              onViewInvoice(invoice);
+                            }}
+                            className="text-blue-400 hover:bg-blue-500/10"
+                            title="View Details"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </Link>
 
                         {invoice.due_amount > 0 && (
                           <Button

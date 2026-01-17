@@ -21,6 +21,7 @@ import {
 import { DollarSign, CreditCard, CheckCircle, AlertCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Invoice } from "@/types/invoice";
+import { useRouter } from "next/navigation";
 
 interface PaymentsDuesTabProps {
   dateRange: string;
@@ -31,6 +32,7 @@ export default function PaymentsDuesTab({
   dateRange,
   invoices,
 }: PaymentsDuesTabProps) {
+  const router = useRouter();
   const [customerFilter, setCustomerFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -280,10 +282,10 @@ export default function PaymentsDuesTab({
             {statusFilter === "all"
               ? "All Invoices"
               : statusFilter === "paid"
-              ? "Paid Invoices"
-              : statusFilter === "partial"
-              ? "Partial Payments"
-              : "Pending Payments"}
+                ? "Paid Invoices"
+                : statusFilter === "partial"
+                  ? "Partial Payments"
+                  : "Pending Payments"}
             {filteredInvoices.length > 0 && ` (${filteredInvoices.length})`}
           </CardTitle>
         </CardHeader>
@@ -294,10 +296,10 @@ export default function PaymentsDuesTab({
                 {statusFilter === "paid"
                   ? "🎉 No paid invoices in the selected period"
                   : statusFilter === "partial"
-                  ? "No partially paid invoices found"
-                  : statusFilter === "due"
-                  ? "🎉 No pending payments! All invoices are cleared"
-                  : "No invoices found with the selected filters"}
+                    ? "No partially paid invoices found"
+                    : statusFilter === "due"
+                      ? "🎉 No pending payments! All invoices are cleared"
+                      : "No invoices found with the selected filters"}
               </div>
             ) : (
               <Table>
@@ -326,7 +328,7 @@ export default function PaymentsDuesTab({
                       key={invoice.id}
                       className="border-[#D4AF37]/30 hover:bg-[#1a1a1a] cursor-pointer"
                       onClick={() => {
-                        window.location.href = `/dashboard/invoices/${invoice.id}`;
+                        router.push(`/dashboard/invoices/${invoice.id}`);
                       }}
                     >
                       <TableCell className="text-white font-medium">

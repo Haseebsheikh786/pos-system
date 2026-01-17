@@ -17,6 +17,7 @@ import {
   updateStock,
 } from "@/store/inventorySlice";
 import { Product } from "@/types/product";
+import Link from "next/link";
 
 export default function InventoryPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -56,7 +57,7 @@ export default function InventoryPage() {
   useEffect(() => {
     if (inventory.length > 0) {
       const lowStock = inventory.filter(
-        (item) => item.stock <= item.min_stock_level
+        (item) => item.stock <= item.min_stock_level,
       );
       const criticalStock = inventory.filter((item) => item.stock < 10);
       const outOfStock = inventory.filter((item) => item.stock === 0);
@@ -94,7 +95,7 @@ export default function InventoryPage() {
         }
       }, 500); // 500ms delay
     },
-    [dispatch, user?.id]
+    [dispatch, user?.id],
   );
 
   const clearSearch = () => {
@@ -114,7 +115,7 @@ export default function InventoryPage() {
           productId,
           shopId: user.id,
           newStock,
-        })
+        }),
       ).unwrap();
 
       // Refresh stats after stock update
@@ -123,10 +124,6 @@ export default function InventoryPage() {
       console.error("Error updating stock:", error);
       alert("Failed to update stock. Please try again.");
     }
-  };
-
-  const navigateToProducts = () => {
-    window.location.href = "/dashboard/products";
   };
 
   // Cleanup timer on unmount
@@ -150,16 +147,18 @@ export default function InventoryPage() {
             Monitor stock levels and get low-stock alerts.
           </p>
         </div>
-        <div className="flex gap-4">
+        <Link
+          href="/dashboard/products"
+          prefetch={true} // Prefetch for better performance
+        >
           <Button
-            onClick={navigateToProducts}
             className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
             disabled={loading}
           >
             <Plus className="mr-2 h-4 w-4" />
             Manage Products
           </Button>
-        </div>
+        </Link>
       </div>
 
       {/* Search Bar */}

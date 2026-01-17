@@ -21,13 +21,14 @@ import { RootState, AppDispatch } from "@/store/store";
 import { fetchProducts } from "@/store/productSlice";
 import { fetchInvoices } from "@/store/invoiceSlice";
 import { DateRange } from "@/types/invoice";
+import { fetchProfile } from "@/store/profileSlice";
 
 export default function ReportsPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { items: products } = useSelector((state: RootState) => state.products);
   const { invoices } = useSelector((state: RootState) => state.invoices);
   const { user } = useSelector((state: RootState) => state.auth);
-
+  const { profile } = useSelector((state: RootState) => state.profile);
   const [dateRange, setDateRange] = useState<DateRange>("today");
   const [activeTab, setActiveTab] = useState("sales-profit");
 
@@ -38,11 +39,12 @@ export default function ReportsPage() {
   useEffect(() => {
     if (user?.id) {
       dispatch(fetchProducts(user.id));
+      dispatch(fetchProfile(user.id));
       dispatch(
         fetchInvoices({
           shopId: user.id,
           dateRange,
-        })
+        }),
       );
     }
   }, [dispatch, user?.id, dateRange]);
@@ -134,17 +136,26 @@ export default function ReportsPage() {
             dateRange={dateRange}
             invoices={invoices}
             products={products}
+            profile={profile || { currency: "pkr" }}
           />
         </TabsContent>
 
         {/* Tab 2: Payments & Dues */}
         <TabsContent value="payments-dues">
-          <PaymentsDuesTab dateRange={dateRange} invoices={invoices} />
+          <PaymentsDuesTab
+            dateRange={dateRange}
+            invoices={invoices}
+            profile={profile || { currency: "pkr" }}
+          />
         </TabsContent>
 
         {/* Tab 3: Inventory */}
         <TabsContent value="inventory">
-          <InventoryTab dateRange={dateRange} products={products} />
+          <InventoryTab
+            dateRange={dateRange}
+            products={products}
+            profile={profile || { currency: "pkr" }}
+          />
         </TabsContent>
       </Tabs>
     </div>

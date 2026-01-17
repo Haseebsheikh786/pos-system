@@ -20,10 +20,12 @@ import {
   setSearchQuery,
 } from "@/store/customerSlice";
 import { CustomerFormData } from "@/types/customer";
+import { fetchProfile } from "@/store/profileSlice";
 
 export default function CustomersPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { profile } = useSelector((state: RootState) => state.profile);
   const {
     items: customers,
     loading,
@@ -35,7 +37,7 @@ export default function CustomersPage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState<
     (typeof customers)[0] | null
-  >(null); 
+  >(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   const [formData, setFormData] = useState<CustomerFormData>({
@@ -53,6 +55,7 @@ export default function CustomersPage() {
   useEffect(() => {
     if (user?.id) {
       dispatch(fetchCustomers(user.id));
+      dispatch(fetchProfile(user.id));
     }
   }, [dispatch, user?.id]);
 
@@ -88,7 +91,7 @@ export default function CustomersPage() {
         }
       }, 500); // 500ms delay
     },
-    [dispatch, user?.id]
+    [dispatch, user?.id],
   );
 
   const clearSearch = () => {
@@ -111,7 +114,7 @@ export default function CustomersPage() {
         createCustomer({
           shopId: user.id,
           customerData: formData,
-        })
+        }),
       ).unwrap();
 
       setFormData({
@@ -148,7 +151,7 @@ export default function CustomersPage() {
           id: editingCustomer.id,
           shopId: user.id,
           customerData: formData,
-        })
+        }),
       ).unwrap();
 
       setFormData({
@@ -236,7 +239,11 @@ export default function CustomersPage() {
       </div>
 
       {/* Stats Grid */}
-      <CustomerStats customers={customers} loading={loading} />
+      <CustomerStats
+        customers={customers}
+        loading={loading}
+        profile={profile || { currency: "pkr" }}
+      />
 
       {/* Error Message */}
       {error && (
@@ -284,6 +291,7 @@ export default function CustomersPage() {
           onEdit={openEditDialog}
           onDelete={handleDeleteCustomer}
           loading={loading}
+          profile={profile || { currency: "pkr" }}
         />
       )}
 

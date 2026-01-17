@@ -11,9 +11,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, PlusCircle,  Download } from "lucide-react";
+import { Eye, PlusCircle, Download } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
 import Link from "next/link";
+import { getCurrencySymbol } from "@/lib/currency";
 
 interface InvoiceListProps {
   invoices: Invoice[];
@@ -21,6 +22,10 @@ interface InvoiceListProps {
   onViewInvoice: (invoice: Invoice) => void;
   onAddPayment: (invoice: Invoice) => void;
   onPrintInvoice: (invoice: Invoice) => void;
+  profile: {
+    currency?: string;
+  };
+  
 }
 
 export default function InvoiceList({
@@ -29,6 +34,7 @@ export default function InvoiceList({
   onViewInvoice,
   onAddPayment,
   onPrintInvoice,
+  profile
 }: InvoiceListProps) {
   const getPaymentStatusBadge = (status: string) => {
     switch (status) {
@@ -58,6 +64,10 @@ export default function InvoiceList({
         );
     }
   };
+
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -154,15 +164,15 @@ export default function InvoiceList({
                       </div>
                     </TableCell>
                     <TableCell className="text-right text-white font-medium">
-                      ₹{invoice.total?.toLocaleString() || "0"}
+                      {currencySymbol}{invoice.total?.toLocaleString() || "0"}
                     </TableCell>
                     <TableCell className="text-right text-green-400">
-                      ₹{invoice.amount_paid?.toLocaleString() || "0"}
+                      {currencySymbol}{invoice.amount_paid?.toLocaleString() || "0"}
                     </TableCell>
                     <TableCell className="text-right">
                       {invoice.due_amount > 0 ? (
                         <span className="text-orange-400 font-medium">
-                          ₹{invoice.due_amount?.toLocaleString() || "0"}
+                          {currencySymbol}{invoice.due_amount?.toLocaleString() || "0"}
                         </span>
                       ) : (
                         <span className="text-gray-400">-</span>
@@ -182,7 +192,7 @@ export default function InvoiceList({
                             size="sm"
                             onClick={(e) => {
                               e.stopPropagation();
-                              e.preventDefault(); 
+                              e.preventDefault();
                               onViewInvoice(invoice);
                             }}
                             className="text-blue-400 hover:bg-blue-500/10"

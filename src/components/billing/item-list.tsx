@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2, X } from "lucide-react";
 import type { Product } from "@/types/product";
+import { getCurrencySymbol } from "@/lib/currency";
 
 type BillItem = {
   id: number;
@@ -29,6 +30,9 @@ interface ItemListProps {
   onUpdateQuantity: (id: number, newQty: number) => void;
   onClearBill: () => void;
   products: Product[];
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function ItemList({
@@ -37,6 +41,7 @@ export default function ItemList({
   onUpdateQuantity,
   onClearBill,
   products,
+  profile,
 }: ItemListProps) {
   const getStockStatus = (item: BillItem) => {
     const product = products.find((p) => p.id === item.productId);
@@ -48,6 +53,9 @@ export default function ItemList({
     if (remainingStock <= product.min_stock_level) return "low-stock";
     return "available";
   };
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
 
   return (
     <Card className="bg-[#0a0a0a] border-[#D4AF37]">
@@ -106,7 +114,7 @@ export default function ItemList({
                         </div>
                       </TableCell>
                       <TableCell className="text-gray-300">
-                        ₹{item.price.toLocaleString()}
+                        {currencySymbol}{item.price.toLocaleString()}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
@@ -143,7 +151,7 @@ export default function ItemList({
                         )}
                       </TableCell>
                       <TableCell className="text-white font-medium">
-                        ₹{item.total.toLocaleString()}
+                        {currencySymbol}{item.total.toLocaleString()}
                       </TableCell>
                       <TableCell>
                         <span
@@ -151,15 +159,15 @@ export default function ItemList({
                             stockStatus === "out-of-stock"
                               ? "bg-red-500/10 text-red-400"
                               : stockStatus === "low-stock"
-                              ? "bg-orange-500/10 text-orange-400"
-                              : "bg-green-500/10 text-green-400"
+                                ? "bg-orange-500/10 text-orange-400"
+                                : "bg-green-500/10 text-green-400"
                           }`}
                         >
                           {stockStatus === "out-of-stock"
                             ? "No Stock"
                             : stockStatus === "low-stock"
-                            ? "Low Stock"
-                            : "Available"}
+                              ? "Low Stock"
+                              : "Available"}
                         </span>
                       </TableCell>
                       <TableCell>

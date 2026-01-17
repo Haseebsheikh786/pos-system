@@ -10,18 +10,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2, Eye } from "lucide-react";
 import { Product } from "@/types/product";
+import { getCurrencySymbol } from "@/lib/currency";
 
 interface ProductListProps {
   products: Product[];
   onEdit: (product: Product) => void;
   onDelete: (id: string) => void;
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function ProductList({
   products,
   onEdit,
   onDelete,
+  profile,
 }: ProductListProps) {
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
   const getStockColor = (stock: number, minStock: number) => {
     if (stock === 0) return "bg-red-500/20 text-red-400 border-red-500/30";
     if (stock <= minStock)
@@ -70,9 +78,11 @@ export default function ProductList({
                       </div>
                     </TableCell>
                     <TableCell className="text-gray-300">
+                      {currencySymbol}
                       {product.price.toFixed(2)}
                     </TableCell>
                     <TableCell className="text-gray-300">
+                      {currencySymbol}
                       {product.cost_price
                         ? `${product.cost_price.toFixed(2)}`
                         : "N/A"}
@@ -89,7 +99,7 @@ export default function ProductList({
                         <span
                           className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getStockColor(
                             product.stock,
-                            product.min_stock_level
+                            product.min_stock_level,
                           )}`}
                         >
                           {product.stock} units

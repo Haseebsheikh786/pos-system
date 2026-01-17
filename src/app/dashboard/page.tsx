@@ -7,12 +7,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import { fetchProducts } from "@/store/productSlice";
 import { fetchInvoices } from "@/store/invoiceSlice";
+import { fetchProfile } from "@/store/profileSlice";
 
 export default function DashboardPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { items: products } = useSelector((state: RootState) => state.products);
   const { invoices } = useSelector((state: RootState) => state.invoices);
   const { user } = useSelector((state: RootState) => state.auth);
+  const { profile } = useSelector((state: RootState) => state.profile);
 
   const stats = useMemo(() => {
     // Calculate today's sales
@@ -68,11 +70,12 @@ export default function DashboardPage() {
   useEffect(() => {
     if (user?.id) {
       dispatch(fetchProducts(user.id));
+      dispatch(fetchProfile(user.id));
       dispatch(
         fetchInvoices({
           shopId: user.id,
           dateRange: "today",
-        })
+        }),
       );
     }
   }, [dispatch, user?.id]);
@@ -88,8 +91,12 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <StatsCards stats={stats} />
-      <ActivityAndAlerts invoices={invoices} products={products} />
+      <StatsCards stats={stats} profile={profile || { currency: "pkr" }} />
+      <ActivityAndAlerts
+        invoices={invoices}
+        products={products}
+        profile={profile || { currency: "pkr" }}
+      />
     </div>
   );
 }

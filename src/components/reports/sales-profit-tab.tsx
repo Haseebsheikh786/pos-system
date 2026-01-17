@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getCurrencySymbol } from "@/lib/currency";
 import { DateRange, Invoice } from "@/types/invoice";
 import { Product } from "@/types/product";
 import { TrendingUp, DollarSign, FileText, BarChart3 } from "lucide-react";
@@ -18,12 +19,16 @@ interface SalesProfitTabProps {
   dateRange: DateRange;
   invoices: Invoice[];
   products: Product[];
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function SalesProfitTab({
   dateRange,
   invoices,
   products,
+  profile,
 }: SalesProfitTabProps) {
   // Create product map for quick lookups
   const productMap = useMemo(() => {
@@ -159,21 +164,25 @@ export default function SalesProfitTab({
   // Calculate total revenue for percentage calculation
   const totalProductRevenue = productSales.reduce(
     (sum, p) => sum + p.revenue,
-    0
+    0,
   );
+
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
 
   // Summary cards data
   const summaryCards = [
     {
       title: "Total Sales",
-      value: `Rs. ${totalSales.toLocaleString()}`,
+      value: `${currencySymbol}${totalSales.toLocaleString()}`,
       icon: DollarSign,
       description: getDateRangeDescription(dateRange),
       color: "border-blue-500",
     },
     {
       title: "Total Profit",
-      value: `Rs. ${Math.round(totalProfit).toLocaleString()}`,
+      value: `${currencySymbol}${Math.round(totalProfit).toLocaleString()}`,
       icon: TrendingUp,
       description: `${profitMargin.toFixed(1)}% profit margin`,
       color: totalProfit >= 0 ? "border-green-500" : "border-red-500",
@@ -182,7 +191,7 @@ export default function SalesProfitTab({
       title: "Total Invoices",
       value: invoices.length.toString(),
       icon: FileText,
-      description: `Avg: Rs. ${
+      description: `Avg: ${currencySymbol}${
         invoices.length > 0
           ? Math.round(totalSales / invoices.length).toLocaleString()
           : 0
@@ -215,7 +224,7 @@ export default function SalesProfitTab({
 
   // Format currency
   const formatCurrency = (amount: number) => {
-    return `Rs. ${amount.toLocaleString()}`;
+    return `${currencySymbol}${amount.toLocaleString()}`;
   };
 
   return (
@@ -295,9 +304,9 @@ export default function SalesProfitTab({
                       <TableCell className="text-gray-300">
                         {data.transactions > 0
                           ? formatCurrency(
-                              Math.round(data.sales / data.transactions)
+                              Math.round(data.sales / data.transactions),
                             )
-                          : "Rs. 0"}
+                          : `${currencySymbol}0`}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -338,7 +347,7 @@ export default function SalesProfitTab({
                     const percentage =
                       totalProductRevenue > 0
                         ? ((item.revenue / totalProductRevenue) * 100).toFixed(
-                            1
+                            1,
                           )
                         : "0.0";
 

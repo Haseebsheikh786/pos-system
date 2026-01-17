@@ -25,6 +25,7 @@ import type { Customer } from "@/types/customer";
 import useInvoiceDownloader from "@/hooks/useInvoiceDownloader";
 import { fetchProfile } from "@/store/profileSlice";
 import { Invoice, InvoiceItem } from "@/types/invoice";
+import { getCurrencySymbol } from "@/lib/currency";
 
 type BillItem = {
   id: number;
@@ -45,12 +46,12 @@ export default function BillingPage() {
 
   // Get products from Redux store
   const { items: products, loading: productsLoading } = useSelector(
-    (state: RootState) => state.products
+    (state: RootState) => state.products,
   );
 
   // Get customers from Redux store
   const { items: customers, loading: customersLoading } = useSelector(
-    (state: RootState) => state.customers
+    (state: RootState) => state.customers,
   );
 
   const [billItems, setBillItems] = useState<BillItem[]>([]);
@@ -115,7 +116,7 @@ export default function BillingPage() {
 
     // Check if item already exists in bill
     const existingItem = billItems.find(
-      (item) => item.productId === selectedProduct
+      (item) => item.productId === selectedProduct,
     );
 
     if (existingItem) {
@@ -125,7 +126,7 @@ export default function BillingPage() {
         alert(
           `Cannot add more. Only ${
             product.stock - existingItem.quantity
-          } more units available`
+          } more units available`,
         );
         return;
       }
@@ -138,8 +139,8 @@ export default function BillingPage() {
                 quantity: item.quantity + qty,
                 total: (item.quantity + qty) * item.price,
               }
-            : item
-        )
+            : item,
+        ),
       );
     } else {
       const newItem: BillItem = {
@@ -182,8 +183,8 @@ export default function BillingPage() {
       billItems.map((item) =>
         item.id === id
           ? { ...item, quantity: newQty, total: item.price * newQty }
-          : item
-      )
+          : item,
+      ),
     );
   };
 
@@ -232,7 +233,7 @@ export default function BillingPage() {
 
     const totalAmount = tempInvoiceItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
-      0
+      0,
     );
 
     return {
@@ -274,7 +275,7 @@ export default function BillingPage() {
   };
 
   const selectedCustomerData = customers?.find(
-    (c) => c.id === selectedCustomer
+    (c) => c.id === selectedCustomer,
   );
 
   const subtotal = billItems.reduce((sum, item) => sum + item.total, 0);
@@ -290,9 +291,12 @@ export default function BillingPage() {
     (product) =>
       product.is_active &&
       product.stock > 0 &&
-      !billItems.some((item) => item.productId === product.id)
+      !billItems.some((item) => item.productId === product.id),
   );
 
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
   return (
     <div className="p-8">
       {/* Header */}
@@ -339,8 +343,8 @@ export default function BillingPage() {
                           productsLoading
                             ? "Loading products..."
                             : products.length === 0
-                            ? "No products available"
-                            : "Choose a product"
+                              ? "No products available"
+                              : "Choose a product"
                         }
                       />
                     </SelectTrigger>
@@ -365,8 +369,9 @@ export default function BillingPage() {
                             <div className="flex flex-col">
                               <span>{product.name}</span>
                               <span className="text-xs text-gray-400">
-                                Price: ₹{product.price.toLocaleString()} |
-                                Stock: {product.stock}
+                                Price: {currencySymbol}
+                                {product.price.toLocaleString()} | Stock:{" "}
+                                {product.stock}
                                 {product.stock <= product.min_stock_level && (
                                   <span className="text-orange-400 ml-1">
                                     (Low Stock)
@@ -415,6 +420,7 @@ export default function BillingPage() {
             onUpdateQuantity={updateQuantity}
             onClearBill={handleClearBill}
             products={products}
+            profile={profile || { currency: "pkr" }}
           />
         </div>
 
@@ -462,7 +468,7 @@ export default function BillingPage() {
                             {customer.phone}
                             {customer.total_due_amount > 0 && (
                               <span className="text-orange-400 ml-1">
-                                (Due: ₹
+                                (Due: {currencySymbol}
                                 {customer.total_due_amount.toLocaleString()})
                               </span>
                             )}
@@ -487,7 +493,7 @@ export default function BillingPage() {
                     </p>
                     {(selectedCustomerData?.total_due_amount ?? 0) > 0 && (
                       <p className="text-orange-400 text-sm mt-1">
-                        Outstanding: ₹
+                        Outstanding: {currencySymbol}
                         {customers
                           .find((c) => c.id === selectedCustomer)
                           ?.total_due_amount.toLocaleString()}
@@ -513,7 +519,10 @@ export default function BillingPage() {
                     <span>
                       {item.productName} × {item.quantity}
                     </span>
-                    <span>₹{item.total.toLocaleString()}</span>
+                    <span>
+                      {currencySymbol}
+                      {item.total.toLocaleString()}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -522,17 +531,24 @@ export default function BillingPage() {
 
               <div className="flex justify-between text-gray-300">
                 <span>Subtotal:</span>
-                <span>₹{subtotal.toLocaleString()}</span>
+                <span>
+                  {currencySymbol}
+                  {subtotal.toLocaleString()}
+                </span>
               </div>
               <div className="flex justify-between text-gray-300">
                 <span>Tax:</span>
-                <span>₹{tax}</span>
+                <span>
+                  {currencySymbol}
+                  {tax}
+                </span>
               </div>
               <div className="h-px bg-[#D4AF37]/30" />
               <div className="flex justify-between text-white text-xl font-bold">
                 <span>Total:</span>
                 <span className="text-[#D4AF37]">
-                  ₹{total.toLocaleString()}
+                  {currencySymbol}
+                  {total.toLocaleString()}
                 </span>
               </div>
 
@@ -587,6 +603,7 @@ export default function BillingPage() {
             setCustomerPhone("");
             alert("Invoice saved successfully!");
           }}
+          profile={profile || { currency: "pkr" }}
         />
       </Dialog>
     </div>

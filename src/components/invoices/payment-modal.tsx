@@ -18,6 +18,7 @@ import type { Invoice } from "@/types/invoice";
 import type { AppDispatch, RootState } from "@/store/store";
 import { createPayment, clearErrors } from "@/store/paymentSlice";
 import type { PaymentFormData } from "@/types/payment";
+import { getCurrencySymbol } from "@/lib/currency";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -25,6 +26,9 @@ interface PaymentModalProps {
   invoice: Invoice | null;
   shopId: string;
   onPaymentSuccess?: () => void;
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function PaymentModal({
@@ -33,6 +37,7 @@ export default function PaymentModal({
   invoice,
   shopId,
   onPaymentSuccess,
+  profile
 }: PaymentModalProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { saving, saveError } = useSelector(
@@ -46,6 +51,10 @@ export default function PaymentModal({
   const maxPayableAmount = invoice ? invoice.due_amount : 0;
   const totalAmount = invoice ? invoice.total : 0;
   const amountPaid = invoice ? invoice.amount_paid : 0;
+
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
 
   // Reset form when modal opens/closes or invoice changes
   useEffect(() => {
@@ -82,7 +91,7 @@ export default function PaymentModal({
 
     if (amount > maxPayableAmount) {
       setValidationError(
-        `Amount cannot exceed due amount of ₹${maxPayableAmount.toLocaleString()}`
+        `Amount cannot exceed due amount of {currencySymbol}${maxPayableAmount.toLocaleString()}`
       );
       return false;
     }
@@ -164,19 +173,19 @@ export default function PaymentModal({
             <div className="flex justify-between items-center">
               <span className="text-gray-400">Total Amount:</span>
               <span className="text-white font-medium">
-                ₹{totalAmount.toLocaleString()}
+                {currencySymbol}{totalAmount.toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-400">Amount Paid:</span>
               <span className="text-green-400">
-                ₹{amountPaid.toLocaleString()}
+                {currencySymbol}{amountPaid.toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-400">Due Amount:</span>
               <span className="text-orange-400 font-medium">
-                ₹{maxPayableAmount.toLocaleString()}
+                {currencySymbol}{maxPayableAmount.toLocaleString()}
               </span>
             </div>
             <div className="pt-2 border-t border-gray-700">

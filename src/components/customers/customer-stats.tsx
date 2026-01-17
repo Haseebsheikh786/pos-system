@@ -1,26 +1,34 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getCurrencySymbol } from "@/lib/currency";
 import { Customer } from "@/types/customer";
 
 interface CustomerStatsProps {
   customers: Customer[];
   loading?: boolean;
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function CustomerStats({
   customers,
   loading = false,
+  profile,
 }: CustomerStatsProps) {
   const totalCustomers = customers.length;
   const totalCredit = customers.reduce((sum, c) => sum + c.total_due_amount, 0);
   const customersWithCredit = customers.filter(
-    (c) => c.total_due_amount > 0
+    (c) => c.total_due_amount > 0,
   ).length;
   const totalPurchases = customers.reduce(
     (sum, c) => sum + c.total_purchases,
-    0
+    0,
   );
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
   const stats = [
     {
       title: "Total Customers",
@@ -29,8 +37,8 @@ export default function CustomerStats({
       description: "",
     },
     {
-      title: "Total Credit (Udhaar)",
-      value: loading ? "-" : `₹${totalCredit.toLocaleString()}`,
+      title: "Total Credit",
+      value: loading ? "-" : `${currencySymbol}${totalCredit.toLocaleString()}`,
       color: "text-orange-400",
       description:
         customersWithCredit > 0
@@ -39,7 +47,9 @@ export default function CustomerStats({
     },
     {
       title: "Total Purchases",
-      value: loading ? "-" : `₹${totalPurchases.toLocaleString()}`,
+      value: loading
+        ? "-"
+        : `${currencySymbol}${totalPurchases.toLocaleString()}`,
       color: "text-green-400",
       description: "",
     },

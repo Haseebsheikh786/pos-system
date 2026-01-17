@@ -4,17 +4,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TrendingDown } from "lucide-react";
 import Link from "next/link";
+import { getCurrencySymbol } from "@/lib/currency";
 import type { Invoice } from "@/types/invoice";
 import type { Product } from "@/types/product";
+import type { Profile } from "@/types/profile";
 
 interface ActivityAndAlertsProps {
   invoices: Invoice[];
-  products?: Product[]; // Optional for low stock alerts
+  products?: Product[];
+  profile: {
+    currency?: string;
+  };
 }
 
 const ActivityAndAlerts = ({
   invoices,
   products = [],
+  profile,
 }: ActivityAndAlertsProps) => {
   const formatTime = (dateString: string) => {
     return new Date(dateString).toLocaleTimeString([], {
@@ -23,9 +29,13 @@ const ActivityAndAlerts = ({
     });
   };
 
-  // Calculate low stock products (stock <= min_stock_level)
+  // Get currency symbol from profile
+  const currencyCode = profile?.currency || "pkr";
+  const currencySymbol = getCurrencySymbol(currencyCode);
+
+  // Calculate low stock products
   const lowStockProducts = products.filter((product) => {
-    const minStock = product.min_stock_level || 5; // Default minimum stock
+    const minStock = product.min_stock_level || 5;
     return product.stock <= minStock;
   });
 
@@ -87,11 +97,13 @@ const ActivityAndAlerts = ({
                     </div>
                     <div className="text-right">
                       <div className="text-green-400 font-bold text-lg">
+                        {currencySymbol}
                         {invoice.total || 0}
                       </div>
                       {invoice.due_amount > 0 && (
                         <div className="text-xs text-orange-400">
-                          Due: {invoice.due_amount}
+                          Due: {currencySymbol}
+                          {invoice.due_amount}
                         </div>
                       )}
                     </div>
@@ -161,7 +173,10 @@ const ActivityAndAlerts = ({
                           </span>
                         </div>
                         <div className="flex items-center gap-4 text-xs text-gray-400 mt-2">
-                          <span>Price: {product.price || 0}</span>
+                          <span>
+                            Price: {currencySymbol}
+                            {product.price?.toLocaleString() || 0}
+                          </span>
                           <span>•</span>
                           <span>
                             Stock Level: {product.min_stock_level || 5} min

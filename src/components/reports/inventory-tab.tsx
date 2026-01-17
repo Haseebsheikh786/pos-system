@@ -20,10 +20,14 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Package, AlertTriangle, TrendingDown, DollarSign } from "lucide-react";
+import { getCurrencySymbol } from "@/lib/currency";
 
 interface InventoryTabProps {
   dateRange: string;
   products: Product[];
+  profile: {
+    currency?: string;
+  };
 }
 type StockStatus = "out" | "low" | "good";
 type StockFilter = StockStatus | "all";
@@ -31,6 +35,7 @@ type StockFilter = StockStatus | "all";
 export default function InventoryTab({
   dateRange,
   products,
+  profile,
 }: InventoryTabProps) {
   const [stockFilter, setStockFilter] = useState<StockStatus | "all">("all");
 
@@ -52,7 +57,7 @@ export default function InventoryTab({
         }
 
         // Calculate stock value (stock × cost price, fallback to selling price)
-        const price =  product.price || 0;
+        const price = product.price || 0;
         totalValue += product.stock * price;
       });
 
@@ -64,9 +69,13 @@ export default function InventoryTab({
       };
     }, [products]);
 
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
+
   // Format currency
   const formatCurrency = (amount: number) => {
-    return `Rs. ${amount.toLocaleString()}`;
+    return `${currencySymbol}${amount.toLocaleString()}`;
   };
 
   // Determine stock status for a product
@@ -227,10 +236,10 @@ export default function InventoryTab({
             {stockFilter === "all"
               ? "All Products"
               : stockFilter === "out"
-              ? "Out of Stock Products"
-              : stockFilter === "low"
-              ? "Low Stock Products"
-              : "Products in Good Stock"}
+                ? "Out of Stock Products"
+                : stockFilter === "low"
+                  ? "Low Stock Products"
+                  : "Products in Good Stock"}
             {filteredProducts.length > 0 && ` (${filteredProducts.length})`}
           </CardTitle>
         </CardHeader>
@@ -241,8 +250,8 @@ export default function InventoryTab({
                 {stockFilter === "out"
                   ? "🎉 No products are out of stock!"
                   : stockFilter === "low"
-                  ? "🎉 No products are low on stock!"
-                  : "No products found"}
+                    ? "🎉 No products are low on stock!"
+                    : "No products found"}
               </div>
             ) : (
               <Table>
@@ -251,7 +260,6 @@ export default function InventoryTab({
                     <TableHead className="text-[#D4AF37]">
                       Product Name
                     </TableHead>
-                    <TableHead className="text-[#D4AF37]">SKU</TableHead>
                     <TableHead className="text-[#D4AF37]">
                       Current Stock
                     </TableHead>
@@ -292,16 +300,13 @@ export default function InventoryTab({
                             )}
                           </div>
                         </TableCell>
-                        <TableCell className="text-gray-300">
-                          {product.sku || "N/A"}
-                        </TableCell>
                         <TableCell
                           className={
                             stockStatus === "out"
                               ? "text-red-400 font-bold"
                               : stockStatus === "low"
-                              ? "text-orange-400"
-                              : "text-gray-300"
+                                ? "text-orange-400"
+                                : "text-gray-300"
                           }
                         >
                           {product.stock} units

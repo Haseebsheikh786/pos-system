@@ -184,7 +184,7 @@ export default function InvoicePage() {
       </div>
 
       {/* Stats Grid */}
-      <InvoiceStats invoices={filteredInvoices} loading={loading} />
+      <InvoiceStats invoices={filteredInvoices} loading={loading} profile={profile || { currency: "pkr" }}/>
 
       {/* Filters */}
       <InvoiceFilters
@@ -228,6 +228,7 @@ export default function InvoicePage() {
           onViewInvoice={handleViewInvoice}
           onAddPayment={handleAddPayment}
           onPrintInvoice={handlePrintInvoice}
+          profile={profile || { currency: "pkr" }}
         />
       )}
       {user && (
@@ -237,6 +238,7 @@ export default function InvoicePage() {
           invoice={selectedInvoice}
           shopId={user?.id}
           onPaymentSuccess={handlePaymentSuccess}
+          profile={profile || { currency: "pkr" }}
         />
       )}
 

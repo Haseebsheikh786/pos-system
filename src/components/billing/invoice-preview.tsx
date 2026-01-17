@@ -23,6 +23,7 @@ import {
 import { Download, Save, CheckCircle, AlertCircle } from "lucide-react";
 import { createInvoice } from "@/store/invoiceSlice";
 import type { InvoiceFormData } from "@/types/invoice";
+import { getCurrencySymbol } from "@/lib/currency";
 
 type BillItem = {
   id: number;
@@ -46,6 +47,9 @@ interface InvoicePreviewProps {
   onDownload: () => void;
   onClose: () => void;
   onSaveSuccess?: () => void;
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function InvoicePreview({
@@ -59,11 +63,12 @@ export default function InvoicePreview({
   onDownload,
   onClose,
   onSaveSuccess,
+  profile,
 }: InvoicePreviewProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
   const { saving, saveError } = useSelector(
-    (state: RootState) => state.invoices
+    (state: RootState) => state.invoices,
   );
   const [paymentAmount, setPaymentAmount] = useState<string>(total.toString());
   const [isSaving, setIsSaving] = useState(false);
@@ -74,6 +79,10 @@ export default function InvoicePreview({
     month: "short",
     year: "numeric",
   });
+
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
 
   // Calculate change for cash payments
   useEffect(() => {
@@ -135,7 +144,7 @@ export default function InvoicePreview({
         createInvoice({
           shopId: user.id,
           invoiceData,
-        })
+        }),
       ).unwrap();
 
       setSaveSuccess(true);
@@ -230,7 +239,7 @@ export default function InvoicePreview({
           <div className="text-right">
             <Label className="text-gray-400 text-sm">Total Amount</Label>
             <p className="text-2xl font-bold text-[#D4AF37] mt-1">
-              ₹{total.toLocaleString()}
+              {currencySymbol}{total.toLocaleString()}
             </p>
           </div>
         </div>
@@ -260,13 +269,13 @@ export default function InvoicePreview({
                     {item.productName}
                   </TableCell>
                   <TableCell className="text-gray-300 text-right">
-                    ₹{item.price}
+                    {currencySymbol}{item.price}
                   </TableCell>
                   <TableCell className="text-gray-300 text-right">
                     {item.quantity}
                   </TableCell>
                   <TableCell className="text-white text-right">
-                    ₹{item.total.toLocaleString()}
+                    {currencySymbol}{item.total.toLocaleString()}
                   </TableCell>
                 </TableRow>
               ))}
@@ -278,11 +287,11 @@ export default function InvoicePreview({
         <div className="space-y-2">
           <div className="flex justify-between text-gray-300">
             <span>Subtotal:</span>
-            <span>₹{subtotal.toLocaleString()}</span>
+            <span>{currencySymbol}{subtotal.toLocaleString()}</span>
           </div>
           <div className="flex justify-between text-white text-lg font-bold">
             <span>Total Amount:</span>
-            <span className="text-[#D4AF37]">₹{total.toLocaleString()}</span>
+            <span className="text-[#D4AF37]">{currencySymbol}{total.toLocaleString()}</span>
           </div>
         </div>
 
@@ -323,13 +332,13 @@ export default function InvoicePreview({
               <div>
                 <p className="text-gray-400 text-sm">Total Amount</p>
                 <p className="text-white text-xl font-bold">
-                  ₹{total.toLocaleString()}
+                  {currencySymbol}{total.toLocaleString()}
                 </p>
               </div>
               <div>
                 <p className="text-gray-400 text-sm">Payment</p>
                 <p className="text-white text-xl font-bold">
-                  ₹{(parseFloat(paymentAmount) || 0).toLocaleString()}
+                  {currencySymbol}{(parseFloat(paymentAmount) || 0).toLocaleString()}
                 </p>
               </div>
               <div>
@@ -341,7 +350,7 @@ export default function InvoicePreview({
                       : "text-green-400"
                   }`}
                 >
-                  ₹{(total - (parseFloat(paymentAmount) || 0)).toLocaleString()}
+                  {currencySymbol}{(total - (parseFloat(paymentAmount) || 0)).toLocaleString()}
                 </p>
               </div>
               <div>

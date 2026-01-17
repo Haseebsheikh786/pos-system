@@ -18,10 +18,12 @@ import {
 } from "@/store/inventorySlice";
 import { Product } from "@/types/product";
 import Link from "next/link";
+import { fetchProfile } from "@/store/profileSlice";
 
 export default function InventoryPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { profile } = useSelector((state: RootState) => state.profile);
   const {
     items: inventory,
     loading,
@@ -45,6 +47,7 @@ export default function InventoryPage() {
     if (user?.id) {
       dispatch(fetchInventory(user.id));
       dispatch(fetchInventoryStats(user.id));
+      dispatch(fetchProfile(user.id));
     }
   }, [dispatch, user?.id]);
 
@@ -189,7 +192,7 @@ export default function InventoryPage() {
       </Card>
 
       {/* Stats Grid */}
-      <InventoryStats stats={stats || undefined} loading={statsLoading} />
+      <InventoryStats stats={stats || undefined} loading={statsLoading} profile={profile || { currency: "pkr" }}/>
 
       {/* Error Messages */}
       {(error || statsError) && (

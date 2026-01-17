@@ -49,6 +49,7 @@ import { fetchInvoiceDetails, clearCurrentInvoice } from "@/store/invoiceSlice";
 import { fetchInvoicePayments } from "@/store/paymentSlice";
 import { fetchProfile } from "@/store/profileSlice";
 import { useInvoiceDownloader } from "@/hooks/useInvoiceDownloader";
+import { getCurrencySymbol } from "@/lib/currency";
 
 export default function InvoiceDetailPage() {
   const params = useParams();
@@ -139,6 +140,10 @@ export default function InvoiceDetailPage() {
     const date = new Date(dateString);
     return format(date, "hh:mm a");
   };
+
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
 
   const handlePaymentSuccess = () => {
     if (shopId) {
@@ -393,7 +398,7 @@ export default function InvoiceDetailPage() {
                               </div>
                             </TableCell>
                             <TableCell className="text-gray-300 text-right">
-                              {item.price}
+                              {currencySymbol}{item.price}
                             </TableCell>
                             <TableCell className="text-gray-300 text-right">
                               {item.quantity}
@@ -463,7 +468,7 @@ export default function InvoiceDetailPage() {
                         </div>
                         <div className="text-right">
                           <p className="text-green-400 font-bold text-lg">
-                            {payment.amount}
+                           {currencySymbol}{payment.amount}
                           </p>
                         </div>
                       </div>
@@ -487,7 +492,7 @@ export default function InvoiceDetailPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400">Subtotal</span>
-                    <span className="text-white">{grandTotal}</span>
+                    <span className="text-white">{currencySymbol}{grandTotal}</span>
                   </div>
 
                   <Separator className="bg-[#D4AF37]/30" />
@@ -497,7 +502,7 @@ export default function InvoiceDetailPage() {
                       Grand Total
                     </span>
                     <span className="text-white font-bold text-xl">
-                      {grandTotal}
+                      {currencySymbol}{grandTotal}
                     </span>
                   </div>
 
@@ -506,7 +511,7 @@ export default function InvoiceDetailPage() {
                   <div className="flex justify-between items-center pt-2">
                     <span className="text-gray-400">Amount Paid</span>
                     <span className="text-green-400 font-medium">
-                      {amountPaid}
+                      {currencySymbol}{amountPaid}
                     </span>
                   </div>
 
@@ -517,7 +522,7 @@ export default function InvoiceDetailPage() {
                         balanceDue > 0 ? "text-amber-400" : "text-green-400"
                       }`}
                     >
-                      {balanceDue}
+                      {currencySymbol}{balanceDue}
                     </span>
                   </div>
 
@@ -583,6 +588,7 @@ export default function InvoiceDetailPage() {
           invoice={invoice}
           shopId={shopId}
           onPaymentSuccess={handlePaymentSuccess}
+          profile={profile || { currency: "pkr" }}
         />
       )}
     </div>

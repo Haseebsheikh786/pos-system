@@ -3,35 +3,37 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, DollarSign, CheckCircle, Clock } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
+import { getCurrencySymbol } from "@/lib/currency";
 
 interface InvoiceStatsProps {
   invoices: Invoice[];
   loading?: boolean;
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function InvoiceStats({
   invoices,
   loading = false,
+  profile,
 }: InvoiceStatsProps) {
   const calculateStats = () => {
     const totalInvoices = invoices.length;
-    const totalAmount = invoices.reduce(
-      (sum, inv) => sum + inv.total,
-      0
-    );
+    const totalAmount = invoices.reduce((sum, inv) => sum + inv.total, 0);
     const totalCollected = invoices.reduce(
       (sum, inv) => sum + inv.amount_paid,
-      0
+      0,
     );
     const totalDue = invoices.reduce((sum, inv) => sum + inv.due_amount, 0);
     const pendingInvoices = invoices.filter(
-      (inv) => inv.payment_status === "pending"
+      (inv) => inv.payment_status === "pending",
     ).length;
     const partialInvoices = invoices.filter(
-      (inv) => inv.payment_status === "partial"
+      (inv) => inv.payment_status === "partial",
     ).length;
     const paidInvoices = invoices.filter(
-      (inv) => inv.payment_status === "paid"
+      (inv) => inv.payment_status === "paid",
     ).length;
 
     return {
@@ -47,6 +49,10 @@ export default function InvoiceStats({
 
   const stats = calculateStats();
 
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
+
   const statCards = [
     {
       title: "Total Invoices",
@@ -59,7 +65,7 @@ export default function InvoiceStats({
     },
     {
       title: "Total Amount",
-      value: loading ? "-" : `₹${stats.totalAmount.toLocaleString()}`,
+      value: loading ? "-" : `${currencySymbol}${stats.totalAmount.toLocaleString()}`,
       icon: DollarSign,
       iconColor: "text-green-400",
       valueColor: "text-green-400",
@@ -68,7 +74,7 @@ export default function InvoiceStats({
     },
     {
       title: "Amount Collected",
-      value: loading ? "-" : `₹${stats.totalCollected.toLocaleString()}`,
+      value: loading ? "-" : `${currencySymbol}${stats.totalCollected.toLocaleString()}`,
       icon: CheckCircle,
       iconColor: "text-blue-400",
       valueColor: "text-blue-400",
@@ -77,7 +83,7 @@ export default function InvoiceStats({
     },
     {
       title: "Pending Amount",
-      value: loading ? "-" : `₹${stats.totalDue.toLocaleString()}`,
+      value: loading ? "-" : `${currencySymbol}${stats.totalDue.toLocaleString()}`,
       icon: Clock,
       iconColor: "text-orange-400",
       valueColor: "text-orange-400",

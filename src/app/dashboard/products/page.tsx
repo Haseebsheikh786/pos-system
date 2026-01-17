@@ -19,10 +19,13 @@ import {
   setSearchQuery,
 } from "@/store/productSlice";
 import { ProductFormData, Product } from "@/types/product";
+import { fetchProfile } from "@/store/profileSlice";
+import { getCurrencySymbol } from "@/lib/currency";
 
 export default function ProductsPage() {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { profile } = useSelector((state: RootState) => state.profile);
   const {
     items: products,
     loading,
@@ -51,10 +54,15 @@ export default function ProductsPage() {
   // Use ref for debounce timer
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
+
   // Fetch products on component mount
   useEffect(() => {
     if (user?.id) {
       dispatch(fetchProducts(user.id));
+      dispatch(fetchProfile(user.id));
     }
   }, [dispatch, user?.id]);
 
@@ -90,7 +98,7 @@ export default function ProductsPage() {
         }
       }, 500); // 500ms delay
     },
-    [dispatch, user?.id]
+    [dispatch, user?.id],
   );
 
   const clearSearch = () => {
@@ -119,7 +127,7 @@ export default function ProductsPage() {
         createProduct({
           shopId: user.id,
           productData: formData,
-        })
+        }),
       ).unwrap();
 
       setFormData({
@@ -163,7 +171,7 @@ export default function ProductsPage() {
           id: editingProduct.id,
           shopId: user.id,
           productData: formData,
-        })
+        }),
       ).unwrap();
 
       setFormData({
@@ -246,12 +254,12 @@ export default function ProductsPage() {
   // Calculate statistics
   const totalProducts = products.length;
   const lowStockProducts = products.filter(
-    (p) => p.stock <= p.min_stock_level
+    (p) => p.stock <= p.min_stock_level,
   ).length;
   const outOfStockProducts = products.filter((p) => p.stock === 0).length;
   const totalStockValue = products.reduce(
     (sum, p) => sum + p.price * p.stock,
-    0
+    0,
   );
 
   return (
@@ -358,7 +366,9 @@ export default function ProductsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-400">
-              {loading ? "-" : `₹${totalStockValue.toLocaleString()}`}
+              {loading
+                ? "-"
+                : `${currencySymbol}${totalStockValue.toLocaleString()}`}
             </div>
           </CardContent>
         </Card>
@@ -383,6 +393,7 @@ export default function ProductsPage() {
           products={products}
           onEdit={openEditDialog}
           onDelete={handleDeleteProduct}
+          profile={profile || { currency: "pkr" }}
         />
       )}
 

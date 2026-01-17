@@ -13,12 +13,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, Pencil } from "lucide-react";
 import { Customer } from "@/types/customer";
+import { getCurrencySymbol } from "@/lib/currency";
 
 interface CustomerListProps {
   customers: Customer[];
   onEdit: (customer: Customer) => void;
   onDelete: (id: string) => void;
   loading?: boolean;
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function CustomerList({
@@ -26,7 +30,11 @@ export default function CustomerList({
   onEdit,
   onDelete,
   loading = false,
+  profile,
 }: CustomerListProps) {
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
 
   if (loading && customers.length === 0) {
     return (
@@ -89,6 +97,7 @@ export default function CustomerList({
                     <TableCell>
                       {customer.total_due_amount > 0 ? (
                         <Badge className="bg-orange-500/10 text-orange-400 border-orange-500">
+                          {currencySymbol}
                           {customer.total_due_amount.toLocaleString()}
                         </Badge>
                       ) : (

@@ -1,5 +1,5 @@
 "use client";
-
+import { getCurrencySymbol } from "@/lib/currency";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, TrendingUp, CreditCard, Package } from "lucide-react";
 
@@ -10,9 +10,16 @@ interface StatsProps {
     creditBalance: number;
     totalProducts: number;
   };
+  profile: {
+    currency?: string;
+  };
 }
 
-const StatsCards = ({ stats }: StatsProps) => {
+const StatsCards = ({ stats, profile }: StatsProps) => {
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
+
   return (
     <>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
@@ -26,7 +33,8 @@ const StatsCards = ({ stats }: StatsProps) => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">
-              Rs. {stats.todaysSales.toLocaleString()}
+              {currencySymbol}
+              {stats.todaysSales.toLocaleString()}
             </div>
           </CardContent>
         </Card>
@@ -41,7 +49,8 @@ const StatsCards = ({ stats }: StatsProps) => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">
-              Rs. {stats.todaysProfit.toLocaleString()}
+              {currencySymbol}
+              {stats.todaysProfit.toLocaleString()}
             </div>
           </CardContent>
         </Card>
@@ -56,7 +65,8 @@ const StatsCards = ({ stats }: StatsProps) => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-orange-400">
-              Rs. {stats.creditBalance.toLocaleString()}
+              {currencySymbol}
+              {stats.creditBalance.toLocaleString()}
             </div>
           </CardContent>
         </Card>

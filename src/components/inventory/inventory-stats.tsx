@@ -10,6 +10,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Product } from "@/types/product";
+import { getCurrencySymbol } from "@/lib/currency";
 
 interface InventoryStatsProps {
   stats?: {
@@ -21,12 +22,19 @@ interface InventoryStatsProps {
     itemsNeedingRestock: number;
   };
   loading?: boolean;
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function InventoryStats({
   stats,
   loading = false,
+  profile,
 }: InventoryStatsProps) {
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
   const statCards = [
     {
       title: "Total Items",
@@ -64,7 +72,7 @@ export default function InventoryStats({
       title: "Stock Value",
       value: loading
         ? "-"
-        : `₹${stats?.totalStockValue?.toLocaleString() || 0}`,
+        : `${currencySymbol}${stats?.totalStockValue?.toLocaleString() || 0}`,
       icon: DollarSign,
       iconColor: "text-green-400",
       valueColor: "text-green-400",

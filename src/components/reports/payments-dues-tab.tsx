@@ -22,15 +22,20 @@ import { DollarSign, CreditCard, CheckCircle, AlertCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Invoice } from "@/types/invoice";
 import { useRouter } from "next/navigation";
+import { getCurrencySymbol } from "@/lib/currency";
 
 interface PaymentsDuesTabProps {
   dateRange: string;
   invoices: Invoice[];
+  profile: {
+    currency?: string;
+  };
 }
 
 export default function PaymentsDuesTab({
   dateRange,
   invoices,
+  profile,
 }: PaymentsDuesTabProps) {
   const router = useRouter();
   const [customerFilter, setCustomerFilter] = useState("all");
@@ -47,9 +52,13 @@ export default function PaymentsDuesTab({
     return Array.from(customers).sort();
   }, [invoices]);
 
+  const currencySymbol = profile?.currency
+    ? getCurrencySymbol(profile.currency)
+    : "Rs.";
+
   // Format currency
   const formatCurrency = (amount: number) => {
-    return `Rs. ${amount.toLocaleString()}`;
+    return `${currencySymbol}${amount.toLocaleString()}`;
   };
 
   // Get status badge

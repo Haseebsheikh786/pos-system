@@ -3,6 +3,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import type { Invoice, InvoiceItem } from '@/types/invoice';
 import type { Profile } from '@/types/profile';
+import { getCurrencySymbol } from '@/lib/currency';
 
 interface JsPDFWithAutoTable extends jsPDF {
     lastAutoTable?: {
@@ -17,7 +18,6 @@ interface DownloadInvoiceArgs {
 }
 
 export const useInvoiceDownloader = () => {
-    const formatCurrency = (amount: number) => `${amount}`;
 
     const formatDate = (dateString: string) =>
         new Date(dateString).toLocaleDateString('en-IN', {
@@ -30,7 +30,7 @@ export const useInvoiceDownloader = () => {
         new Date(dateString).toLocaleTimeString('en-IN', {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: true,
+            hour12: true, 
         });
 
     const calculateTotal = (items: InvoiceItem[]) =>
@@ -39,7 +39,13 @@ export const useInvoiceDownloader = () => {
     // ✅ FUNCTION ACCEPTS DATA
     const downloadInvoice = useCallback(
         async ({ invoice, items, profile }: DownloadInvoiceArgs) => {
-            if (!invoice) return; 
+            if (!invoice) return;
+
+            const currencySymbol = profile?.currency
+                ? getCurrencySymbol(profile.currency)
+                : "Rs.";
+
+            const formatCurrency = (amount: number) => `${currencySymbol}${amount}`;
 
             const doc = new jsPDF({
                 orientation: 'portrait',

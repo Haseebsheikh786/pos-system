@@ -8,9 +8,9 @@ const HeroSection = () => {
     <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight text-balance">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-balance">
             Simple Billing Software{" "}
-            <span className="text-[#D4AF37]">for Your Shop</span>
+            <span className="text-primary">for Your Shop</span>
           </h1>
           <p className="text-xl text-gray-400 mb-8 leading-relaxed text-pretty">
             Create bills, track stock, manage credit – all in one place. Start
@@ -24,10 +24,7 @@ const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/signup">
-              <Button
-                size="lg"
-                className="bg-[#8E7525] hover:bg-[#A38A2E] text-white text-lg px-8 py-6"
-              >
+              <Button size="lg" className="  px-8 py-6">
                 Start Free Trial
                 <ArrowRight className="ml-2" size={20} />
               </Button>
@@ -36,7 +33,7 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 text-lg px-8 py-6 bg-transparent"
+                className="border-primary text-primary hover:bg-primary/10 text-lg px-8 py-6 bg-transparent"
               >
                 See How It Works
               </Button>
@@ -46,7 +43,7 @@ const HeroSection = () => {
           {/* Trust Badge */}
           <div className="mt-12 pt-6 border-t border-gray-800">
             <p className="text-gray-400">
-              <span className="text-[#D4AF37] font-semibold">
+              <span className="text-primary font-semibold">
                 No credit card required
               </span>{" "}
               •<span className="mx-2">|</span>

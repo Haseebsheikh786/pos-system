@@ -76,7 +76,7 @@ export default function SettingsPage() {
 
     try {
       const response = await dispatch(
-        uploadLogo({ file, userId: user.id })
+        uploadLogo({ file, userId: user.id }),
       ).unwrap();
       setFormData((prev) => ({
         ...prev,
@@ -113,7 +113,7 @@ export default function SettingsPage() {
         updateProfile({
           userId: user.id,
           profileData: formData,
-        })
+        }),
       ).unwrap();
       alert("Settings saved successfully!");
     } catch (error) {
@@ -124,7 +124,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="p-8 flex justify-center items-center min-h-[60vh]">
-        <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37]" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
         <span className="ml-3 text-gray-400">Loading settings...</span>
       </div>
     );
@@ -137,7 +137,7 @@ export default function SettingsPage() {
           <p className="text-red-400">Error: {error}</p>
           <Button
             onClick={() => user?.id && dispatch(fetchProfile(user.id))}
-            className="mt-2 bg-red-500 hover:bg-red-600 text-white"
+            className="mt-2 bg-red-500 hover:bg-red-600 "
           >
             Retry
           </Button>
@@ -150,7 +150,7 @@ export default function SettingsPage() {
     <div className="p-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Settings</h1>
+        <h1 className="text-3xl font-bold  mb-2">Settings</h1>
         <p className="text-gray-400">
           Configure your shop details and preferences.
         </p>
@@ -187,7 +187,7 @@ export default function SettingsPage() {
           <div className="flex justify-end">
             <Button
               onClick={handleSaveSettings}
-              className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
+              className=""
               disabled={saving || logoUploading}
             >
               {saving ? (

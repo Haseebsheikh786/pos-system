@@ -42,9 +42,9 @@ const ActivityAndAlerts = ({
   return (
     <div className="grid gap-6 md:grid-cols-2">
       {/* Recent Activity Card */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]/30">
+      <Card className="bg-card border-primary/30">
         <CardHeader>
-          <CardTitle className="text-white flex justify-between items-center">
+          <CardTitle className=" flex justify-between items-center">
             <span>Recent Activity</span>
             <span className="text-sm font-normal text-gray-400">
               {invoices.length > 0
@@ -68,10 +68,10 @@ const ActivityAndAlerts = ({
                   prefetch={true}
                   className="block"
                 >
-                  <div className="flex items-center justify-between p-3 hover:bg-[#1a1a1a] rounded-lg transition-colors cursor-pointer group">
+                  <div className="flex items-center justify-between p-3 hover:bg-dark-gray rounded-lg transition-colors cursor-pointer group">
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <div className="text-white font-medium truncate group-hover:text-[#D4AF37] transition-colors">
+                        <div className=" font-medium truncate group-hover:text-primary transition-colors">
                           {invoice.invoice_number ||
                             `INV-${invoice.id.slice(0, 8)}`}
                         </div>
@@ -116,7 +116,7 @@ const ActivityAndAlerts = ({
                   <Link href="/dashboard/invoices" prefetch={true}>
                     <Button
                       variant="outline"
-                      className="w-full border-gray-700 text-gray-300 hover:text-white hover:bg-gray-800"
+                      className="w-full border-gray-700 text-gray-300 hover: hover:bg-gray-800"
                     >
                       View All Sales
                     </Button>
@@ -129,9 +129,9 @@ const ActivityAndAlerts = ({
       </Card>
 
       {/* Low Stock Alerts Card */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]/30">
+      <Card className="bg-card border-primary/30">
         <CardHeader>
-          <CardTitle className="text-white flex justify-between items-center">
+          <CardTitle className=" flex justify-between items-center">
             <span>Stock Alerts</span>
             <span className="text-sm font-normal text-gray-400">
               {lowStockProducts.length} alerts
@@ -165,7 +165,7 @@ const ActivityAndAlerts = ({
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
-                          <div className="font-medium text-white truncate group-hover:text-[#D4AF37] transition-colors">
+                          <div className="font-medium  truncate group-hover:text-primary transition-colors">
                             {product.name || "Unnamed Product"}
                           </div>
                           <span className="text-red-400 font-bold text-sm">

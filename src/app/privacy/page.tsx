@@ -24,8 +24,8 @@ export default function PrivacyPage() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
-              Privacy <span className="text-[#D4AF37]">Policy</span>
+            <h1 className="text-5xl md:text-6xl font-bold  mb-6 leading-tight text-balance">
+              Privacy <span className="text-primary">Policy</span>
             </h1>
             <p className="text-gray-400 text-lg">
               Last updated: December 14, 2024
@@ -33,10 +33,8 @@ export default function PrivacyPage() {
           </div>
 
           <div className="prose prose-invert max-w-none space-y-8">
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                1. Introduction
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">1. Introduction</h2>
               <p className="text-gray-400 leading-relaxed">
                 POS System ("we," "our," or "us") is committed to protecting
                 your privacy. This Privacy Policy explains how we collect, use,
@@ -46,8 +44,8 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 2. Information We Collect
               </h2>
               <p className="text-gray-400 leading-relaxed mb-4">
@@ -73,8 +71,8 @@ export default function PrivacyPage() {
               </ul>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 3. How We Use Your Information
               </h2>
               <p className="text-gray-400 leading-relaxed mb-4">
@@ -103,8 +101,8 @@ export default function PrivacyPage() {
               </ul>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 4. Information Sharing and Disclosure
               </h2>
               <p className="text-gray-400 leading-relaxed mb-4">
@@ -112,31 +110,29 @@ export default function PrivacyPage() {
               </p>
               <ul className="list-disc list-inside text-gray-400 space-y-2 ml-4">
                 <li>
-                  <strong className="text-white">Service Providers:</strong> We
-                  share information with third-party vendors who perform
-                  services on our behalf
+                  <strong className="">Service Providers:</strong> We share
+                  information with third-party vendors who perform services on
+                  our behalf
                 </li>
                 <li>
-                  <strong className="text-white">Legal Requirements:</strong> We
-                  may disclose information if required by law or in response to
+                  <strong className="">Legal Requirements:</strong> We may
+                  disclose information if required by law or in response to
                   valid requests by public authorities
                 </li>
                 <li>
-                  <strong className="text-white">Business Transfers:</strong> In
+                  <strong className="">Business Transfers:</strong> In
                   connection with any merger, sale of company assets, or
                   acquisition
                 </li>
                 <li>
-                  <strong className="text-white">With Your Consent:</strong> We
-                  may share information with your explicit consent
+                  <strong className="">With Your Consent:</strong> We may share
+                  information with your explicit consent
                 </li>
               </ul>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                5. Data Security
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">5. Data Security</h2>
               <p className="text-gray-400 leading-relaxed mb-4">
                 We implement appropriate technical and organizational measures
                 to protect the security of your personal information, including:
@@ -153,10 +149,8 @@ export default function PrivacyPage() {
               </ul>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                6. Data Retention
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">6. Data Retention</h2>
               <p className="text-gray-400 leading-relaxed">
                 We retain your information for as long as necessary to fulfill
                 the purposes outlined in this Privacy Policy, unless a longer
@@ -166,8 +160,8 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 7. Your Rights and Choices
               </h2>
               <p className="text-gray-400 leading-relaxed mb-4">
@@ -176,30 +170,30 @@ export default function PrivacyPage() {
               </p>
               <ul className="list-disc list-inside text-gray-400 space-y-2 ml-4">
                 <li>
-                  <strong className="text-white">Access:</strong> Request access
-                  to your personal information
+                  <strong className="">Access:</strong> Request access to your
+                  personal information
                 </li>
                 <li>
-                  <strong className="text-white">Correction:</strong> Request
-                  correction of inaccurate information
+                  <strong className="">Correction:</strong> Request correction
+                  of inaccurate information
                 </li>
                 <li>
-                  <strong className="text-white">Deletion:</strong> Request
-                  deletion of your personal information
+                  <strong className="">Deletion:</strong> Request deletion of
+                  your personal information
                 </li>
                 <li>
-                  <strong className="text-white">Portability:</strong> Request a
-                  copy of your data in a portable format
+                  <strong className="">Portability:</strong> Request a copy of
+                  your data in a portable format
                 </li>
                 <li>
-                  <strong className="text-white">Objection:</strong> Object to
-                  processing of your information
+                  <strong className="">Objection:</strong> Object to processing
+                  of your information
                 </li>
               </ul>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 8. Cookies and Tracking Technologies
               </h2>
               <p className="text-gray-400 leading-relaxed">
@@ -211,8 +205,8 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 9. Children's Privacy
               </h2>
               <p className="text-gray-400 leading-relaxed">
@@ -224,8 +218,8 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 10. International Data Transfers
               </h2>
               <p className="text-gray-400 leading-relaxed">
@@ -237,8 +231,8 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 11. Changes to This Privacy Policy
               </h2>
               <p className="text-gray-400 leading-relaxed">
@@ -249,15 +243,13 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                12. Contact Us
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">12. Contact Us</h2>
               <p className="text-gray-400 leading-relaxed">
                 If you have any questions about this Privacy Policy, please
                 contact us:
               </p>
-              <div className="mt-4 text-[#D4AF37]">
+              <div className="mt-4 text-primary">
                 <p>Email: privacy@possystem.com</p>
                 <p>Address: 123 Business Street, San Francisco, CA 94103</p>
               </div>

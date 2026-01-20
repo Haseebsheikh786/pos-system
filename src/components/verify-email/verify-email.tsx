@@ -110,20 +110,20 @@ function VerifyEmail() {
     <div className="w-full max-w-md">
       {/* Logo */}
       <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-        <div className="w-10 h-10 bg-[#D4AF37] rounded flex items-center justify-center">
-          <span className="text-black font-bold text-2xl">P</span>
+        <div className="w-10 h-10 bg-primary rounded flex items-center justify-center">
+          <span className="text-background font-bold text-2xl">P</span>
         </div>
-        <span className="text-white font-bold text-2xl">POS System</span>
+        <span className=" font-bold text-2xl">POS System</span>
       </Link>
 
-      <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardHeader className="space-y-1">
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-[#D4AF37]/10 rounded-full flex items-center justify-center">
-              <MailCheck className="text-[#D4AF37]" size={32} />
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+              <MailCheck className="text-primary" size={32} />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-white text-center">
+          <CardTitle className="text-2xl font-bold  text-center">
             Verify Your Email
           </CardTitle>
           <CardDescription className="text-gray-400 text-center">
@@ -131,19 +131,19 @@ function VerifyEmail() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Alert className="bg-[#1A1A1A] border-[#D4AF37]">
+          <Alert className="bg-dark-gray border-primary">
             <AlertDescription className="text-gray-300">
               We've sent a verification link to{" "}
-              <strong className="text-white">{userEmail}</strong>. Click the
-              link in the email to activate your account and get started with
-              your free trial.
+              <strong className="">{userEmail}</strong>. Click the link in the
+              email to activate your account and get started with your free
+              trial.
             </AlertDescription>
           </Alert>
 
-          <div className="bg-[#1A1A1A] p-4 rounded-lg border border-[#D4AF37]/30">
+          <div className="bg-dark-gray p-4 rounded-lg border border-primary/30">
             <div className="flex items-center gap-3 mb-3">
-              <ShieldCheck className="text-[#D4AF37]" size={20} />
-              <h4 className="font-semibold text-white">What's Next?</h4>
+              <ShieldCheck className="text-primary" size={20} />
+              <h4 className="font-semibold ">What's Next?</h4>
             </div>
             <ul className="text-sm text-gray-400 space-y-2 list-disc pl-5">
               <li>Check your inbox (and spam folder) for our email</li>
@@ -165,13 +165,13 @@ function VerifyEmail() {
               type="button"
               onClick={handleResendLink}
               disabled={isResending || countdown > 0}
-              className="w-full bg-[#8E7525] hover:bg-[#A38A2E] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full  disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isResending
                 ? "Sending..."
                 : countdown > 0
-                ? `Resend in ${formatTime(countdown)}`
-                : "Resend Verification Email"}
+                  ? `Resend in ${formatTime(countdown)}`
+                  : "Resend Verification Email"}
             </Button>
 
             {resendSuccess && (
@@ -189,23 +189,23 @@ function VerifyEmail() {
             Already verified?{" "}
             <Link
               href="/login"
-              className="text-[#D4AF37] hover:text-[#D4AF37]/80 font-semibold"
+              className="text-primary hover:text-primary/80 font-semibold"
             >
               Sign in
             </Link>
           </div>
           <div className="relative w-full">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-[#D4AF37]/30" />
+              <span className="w-full border-t border-primary/30" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-[#0A0A0A] px-2 text-gray-500">or</span>
+              <span className="bg-card px-2 text-gray-500">or</span>
             </div>
           </div>
           <Button
             variant="outline"
             onClick={handleUseDifferentEmail}
-            className="w-full border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 bg-transparent"
+            className="w-full border-primary text-primary hover:bg-primary/10 bg-transparent"
           >
             Use Different Email
           </Button>

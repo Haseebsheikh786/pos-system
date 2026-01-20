@@ -41,7 +41,7 @@ const VideoDemo = ({
 
   return (
     <div
-      className={`relative aspect-video rounded-2xl overflow-hidden border-2 border-[#D4AF37]/30 bg-black ${className}`}
+      className={`relative aspect-video rounded-2xl overflow-hidden border-2 border-primary/30 bg-background ${className}`}
     >
       {/* Video */}
       <video
@@ -55,12 +55,12 @@ const VideoDemo = ({
       {/* Overlay - Show when not playing or on hover */}
       {!isPlaying && (
         <div
-          className="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer"
+          className="absolute inset-0 flex items-center justify-center bg-background/40 cursor-pointer"
           onClick={handlePlay}
         >
           <div className="text-center">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-[#D4AF37] flex items-center justify-center hover:bg-[#A38A2E] transition-colors">
-              <PlayCircle size={40} className="text-white ml-1" />
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary flex items-center justify-center hover:bg-[#A38A2E] transition-colors">
+              <PlayCircle size={40} className=" ml-1" />
             </div>
             {showTitle && (
               <>
@@ -77,7 +77,7 @@ const VideoDemo = ({
       {/* Play/Pause button overlay when playing */}
       {isPlaying && (
         <div
-          className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/20 transition-all duration-300 cursor-pointer"
+          className="absolute inset-0 flex items-center justify-center bg-background/0 hover:bg-background/20 transition-all duration-300 cursor-pointer"
           onClick={togglePlay}
         >
           <div
@@ -85,11 +85,11 @@ const VideoDemo = ({
               isPlaying ? "opacity-100" : ""
             }`}
           >
-            <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm">
+            <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-background/50 flex items-center justify-center backdrop-blur-sm">
               {isPlaying ? (
-                <Pause size={32} className="text-white" />
+                <Pause size={32} className="" />
               ) : (
-                <PlayCircle size={32} className="text-white ml-1" />
+                <PlayCircle size={32} className=" ml-1" />
               )}
             </div>
           </div>

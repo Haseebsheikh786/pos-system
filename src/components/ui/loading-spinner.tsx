@@ -1,18 +1,18 @@
 export default function LoadingCard() {
   return (
     <div className="w-full max-w-md">
-      <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
+      <div className="bg-card border border-primary rounded-lg p-8">
         {/* Logo skeleton */}
         <div className="flex justify-center mb-8">
-          <div className="w-10 h-10 bg-[#D4AF37]/20 rounded flex items-center justify-center">
-            <div className="w-6 h-6 bg-[#D4AF37]/40 rounded"></div>
+          <div className="w-10 h-10 bg-primary/20 rounded flex items-center justify-center">
+            <div className="w-6 h-6 bg-primary/40 rounded"></div>
           </div>
         </div>
 
         {/* Animated icon */}
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-[#D4AF37]/10 rounded-full flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
         </div>
 

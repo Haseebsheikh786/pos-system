@@ -7,9 +7,9 @@ function About() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto mb-16">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold  mb-6 leading-tight">
               Shop Software Built by
-              <span className="text-[#D4AF37]"> Shop Experts</span>
+              <span className="text-primary"> Shop Experts</span>
             </h1>
             <p className="text-xl text-gray-400 leading-relaxed text-pretty">
               We visited 100+ shops and saw the same problems: billing takes too
@@ -20,37 +20,37 @@ function About() {
 
           {/* Our Story */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-            <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+            <Card className="bg-card border-primary">
               <CardContent className="p-8">
-                <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4">
-                  <Zap className="text-[#D4AF37]" size={24} />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <Zap className="text-primary" size={24} />
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-4">
+                <h2 className="text-2xl font-bold  mb-4">
                   Why We're Different
                 </h2>
                 <ul className="space-y-3 text-gray-400">
                   <li className="flex items-start">
-                    <span className="text-[#D4AF37] mr-2">•</span>
+                    <span className="text-primary mr-2">•</span>
                     <span>
                       <strong>Built for Small Shops</strong> – Not confusing
                       like big enterprise software
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-[#D4AF37] mr-2">•</span>
+                    <span className="text-primary mr-2">•</span>
                     <span>
                       <strong>Credit Focused</strong> – Track customer credit
                       easily
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-[#D4AF37] mr-2">•</span>
+                    <span className="text-primary mr-2">•</span>
                     <span>
                       <strong>Works Offline</strong> – Internet down? No problem
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-[#D4AF37] mr-2">•</span>
+                    <span className="text-primary mr-2">•</span>
                     <span>
                       <strong>Local Support</strong> – Call/WhatsApp support in
                       your language
@@ -60,14 +60,12 @@ function About() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+            <Card className="bg-card border-primary">
               <CardContent className="p-8">
-                <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4">
-                  <Shield className="text-[#D4AF37]" size={24} />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <Shield className="text-primary" size={24} />
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-4">
-                  Simple & Reliable
-                </h2>
+                <h2 className="text-2xl font-bold  mb-4">Simple & Reliable</h2>
                 <p className="text-gray-400 leading-relaxed mb-4">
                   We believe running a shop should be about serving customers,
                   not fighting complicated software. Our POS is designed to be
@@ -84,7 +82,7 @@ function About() {
 
           {/* What Makes Us Different */}
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">
+            <h2 className="text-4xl font-bold  mb-4">
               Designed for Real Shop Owners
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
@@ -93,12 +91,12 @@ function About() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            <Card className="bg-black border-[#D4AF37] hover:border-[#D4AF37]/70 transition-colors">
+            <Card className="bg-background border-primary hover:border-primary/70 transition-colors">
               <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                  <Clock className="text-[#D4AF37]" size={24} />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                  <Clock className="text-primary" size={24} />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">
+                <h3 className="text-xl font-semibold  mb-2">
                   Lightning-Fast Billing
                 </h3>
                 <p className="text-gray-400 leading-relaxed">
@@ -108,12 +106,12 @@ function About() {
               </CardContent>
             </Card>
 
-            <Card className="bg-black border-[#D4AF37] hover:border-[#D4AF37]/70 transition-colors">
+            <Card className="bg-background border-primary hover:border-primary/70 transition-colors">
               <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                  <Users className="text-[#D4AF37]" size={24} />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                  <Users className="text-primary" size={24} />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">
+                <h3 className="text-xl font-semibold  mb-2">
                   Smart Credit Tracking
                 </h3>
                 <p className="text-gray-400 leading-relaxed">
@@ -123,14 +121,12 @@ function About() {
               </CardContent>
             </Card>
 
-            <Card className="bg-black border-[#D4AF37] hover:border-[#D4AF37]/70 transition-colors">
+            <Card className="bg-background border-primary hover:border-primary/70 transition-colors">
               <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                  <Smartphone className="text-[#D4AF37]" size={24} />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                  <Smartphone className="text-primary" size={24} />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">
-                  Works Anywhere
-                </h3>
+                <h3 className="text-xl font-semibold  mb-2">Works Anywhere</h3>
                 <p className="text-gray-400 leading-relaxed">
                   Use it on your phone, tablet, or computer. Works offline,
                   syncs when you're back online. Never lose a sale.
@@ -140,31 +136,31 @@ function About() {
           </div>
 
           {/* Stats - Now Feature-Focused */}
-          <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8 md:p-12">
-            <h3 className="text-2xl font-bold text-white text-center mb-8">
+          <div className="bg-card border border-primary rounded-lg p-8 md:p-12">
+            <h3 className="text-2xl font-bold  text-center mb-8">
               Numbers That Matter to Shop Owners
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
               <div>
-                <div className="text-4xl md:text-5xl font-bold text-[#D4AF37] mb-2">
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
                   2 Minutes
                 </div>
                 <div className="text-gray-400">Average first bill created</div>
               </div>
               <div>
-                <div className="text-4xl md:text-5xl font-bold text-[#D4AF37] mb-2">
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
                   0 Skills
                 </div>
                 <div className="text-gray-400">Technical knowledge needed</div>
               </div>
               <div>
-                <div className="text-4xl md:text-5xl font-bold text-[#D4AF37] mb-2">
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
                   24/7
                 </div>
                 <div className="text-gray-400">Local language support</div>
               </div>
               <div>
-                <div className="text-4xl md:text-5xl font-bold text-[#D4AF37] mb-2">
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
                   100+ Shops
                 </div>
                 <div className="text-gray-400">Helped and counting</div>
@@ -174,7 +170,7 @@ function About() {
 
           {/* Closing Statement */}
           <div className="text-center mt-16 max-w-3xl mx-auto">
-            <h3 className="text-3xl font-bold text-white mb-6">
+            <h3 className="text-3xl font-bold  mb-6">
               Ready to Simplify Your Shop?
             </h3>
             <p className="text-xl text-gray-400 leading-relaxed">

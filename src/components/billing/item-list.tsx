@@ -58,9 +58,9 @@ export default function ItemList({
     : "Rs.";
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+    <Card className="bg-card border-primary">
       <CardHeader>
-        <CardTitle className="text-white flex items-center justify-between">
+        <CardTitle className=" flex items-center justify-between">
           <span>Bill Items</span>
           {billItems.length > 0 && (
             <Button
@@ -84,13 +84,13 @@ export default function ItemList({
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="border-[#D4AF37]/30">
-                  <TableHead className="text-[#D4AF37]">Product</TableHead>
-                  <TableHead className="text-[#D4AF37]">Price</TableHead>
-                  <TableHead className="text-[#D4AF37]">Quantity</TableHead>
-                  <TableHead className="text-[#D4AF37]">Total</TableHead>
-                  <TableHead className="text-[#D4AF37]">Stock Status</TableHead>
-                  <TableHead className="text-[#D4AF37]"></TableHead>
+                <TableRow className="border-primary/30">
+                  <TableHead className="text-primary">Product</TableHead>
+                  <TableHead className="text-primary">Price</TableHead>
+                  <TableHead className="text-primary">Quantity</TableHead>
+                  <TableHead className="text-primary">Total</TableHead>
+                  <TableHead className="text-primary">Stock Status</TableHead>
+                  <TableHead className="text-primary"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -101,9 +101,9 @@ export default function ItemList({
                   return (
                     <TableRow
                       key={item.id}
-                      className="border-[#D4AF37]/30 hover:bg-[#1a1a1a]"
+                      className="border-primary/30 hover:bg-dark-gray"
                     >
-                      <TableCell className="text-white font-medium">
+                      <TableCell className=" font-medium">
                         <div className="flex flex-col">
                           <span>{item.productName}</span>
                           {product?.sku && (
@@ -114,7 +114,8 @@ export default function ItemList({
                         </div>
                       </TableCell>
                       <TableCell className="text-gray-300">
-                        {currencySymbol}{item.price.toLocaleString()}
+                        {currencySymbol}
+                        {item.price.toLocaleString()}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
@@ -124,12 +125,12 @@ export default function ItemList({
                             onClick={() =>
                               onUpdateQuantity(item.id, item.quantity - 1)
                             }
-                            className="h-6 w-6 p-0 text-gray-400 hover:text-white disabled:opacity-30"
+                            className="h-6 w-6 p-0 text-gray-400 hover: disabled:opacity-30"
                             disabled={item.quantity <= 1}
                           >
                             -
                           </Button>
-                          <span className="text-white w-8 text-center">
+                          <span className=" w-8 text-center">
                             {item.quantity}
                           </span>
                           <Button
@@ -138,7 +139,7 @@ export default function ItemList({
                             onClick={() =>
                               onUpdateQuantity(item.id, item.quantity + 1)
                             }
-                            className="h-6 w-6 p-0 text-gray-400 hover:text-white"
+                            className="h-6 w-6 p-0 text-gray-400 hover:"
                             disabled={product && item.quantity >= product.stock}
                           >
                             +
@@ -150,8 +151,9 @@ export default function ItemList({
                           </p>
                         )}
                       </TableCell>
-                      <TableCell className="text-white font-medium">
-                        {currencySymbol}{item.total.toLocaleString()}
+                      <TableCell className=" font-medium">
+                        {currencySymbol}
+                        {item.total.toLocaleString()}
                       </TableCell>
                       <TableCell>
                         <span

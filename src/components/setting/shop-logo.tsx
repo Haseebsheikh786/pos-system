@@ -47,19 +47,19 @@ export default function ShopLogo({
   };
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+    <Card className="bg-card border-primary">
       <CardHeader>
-        <CardTitle className="text-white">Shop Logo</CardTitle>
+        <CardTitle className="">Shop Logo</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-col items-center gap-4">
           {uploading ? (
-            <div className="w-full aspect-square bg-[#1a1a1a] rounded-lg border-2 border-[#D4AF37] flex items-center justify-center">
-              <Loader2 className="h-12 w-12 text-[#D4AF37] animate-spin" />
+            <div className="w-full aspect-square bg-dark-gray rounded-lg border-2 border-primary flex items-center justify-center">
+              <Loader2 className="h-12 w-12 text-primary animate-spin" />
               <span className="ml-2 text-gray-400">Uploading...</span>
             </div>
           ) : logoUrl ? (
-            <div className="relative w-full aspect-square bg-[#1a1a1a] rounded-lg border-2 border-[#D4AF37] p-4 flex items-center justify-center">
+            <div className="relative w-full aspect-square bg-dark-gray rounded-lg border-2 border-primary p-4 flex items-center justify-center">
               <img
                 src={logoUrl}
                 alt="Shop Logo"
@@ -76,8 +76,8 @@ export default function ShopLogo({
               </Button>
             </div>
           ) : (
-            <div className="w-full aspect-square bg-[#1a1a1a] rounded-lg border-2 border-dashed border-[#D4AF37]/50 flex flex-col items-center justify-center gap-2">
-              <Upload className="h-12 w-12 text-[#D4AF37]/50" />
+            <div className="w-full aspect-square bg-dark-gray rounded-lg border-2 border-dashed border-primary/50 flex flex-col items-center justify-center gap-2">
+              <Upload className="h-12 w-12 text-primary/50" />
               <p className="text-gray-500 text-sm">No logo uploaded</p>
             </div>
           )}
@@ -85,7 +85,7 @@ export default function ShopLogo({
           <div className="w-full space-y-2">
             <Label
               htmlFor="logo-upload"
-              className="flex items-center justify-center gap-2 w-full bg-[#1a1a1a] hover:bg-[#252525] border border-[#D4AF37]/30 text-gray-300 py-2 px-4 rounded-lg cursor-pointer transition-colors"
+              className="flex items-center justify-center gap-2 w-full bg-dark-gray hover:bg-[#252525] border border-primary/30 text-gray-300 py-2 px-4 rounded-lg cursor-pointer transition-colors"
             >
               <Upload className="h-4 w-4" />
               {logoUrl ? "Change Logo" : "Upload Logo"}

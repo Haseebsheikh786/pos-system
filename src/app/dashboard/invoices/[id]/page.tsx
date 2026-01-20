@@ -59,7 +59,7 @@ export default function InvoiceDetailPage() {
   const { user } = useSelector((state: RootState) => state.auth);
   const { profile } = useSelector((state: RootState) => state.profile);
   const { currentInvoice, error } = useSelector(
-    (state: RootState) => state.invoices
+    (state: RootState) => state.invoices,
   );
   const { payments } = useSelector((state: RootState) => state.payment);
   const { downloadInvoice } = useInvoiceDownloader();
@@ -164,9 +164,9 @@ export default function InvoiceDetailPage() {
 
   if (isInitialLoading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] p-8 flex items-center justify-center">
+      <div className="min-h-screen bg-card p-8 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-[#D4AF37] mx-auto mb-4" />
+          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
           <p className="text-gray-400">Loading invoice details...</p>
         </div>
       </div>
@@ -175,29 +175,27 @@ export default function InvoiceDetailPage() {
 
   if (error || !currentInvoice.invoice) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] p-8">
+      <div className="min-h-screen bg-card p-8">
         <div className="max-w-4xl mx-auto">
           <Button
             variant="ghost"
             onClick={() => router.push("/dashboard/invoices")}
-            className="mb-6 text-gray-400 hover:text-white hover:bg-[#D4AF37]/30/30"
+            className="mb-6 text-gray-400 hover: hover:bg-primary/30/30"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Invoices
           </Button>
-          <Card className="bg-[#0a0a0a] border-red-500/30">
+          <Card className="bg-card border-red-500/30">
             <CardContent className="pt-6 text-center">
               <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">
-                Invoice Not Found
-              </h3>
+              <h3 className="text-xl font-semibold  mb-2">Invoice Not Found</h3>
               <p className="text-gray-400 mb-6">
                 {error ||
                   "The invoice you're looking for doesn't exist or you don't have permission to view it."}
               </p>
               <Button
                 onClick={() => router.push("/dashboard/invoices")}
-                className="bg-[#D4AF37] hover:bg-[#c5a030] text-black font-medium"
+                className="bg-primary hover:bg-[#c5a030] text-background font-medium"
               >
                 Back to Invoices
               </Button>
@@ -215,7 +213,7 @@ export default function InvoiceDetailPage() {
   const balanceDue = invoice.due_amount || 0;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-card p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -223,7 +221,7 @@ export default function InvoiceDetailPage() {
             <Button
               variant="ghost"
               onClick={() => router.push("/dashboard/invoices")}
-              className="mb-4 pl-0 text-gray-400 hover:text-white hover:bg-transparent"
+              className="mb-4 pl-0 text-gray-400 hover: hover:bg-transparent"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Invoices
@@ -231,8 +229,8 @@ export default function InvoiceDetailPage() {
             <div className="flex flex-col md:flex-row md:items-center gap-3">
               <div>
                 <div className="flex items-center gap-3">
-                  <Receipt className="h-8 w-8 text-[#D4AF37]" />
-                  <h1 className="text-2xl md:text-3xl font-bold text-white">
+                  <Receipt className="h-8 w-8 text-primary" />
+                  <h1 className="text-2xl md:text-3xl font-bold ">
                     Invoice #
                     {invoice.invoice_number || `INV-${invoice.id.slice(0, 8)}`}
                   </h1>
@@ -256,7 +254,7 @@ export default function InvoiceDetailPage() {
             {balanceDue > 0 && (
               <Button
                 onClick={() => setIsPaymentModalOpen(true)}
-                className="bg-[#D4AF37] hover:bg-[#c5a030] text-black font-medium px-6"
+                className="bg-primary hover:bg-[#c5a030] text-background font-medium px-6"
               >
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Add Payment
@@ -266,7 +264,7 @@ export default function InvoiceDetailPage() {
               onClick={handleDownloadInvoice}
               disabled={!currentInvoice.invoice}
               variant="outline"
-              className="border-[#D4AF37]/30 text-gray-300 hover:text-white hover:bg-[#D4AF37]/30/50 "
+              className="border-primary/30 text-gray-300 hover: hover:bg-primary/30/50 "
             >
               <Download className="h-4 w-4 mr-2" />
               Downlaod PDF
@@ -279,24 +277,20 @@ export default function InvoiceDetailPage() {
           {/* Left Column - Invoice Details */}
           <div className="lg:col-span-2 space-y-6">
             {/* Invoice & Customer Info Card */}
-            <Card className="bg-[#0f0f0f] border-[#D4AF37]">
+            <Card className="bg-[#0f0f0f] border-primary">
               <CardHeader className="pb-4">
-                <CardTitle className="text-white text-lg">
-                  Invoice Details
-                </CardTitle>
+                <CardTitle className=" text-lg">Invoice Details</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Shop Information */}
                   <div>
-                    <h3 className="text-sm font-medium text-gray-400 mb-4 pb-2 border-b border-[#D4AF37]/30">
+                    <h3 className="text-sm font-medium text-gray-400 mb-4 pb-2 border-b border-primary/30">
                       SHOP INFORMATION
                     </h3>
                     <div className="space-y-3">
                       <div>
-                        <p className="text-white font-medium">
-                          {profile?.business_name}
-                        </p>
+                        <p className=" font-medium">{profile?.business_name}</p>
                       </div>
                       <div className="flex items-start gap-3">
                         <MapPin className="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" />
@@ -313,13 +307,13 @@ export default function InvoiceDetailPage() {
 
                   {/* Customer Information */}
                   <div>
-                    <h3 className="text-sm font-medium text-gray-400 mb-4 pb-2 border-b border-[#D4AF37]/30">
+                    <h3 className="text-sm font-medium text-gray-400 mb-4 pb-2 border-b border-primary/30">
                       CUSTOMER INFORMATION
                     </h3>
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
                         <User className="h-4 w-4 text-gray-500" />
-                        <p className="text-white font-medium">
+                        <p className=" font-medium">
                           {invoice.customer_name || "Walk-in Customer"}
                         </p>
                       </div>
@@ -338,13 +332,13 @@ export default function InvoiceDetailPage() {
             </Card>
 
             {/* Products Table Card */}
-            <Card className="bg-[#0f0f0f] border-[#D4AF37]">
+            <Card className="bg-[#0f0f0f] border-primary">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-white text-lg">Products</CardTitle>
+                  <CardTitle className=" text-lg">Products</CardTitle>
                   <Badge
                     variant="outline"
-                    className="text-gray-400 border-[#D4AF37]/30"
+                    className="text-gray-400 border-primary/30"
                   >
                     {items.length} {items.length === 1 ? "Item" : "Items"}
                   </Badge>
@@ -354,17 +348,15 @@ export default function InvoiceDetailPage() {
                 <div className=" ">
                   <Table>
                     <TableHeader>
-                      <TableRow className="border-[#D4AF37]/30">
-                        <TableHead className="text-[#D4AF37]">
-                          Product
-                        </TableHead>
-                        <TableHead className="text-[#D4AF37] text-right">
+                      <TableRow className="border-primary/30">
+                        <TableHead className="text-primary">Product</TableHead>
+                        <TableHead className="text-primary text-right">
                           Price
                         </TableHead>
-                        <TableHead className="text-[#D4AF37] text-right">
+                        <TableHead className="text-primary text-right">
                           Qty
                         </TableHead>
-                        <TableHead className="text-[#D4AF37] text-right">
+                        <TableHead className="text-primary text-right">
                           Total
                         </TableHead>
                       </TableRow>
@@ -383,11 +375,11 @@ export default function InvoiceDetailPage() {
                         items.map((item, index) => (
                           <TableRow
                             key={item.id}
-                            className="border-[#D4AF37]/30 hover:bg-[#1a1a1a]"
+                            className="border-primary/30 hover:bg-dark-gray"
                           >
                             <TableCell>
                               <div>
-                                <p className="text-white font-medium">
+                                <p className=" font-medium">
                                   {item.product_name}
                                 </p>
                                 {item.product_id && (
@@ -398,12 +390,13 @@ export default function InvoiceDetailPage() {
                               </div>
                             </TableCell>
                             <TableCell className="text-gray-300 text-right">
-                              {currencySymbol}{item.price}
+                              {currencySymbol}
+                              {item.price}
                             </TableCell>
                             <TableCell className="text-gray-300 text-right">
                               {item.quantity}
                             </TableCell>
-                            <TableCell className="text-white font-medium text-right">
+                            <TableCell className=" font-medium text-right">
                               {item.price * item.quantity}
                             </TableCell>
                           </TableRow>
@@ -416,15 +409,13 @@ export default function InvoiceDetailPage() {
             </Card>
 
             {/* Payment History Card */}
-            <Card className="bg-[#0f0f0f] border-[#D4AF37]">
+            <Card className="bg-[#0f0f0f] border-primary">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-white text-lg">
-                    Payment History
-                  </CardTitle>
+                  <CardTitle className=" text-lg">Payment History</CardTitle>
                   <Badge
                     variant="outline"
-                    className="text-gray-400 border-[#D4AF37]/30"
+                    className="text-gray-400 border-primary/30"
                   >
                     {payments.length}{" "}
                     {payments.length === 1 ? "Payment" : "Payments"}
@@ -433,7 +424,7 @@ export default function InvoiceDetailPage() {
               </CardHeader>
               <CardContent>
                 {payments.length === 0 ? (
-                  <div className="text-center py-8 border-2 border-dashed border-[#D4AF37]/30 rounded-lg">
+                  <div className="text-center py-8 border-2 border-dashed border-primary/30 rounded-lg">
                     <CreditCard className="h-12 w-12 text-gray-700 mx-auto mb-3" />
                     <p className="text-gray-400">No payments recorded yet</p>
                   </div>
@@ -442,15 +433,15 @@ export default function InvoiceDetailPage() {
                     {payments.map((payment) => (
                       <div
                         key={payment.id}
-                        className="flex items-center justify-between p-4 bg-gray-900/30 rounded-lg border border-[#D4AF37]/30 hover:border-[#D4AF37]/30 transition-colors"
+                        className="flex items-center justify-between p-4 bg-gray-900/30 rounded-lg border border-primary/30 hover:border-primary/30 transition-colors"
                       >
                         <div className="flex items-center gap-4">
-                          <div className="p-2 bg-[#D4AF37]/30 rounded-lg">
+                          <div className="p-2 bg-primary/30 rounded-lg">
                             <CreditCard className="h-5 w-5 text-gray-400" />
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-white font-medium">
+                              <span className=" font-medium">
                                 {payment.method.charAt(0).toUpperCase() +
                                   payment.method.slice(1)}
                               </span>
@@ -468,7 +459,8 @@ export default function InvoiceDetailPage() {
                         </div>
                         <div className="text-right">
                           <p className="text-green-400 font-bold text-lg">
-                           {currencySymbol}{payment.amount}
+                            {currencySymbol}
+                            {payment.amount}
                           </p>
                         </div>
                       </div>
@@ -482,36 +474,37 @@ export default function InvoiceDetailPage() {
           {/* Right Column - Summary & Actions */}
           <div className="space-y-6">
             {/* Amount Summary Card */}
-            <Card className="bg-[#0f0f0f] border-[#D4AF37]">
+            <Card className="bg-[#0f0f0f] border-primary">
               <CardHeader className="pb-4">
-                <CardTitle className="text-white text-lg">
-                  Amount Summary
-                </CardTitle>
+                <CardTitle className=" text-lg">Amount Summary</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400">Subtotal</span>
-                    <span className="text-white">{currencySymbol}{grandTotal}</span>
+                    <span className="">
+                      {currencySymbol}
+                      {grandTotal}
+                    </span>
                   </div>
 
-                  <Separator className="bg-[#D4AF37]/30" />
+                  <Separator className="bg-primary/30" />
 
                   <div className="flex justify-between items-center">
-                    <span className="text-white font-semibold">
-                      Grand Total
-                    </span>
-                    <span className="text-white font-bold text-xl">
-                      {currencySymbol}{grandTotal}
+                    <span className=" font-semibold">Grand Total</span>
+                    <span className=" font-bold text-xl">
+                      {currencySymbol}
+                      {grandTotal}
                     </span>
                   </div>
 
-                  <Separator className="bg-[#D4AF37]/30" />
+                  <Separator className="bg-primary/30" />
 
                   <div className="flex justify-between items-center pt-2">
                     <span className="text-gray-400">Amount Paid</span>
                     <span className="text-green-400 font-medium">
-                      {currencySymbol}{amountPaid}
+                      {currencySymbol}
+                      {amountPaid}
                     </span>
                   </div>
 
@@ -522,7 +515,8 @@ export default function InvoiceDetailPage() {
                         balanceDue > 0 ? "text-amber-400" : "text-green-400"
                       }`}
                     >
-                      {currencySymbol}{balanceDue}
+                      {currencySymbol}
+                      {balanceDue}
                     </span>
                   </div>
 
@@ -530,7 +524,7 @@ export default function InvoiceDetailPage() {
                     <div className="pt-4">
                       <Button
                         onClick={() => setIsPaymentModalOpen(true)}
-                        className="w-full bg-[#D4AF37] hover:bg-[#c5a030] text-black font-medium py-3"
+                        className="w-full bg-primary hover:bg-[#c5a030] text-background font-medium py-3"
                       >
                         <PlusCircle className="h-4 w-4 mr-2" />
                         Add Payment
@@ -549,16 +543,14 @@ export default function InvoiceDetailPage() {
             </Card>
 
             {/* Quick Actions Card */}
-            <Card className="bg-[#0f0f0f] border-[#D4AF37]">
+            <Card className="bg-[#0f0f0f] border-primary">
               <CardHeader className="pb-4">
-                <CardTitle className="text-white text-lg">
-                  Quick Actions
-                </CardTitle>
+                <CardTitle className=" text-lg">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button
                   variant="outline"
-                  className="w-full justify-start border-[#D4AF37]/30 "
+                  className="w-full justify-start border-primary/30 "
                   onClick={handleDownloadInvoice}
                   disabled={!currentInvoice.invoice}
                 >
@@ -568,7 +560,7 @@ export default function InvoiceDetailPage() {
 
                 <Button
                   variant="outline"
-                  className="w-full justify-start border-[#D4AF37]/30 text-gray-300 hover:text-white hover:bg-[#D4AF37]/30/50 "
+                  className="w-full justify-start border-primary/30 text-gray-300 hover: hover:bg-primary/30/50 "
                   onClick={() => router.push("/dashboard/invoices")}
                 >
                   <FileText className="h-4 w-4 mr-3" />

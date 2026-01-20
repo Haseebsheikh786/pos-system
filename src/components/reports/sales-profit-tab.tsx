@@ -234,19 +234,17 @@ export default function SalesProfitTab({
         {summaryCards.map((card, index) => {
           const Icon = card.icon;
           return (
-            <Card key={index} className={`bg-[#0a0a0a] border-[#D4AF37]`}>
+            <Card key={index} className={`bg-card border-primary`}>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-gray-400">
                   {card.title}
                 </CardTitle>
-                <div className="p-2 rounded-full bg-[#1a1a1a]">
-                  <Icon className="h-4 w-4 text-[#D4AF37]" />
+                <div className="p-2 rounded-full bg-dark-gray">
+                  <Icon className="h-4 w-4 text-primary" />
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white mb-1">
-                  {card.value}
-                </div>
+                <div className="text-2xl font-bold  mb-1">{card.value}</div>
                 <p className="text-sm text-gray-400">{card.description}</p>
               </CardContent>
             </Card>
@@ -255,9 +253,9 @@ export default function SalesProfitTab({
       </div>
 
       {/* Sales Report Table */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardHeader>
-          <CardTitle className="text-white">Sales Report</CardTitle>
+          <CardTitle className="">Sales Report</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -268,24 +266,20 @@ export default function SalesProfitTab({
             ) : (
               <Table>
                 <TableHeader>
-                  <TableRow className="border-[#D4AF37]/30">
-                    <TableHead className="text-[#D4AF37]">Date</TableHead>
-                    <TableHead className="text-[#D4AF37]">
-                      Total Sales
-                    </TableHead>
-                    <TableHead className="text-[#D4AF37]">
-                      Total Profit
-                    </TableHead>
-                    <TableHead className="text-[#D4AF37]">Invoices</TableHead>
-                    <TableHead className="text-[#D4AF37]">
+                  <TableRow className="border-primary/30">
+                    <TableHead className="text-primary">Date</TableHead>
+                    <TableHead className="text-primary">Total Sales</TableHead>
+                    <TableHead className="text-primary">Total Profit</TableHead>
+                    <TableHead className="text-primary">Invoices</TableHead>
+                    <TableHead className="text-primary">
                       Avg Invoice Value
                     </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {salesByDate.map((data, index) => (
-                    <TableRow key={index} className="border-[#D4AF37]/30">
-                      <TableCell className="text-white font-medium">
+                    <TableRow key={index} className="border-primary/30">
+                      <TableCell className=" font-medium">
                         {data.date}
                       </TableCell>
                       <TableCell className="text-gray-300">
@@ -318,9 +312,9 @@ export default function SalesProfitTab({
       </Card>
 
       {/* Product-wise Sales */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardHeader>
-          <CardTitle className="text-white">Top Selling Products</CardTitle>
+          <CardTitle className="">Top Selling Products</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -331,13 +325,11 @@ export default function SalesProfitTab({
             ) : (
               <Table>
                 <TableHeader>
-                  <TableRow className="border-[#D4AF37]/30">
-                    <TableHead className="text-[#D4AF37]">
-                      Product Name
-                    </TableHead>
-                    <TableHead className="text-[#D4AF37]">Units Sold</TableHead>
-                    <TableHead className="text-[#D4AF37]">Revenue</TableHead>
-                    <TableHead className="text-[#D4AF37]">
+                  <TableRow className="border-primary/30">
+                    <TableHead className="text-primary">Product Name</TableHead>
+                    <TableHead className="text-primary">Units Sold</TableHead>
+                    <TableHead className="text-primary">Revenue</TableHead>
+                    <TableHead className="text-primary">
                       % of Total Sales
                     </TableHead>
                   </TableRow>
@@ -352,8 +344,8 @@ export default function SalesProfitTab({
                         : "0.0";
 
                     return (
-                      <TableRow key={index} className="border-[#D4AF37]/30">
-                        <TableCell className="text-white font-medium">
+                      <TableRow key={index} className="border-primary/30">
+                        <TableCell className=" font-medium">
                           {item.product}
                         </TableCell>
                         <TableCell className="text-gray-300">
@@ -364,9 +356,9 @@ export default function SalesProfitTab({
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-3">
-                            <div className="flex-1 bg-[#1a1a1a] rounded-full h-2">
+                            <div className="flex-1 bg-dark-gray rounded-full h-2">
                               <div
-                                className="bg-[#D4AF37] h-2 rounded-full"
+                                className="bg-primary h-2 rounded-full"
                                 style={{ width: `${percentage}%` }}
                               />
                             </div>

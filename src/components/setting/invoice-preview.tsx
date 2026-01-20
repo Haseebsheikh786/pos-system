@@ -1,10 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  getCurrencySymbol,
-  getCurrencyName,
-} from "@/lib/currency";
+import { getCurrencySymbol, getCurrencyName } from "@/lib/currency";
 
 interface InvoicePreviewProps {
   logoUrl?: string;
@@ -36,9 +33,9 @@ export default function InvoicePreview({
   const currencyName = getCurrencyName(businessCurrency);
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+    <Card className="bg-card border-primary">
       <CardHeader>
-        <CardTitle className="text-white text-sm">Invoice Preview</CardTitle>
+        <CardTitle className=" text-sm">Invoice Preview</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="bg-white p-4 rounded-lg space-y-3 text-xs">
@@ -52,14 +49,14 @@ export default function InvoicePreview({
               />
             ) : (
               <div className="h-12 flex items-center justify-center mb-2">
-                <div className="w-12 h-12 bg-[#D4AF37] rounded flex items-center justify-center">
-                  <span className="text-black font-bold text-xl">
+                <div className="w-12 h-12 bg-primary rounded flex items-center justify-center">
+                  <span className="text-background font-bold text-xl">
                     {businessName.charAt(0).toUpperCase()}
                   </span>
                 </div>
               </div>
             )}
-            <h3 className="font-bold text-black">{businessName}</h3>
+            <h3 className="font-bold text-background">{businessName}</h3>
             {businessAddress && (
               <p className="text-gray-600 text-xs">{businessAddress}</p>
             )}
@@ -71,7 +68,7 @@ export default function InvoicePreview({
           {/* Invoice Info */}
           <div className="flex justify-between items-center border-b border-gray-200 pb-2">
             <div>
-              <p className="font-semibold text-black">INVOICE</p>
+              <p className="font-semibold text-background">INVOICE</p>
               <p className="text-gray-600">#{invoiceNumber}</p>
             </div>
             <div className="text-right">
@@ -105,7 +102,7 @@ export default function InvoicePreview({
 
           {/* Total */}
           <div className="border-t border-gray-300 pt-2">
-            <div className="flex justify-between font-bold text-black">
+            <div className="flex justify-between font-bold text-background">
               <span>Total:</span>
               <span>
                 {currencySymbol}

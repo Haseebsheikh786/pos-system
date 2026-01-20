@@ -25,7 +25,6 @@ interface InvoiceListProps {
   profile: {
     currency?: string;
   };
-  
 }
 
 export default function InvoiceList({
@@ -34,7 +33,7 @@ export default function InvoiceList({
   onViewInvoice,
   onAddPayment,
   onPrintInvoice,
-  profile
+  profile,
 }: InvoiceListProps) {
   const getPaymentStatusBadge = (status: string) => {
     switch (status) {
@@ -80,7 +79,7 @@ export default function InvoiceList({
 
   if (loading && invoices.length === 0) {
     return (
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardContent className="pt-6 text-center text-gray-400">
           Loading invoices...
         </CardContent>
@@ -89,24 +88,20 @@ export default function InvoiceList({
   }
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+    <Card className="bg-card border-primary">
       <CardContent className="pt-6">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="border-[#D4AF37]/30">
-                <TableHead className="text-[#D4AF37]">Invoice #</TableHead>
-                <TableHead className="text-[#D4AF37]">Date & Time</TableHead>
-                <TableHead className="text-[#D4AF37]">Customer</TableHead>
-                <TableHead className="text-[#D4AF37] text-right">
-                  Total
-                </TableHead>
-                <TableHead className="text-[#D4AF37] text-right">
-                  Paid
-                </TableHead>
-                <TableHead className="text-[#D4AF37] text-right">Due</TableHead>
-                <TableHead className="text-[#D4AF37]">Status</TableHead>
-                <TableHead className="text-[#D4AF37] text-right">
+              <TableRow className="border-primary/30">
+                <TableHead className="text-primary">Invoice #</TableHead>
+                <TableHead className="text-primary">Date & Time</TableHead>
+                <TableHead className="text-primary">Customer</TableHead>
+                <TableHead className="text-primary text-right">Total</TableHead>
+                <TableHead className="text-primary text-right">Paid</TableHead>
+                <TableHead className="text-primary text-right">Due</TableHead>
+                <TableHead className="text-primary">Status</TableHead>
+                <TableHead className="text-primary text-right">
                   Actions
                 </TableHead>
               </TableRow>
@@ -126,11 +121,11 @@ export default function InvoiceList({
                 invoices.map((invoice) => (
                   <TableRow
                     key={invoice.id}
-                    className="border-[#D4AF37]/30 hover:bg-[#1a1a1a] cursor-pointer"
+                    className="border-primary/30 hover:bg-dark-gray cursor-pointer"
                     onClick={() => onViewInvoice(invoice)}
                   >
                     <TableCell>
-                      <div className="font-medium text-white">
+                      <div className="font-medium ">
                         {invoice.invoice_number ||
                           `INV-${invoice.id.slice(0, 8)}`}
                       </div>
@@ -153,7 +148,7 @@ export default function InvoiceList({
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="text-white">
+                        <span className="">
                           {invoice.customer_name || "Walk-in Customer"}
                         </span>
                         {invoice.customer_phone && (
@@ -163,16 +158,19 @@ export default function InvoiceList({
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="text-right text-white font-medium">
-                      {currencySymbol}{invoice.total?.toLocaleString() || "0"}
+                    <TableCell className="text-right  font-medium">
+                      {currencySymbol}
+                      {invoice.total?.toLocaleString() || "0"}
                     </TableCell>
                     <TableCell className="text-right text-green-400">
-                      {currencySymbol}{invoice.amount_paid?.toLocaleString() || "0"}
+                      {currencySymbol}
+                      {invoice.amount_paid?.toLocaleString() || "0"}
                     </TableCell>
                     <TableCell className="text-right">
                       {invoice.due_amount > 0 ? (
                         <span className="text-orange-400 font-medium">
-                          {currencySymbol}{invoice.due_amount?.toLocaleString() || "0"}
+                          {currencySymbol}
+                          {invoice.due_amount?.toLocaleString() || "0"}
                         </span>
                       ) : (
                         <span className="text-gray-400">-</span>
@@ -223,7 +221,7 @@ export default function InvoiceList({
                             e.stopPropagation();
                             onPrintInvoice(invoice);
                           }}
-                          className="text-[#D4AF37] hover:bg-#D4AF37/30"
+                          className="text-primary hover:bg-#D4AF37/30"
                           title="View Details"
                         >
                           <Download className="h-4 w-4" />

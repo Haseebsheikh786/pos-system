@@ -58,14 +58,16 @@ export default function InvoiceStats({
       title: "Total Invoices",
       value: loading ? "-" : stats.totalInvoices,
       icon: FileText,
-      iconColor: "text-[#D4AF37]",
-      valueColor: "text-white",
+      iconColor: "text-primary",
+      valueColor: "",
       description: "All time",
       change: "",
     },
     {
       title: "Total Amount",
-      value: loading ? "-" : `${currencySymbol}${stats.totalAmount.toLocaleString()}`,
+      value: loading
+        ? "-"
+        : `${currencySymbol}${stats.totalAmount.toLocaleString()}`,
       icon: DollarSign,
       iconColor: "text-green-400",
       valueColor: "text-green-400",
@@ -74,7 +76,9 @@ export default function InvoiceStats({
     },
     {
       title: "Amount Collected",
-      value: loading ? "-" : `${currencySymbol}${stats.totalCollected.toLocaleString()}`,
+      value: loading
+        ? "-"
+        : `${currencySymbol}${stats.totalCollected.toLocaleString()}`,
       icon: CheckCircle,
       iconColor: "text-blue-400",
       valueColor: "text-blue-400",
@@ -83,7 +87,9 @@ export default function InvoiceStats({
     },
     {
       title: "Pending Amount",
-      value: loading ? "-" : `${currencySymbol}${stats.totalDue.toLocaleString()}`,
+      value: loading
+        ? "-"
+        : `${currencySymbol}${stats.totalDue.toLocaleString()}`,
       icon: Clock,
       iconColor: "text-orange-400",
       valueColor: "text-orange-400",
@@ -97,7 +103,7 @@ export default function InvoiceStats({
       {statCards.map((stat, index) => {
         const Icon = stat.icon;
         return (
-          <Card key={index} className="bg-[#0a0a0a] border-[#D4AF37]">
+          <Card key={index} className="bg-card border-primary">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-gray-400">
                 {stat.title}

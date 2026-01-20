@@ -143,9 +143,7 @@ export default function InventoryPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Inventory Management
-          </h1>
+          <h1 className="text-3xl font-bold  mb-2">Inventory Management</h1>
           <p className="text-gray-400">
             Monitor stock levels and get low-stock alerts.
           </p>
@@ -154,10 +152,7 @@ export default function InventoryPage() {
           href="/dashboard/products"
           prefetch={true} // Prefetch for better performance
         >
-          <Button
-            className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
-            disabled={loading}
-          >
+          <Button className="" disabled={loading}>
             <Plus className="mr-2 h-4 w-4" />
             Manage Products
           </Button>
@@ -165,7 +160,7 @@ export default function InventoryPage() {
       </div>
 
       {/* Search Bar */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37] mb-6">
+      <Card className="bg-card border-primary mb-6">
         <CardContent className="pt-6">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -174,13 +169,13 @@ export default function InventoryPage() {
               placeholder="Search products by name..."
               value={localSearchQuery}
               onChange={(e) => handleSearchInput(e.target.value)}
-              className="pl-10 pr-10 bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="pl-10 pr-10 bg-dark-gray border-primary/30 "
               disabled={loading}
             />
             {localSearchQuery && (
               <button
                 onClick={clearSearch}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:"
                 type="button"
                 aria-label="Clear search"
               >
@@ -192,7 +187,11 @@ export default function InventoryPage() {
       </Card>
 
       {/* Stats Grid */}
-      <InventoryStats stats={stats || undefined} loading={statsLoading} profile={profile || { currency: "pkr" }}/>
+      <InventoryStats
+        stats={stats || undefined}
+        loading={statsLoading}
+        profile={profile || { currency: "pkr" }}
+      />
 
       {/* Error Messages */}
       {(error || statsError) && (
@@ -259,7 +258,7 @@ export default function InventoryPage() {
       {/* Loading State for Inventory */}
       {loading && inventory.length === 0 ? (
         <div className="flex justify-center items-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37]" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <span className="ml-3 text-gray-400">Loading inventory...</span>
         </div>
       ) : (

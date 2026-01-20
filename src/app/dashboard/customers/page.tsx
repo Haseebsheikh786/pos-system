@@ -221,18 +221,12 @@ export default function CustomersPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Customer Management
-          </h1>
+          <h1 className="text-3xl font-bold  mb-2">Customer Management</h1>
           <p className="text-gray-400">
             Manage customers and track credit (Udhaar).
           </p>
         </div>
-        <Button
-          onClick={openAddDialog}
-          className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
-          disabled={loading}
-        >
+        <Button onClick={openAddDialog} className="" disabled={loading}>
           <Plus className="mr-2 h-4 w-4" />
           Add Customer
         </Button>
@@ -253,7 +247,7 @@ export default function CustomersPage() {
       )}
 
       {/* Search */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37] mb-6">
+      <Card className="bg-card border-primary mb-6">
         <CardContent className="pt-6">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -262,13 +256,13 @@ export default function CustomersPage() {
               placeholder="Search customers by name or phone..."
               value={localSearchQuery}
               onChange={(e) => handleSearchInput(e.target.value)}
-              className="pl-10 pr-10 bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="pl-10 pr-10 bg-dark-gray border-primary/30 "
               disabled={loading}
             />
             {localSearchQuery && (
               <button
                 onClick={clearSearch}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:"
                 type="button"
                 aria-label="Clear search"
               >
@@ -282,7 +276,7 @@ export default function CustomersPage() {
       {/* Customers Table */}
       {loading && customers.length === 0 ? (
         <div className="flex justify-center items-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37]" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <span className="ml-3 text-gray-400">Loading customers...</span>
         </div>
       ) : (

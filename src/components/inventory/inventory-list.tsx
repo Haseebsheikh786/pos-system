@@ -88,7 +88,7 @@ export default function InventoryList({
 
   if (loading && inventory.length === 0) {
     return (
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardContent className="pt-6 text-center text-gray-400">
           Loading inventory...
         </CardContent>
@@ -97,20 +97,20 @@ export default function InventoryList({
   }
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+    <Card className="bg-card border-primary">
       <CardHeader>
-        <CardTitle className="text-white">All Inventory Items</CardTitle>
+        <CardTitle className="">All Inventory Items</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="border-[#D4AF37]/30">
-                <TableHead className="text-[#D4AF37]">Product Name</TableHead>
-                <TableHead className="text-[#D4AF37]">Current Stock</TableHead>
-                <TableHead className="text-[#D4AF37]">Min Stock</TableHead>
-                <TableHead className="text-[#D4AF37]">Status</TableHead>
-                <TableHead className="text-[#D4AF37]">Last Updated</TableHead>
+              <TableRow className="border-primary/30">
+                <TableHead className="text-primary">Product Name</TableHead>
+                <TableHead className="text-primary">Current Stock</TableHead>
+                <TableHead className="text-primary">Min Stock</TableHead>
+                <TableHead className="text-primary">Status</TableHead>
+                <TableHead className="text-primary">Last Updated</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -134,13 +134,11 @@ export default function InventoryList({
                   return (
                     <TableRow
                       key={item.id}
-                      className="border-[#D4AF37]/30 hover:bg-[#1a1a1a]"
+                      className="border-primary/30 hover:bg-dark-gray"
                     >
                       <TableCell>
                         <div className="flex flex-col">
-                          <span className="text-white font-medium">
-                            {item.name}
-                          </span>
+                          <span className=" font-medium">{item.name}</span>
                           {item.description && (
                             <span className="text-xs text-gray-400 truncate max-w-[200px]">
                               {item.description}
@@ -150,7 +148,7 @@ export default function InventoryList({
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-col">
-                          <span className="text-white font-medium">
+                          <span className=" font-medium">
                             {item.stock} units
                           </span>
                           <div className="w-full bg-gray-700 rounded-full h-1.5 mt-1">
@@ -160,8 +158,8 @@ export default function InventoryList({
                                 status === "critical"
                                   ? "bg-red-500"
                                   : status === "low"
-                                  ? "bg-orange-500"
-                                  : "bg-green-500"
+                                    ? "bg-orange-500"
+                                    : "bg-green-500"
                               }`}
                               style={{
                                 width: `${Math.min(stockPercentage, 100)}%`,

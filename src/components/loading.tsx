@@ -33,17 +33,17 @@ export default function Loading({
       <div className="relative">
         {/* Outer ring */}
         <div
-          className={`${sizeClasses[size]} border-4 border-[#D4AF37]/20 rounded-full`}
+          className={`${sizeClasses[size]} border-4 border-primary/20 rounded-full`}
         ></div>
 
         {/* Inner spinning ring */}
         <div
-          className={`absolute top-0 left-0 ${sizeClasses[size]} border-4 border-transparent border-t-[#D4AF37] border-r-[#D4AF37] rounded-full animate-spin`}
+          className={`absolute top-0 left-0 ${sizeClasses[size]} border-4 border-transparent border-t-primary border-r-primary rounded-full animate-spin`}
         ></div>
 
         {/* Center dot */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="h-2 w-2 bg-[#D4AF37] rounded-full"></div>
+          <div className="h-2 w-2 bg-primary rounded-full"></div>
         </div>
       </div>
 
@@ -58,7 +58,7 @@ export default function Loading({
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 bg-[#0a0a0a] z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-card z-50 flex items-center justify-center">
         {content}
       </div>
     );
@@ -83,7 +83,7 @@ export function Spinner({
 
   return (
     <Loader2
-      className={`${sizeClasses[size]} animate-spin text-[#D4AF37] ${className}`}
+      className={`${sizeClasses[size]} animate-spin text-primary ${className}`}
     />
   );
 }

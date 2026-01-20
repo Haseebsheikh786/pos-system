@@ -38,7 +38,7 @@ export default function CustomerList({
 
   if (loading && customers.length === 0) {
     return (
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardContent className="pt-6 text-center text-gray-400">
           Loading customers...
         </CardContent>
@@ -47,20 +47,18 @@ export default function CustomerList({
   }
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+    <Card className="bg-card border-primary">
       <CardContent className="pt-6">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="border-[#D4AF37]/30">
-                <TableHead className="text-[#D4AF37]">Name</TableHead>
-                <TableHead className="text-[#D4AF37]">Phone</TableHead>
-                <TableHead className="text-[#D4AF37]">Address</TableHead>
-                <TableHead className="text-[#D4AF37]">Due Amount</TableHead>
-                <TableHead className="text-[#D4AF37]">
-                  Total Purchases
-                </TableHead>
-                <TableHead className="text-[#D4AF37] text-right">
+              <TableRow className="border-primary/30">
+                <TableHead className="text-primary">Name</TableHead>
+                <TableHead className="text-primary">Phone</TableHead>
+                <TableHead className="text-primary">Address</TableHead>
+                <TableHead className="text-primary">Due Amount</TableHead>
+                <TableHead className="text-primary">Total Purchases</TableHead>
+                <TableHead className="text-primary text-right">
                   Actions
                 </TableHead>
               </TableRow>
@@ -79,13 +77,11 @@ export default function CustomerList({
                 customers.map((customer) => (
                   <TableRow
                     key={customer.id}
-                    className="border-[#D4AF37]/30 hover:bg-[#1a1a1a]"
+                    className="border-primary/30 hover:bg-dark-gray"
                   >
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="text-white font-medium">
-                          {customer.name}
-                        </span>
+                        <span className=" font-medium">{customer.name}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-gray-300">
@@ -115,7 +111,7 @@ export default function CustomerList({
                           variant="ghost"
                           size="sm"
                           onClick={() => onEdit(customer)}
-                          className="text-[#D4AF37] hover:bg-[#D4AF37]/10"
+                          className="text-primary hover:bg-primary/10"
                           title="Edit"
                         >
                           <Pencil className="h-4 w-4" />

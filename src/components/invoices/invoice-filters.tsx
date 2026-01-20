@@ -45,7 +45,7 @@ export default function InvoiceFilters({
     searchQuery || paymentStatus !== "all" || customerId || dateRange !== "all";
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37] mb-6">
+    <Card className="bg-card border-primary mb-6">
       <CardContent className="pt-6">
         <div className="space-y-4">
           {/* Search */}
@@ -56,7 +56,7 @@ export default function InvoiceFilters({
               placeholder="Search by invoice number or customer name..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10 bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="pl-10 bg-dark-gray border-primary/30 "
               disabled={loading}
             />
           </div>
@@ -72,13 +72,13 @@ export default function InvoiceFilters({
                 onValueChange={onDateRangeChange}
                 disabled={loading}
               >
-                <SelectTrigger className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+                <SelectTrigger className="bg-dark-gray border-primary/30 ">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     <SelectValue placeholder="All dates" />
                   </div>
                 </SelectTrigger>
-                <SelectContent className="bg-[#0a0a0a] border-[#D4AF37]">
+                <SelectContent className="bg-card border-primary">
                   <SelectItem value="all">All Dates</SelectItem>
                   <SelectItem value="today">Today</SelectItem>
                   <SelectItem value="yesterday">Yesterday</SelectItem>
@@ -100,13 +100,13 @@ export default function InvoiceFilters({
                 onValueChange={onPaymentStatusChange}
                 disabled={loading}
               >
-                <SelectTrigger className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+                <SelectTrigger className="bg-dark-gray border-primary/30 ">
                   <div className="flex items-center gap-2">
                     <Filter className="h-4 w-4" />
                     <SelectValue placeholder="All status" />
                   </div>
                 </SelectTrigger>
-                <SelectContent className="bg-[#0a0a0a] border-[#D4AF37]">
+                <SelectContent className="bg-card border-primary">
                   <SelectItem value="all">All Status</SelectItem>
                   <SelectItem value="paid">Paid</SelectItem>
                   <SelectItem value="partial">Partial</SelectItem>
@@ -125,16 +125,16 @@ export default function InvoiceFilters({
                 onValueChange={onCustomerChange}
                 disabled={loading || customers.length === 0}
               >
-                <SelectTrigger className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+                <SelectTrigger className="bg-dark-gray border-primary/30 ">
                   <SelectValue placeholder="All customers" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] max-h-60">
+                <SelectContent className="bg-card border-primary max-h-60">
                   <SelectItem value="all">All Customers</SelectItem>
                   {customers.map((customer) => (
                     <SelectItem
                       key={customer.id}
                       value={customer.id}
-                      className="text-white"
+                      className=""
                     >
                       {customer.name}
                       {customer.phone && ` (${customer.phone})`}
@@ -150,7 +150,7 @@ export default function InvoiceFilters({
                 <Button
                   onClick={onClearFilters}
                   variant="outline"
-                  className="w-full border-[#D4AF37]/30 text-gray-300 hover:text-white"
+                  className="w-full flex items-start justify-start bg-dark-gray border-primary/30 "
                   disabled={loading}
                 >
                   Clear Filters

@@ -57,10 +57,10 @@ export default function ShopInformation({
   ];
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+    <Card className="bg-card border-primary">
       <CardHeader className="flex flex-row items-center gap-2">
-        <Store className="h-5 w-5 text-[#D4AF37]" />
-        <CardTitle className="text-white">Shop Information</CardTitle>
+        <Store className="h-5 w-5 text-primary" />
+        <CardTitle className="">Shop Information</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Shop Name */}
@@ -72,7 +72,7 @@ export default function ShopInformation({
             id="shop-name"
             value={formData.business_name}
             onChange={(e) => onFormChange("business_name", e.target.value)}
-            className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+            className="bg-dark-gray border-primary/30 "
             placeholder="Enter your shop name"
             required
           />
@@ -89,16 +89,16 @@ export default function ShopInformation({
           >
             <SelectTrigger
               id="business-type"
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="bg-dark-gray border-primary/30 "
             >
               <SelectValue placeholder="Select your business type" />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-[#D4AF37]/30">
+            <SelectContent className="bg-dark-gray border-primary/30">
               {businessTypeOptions.map((type) => (
                 <SelectItem
                   key={type.value}
                   value={type.value}
-                  className="text-white hover:bg-[#D4AF37]/20 focus:bg-[#D4AF37]/20"
+                  className=" hover:bg-primary/20 focus:bg-primary/20"
                 >
                   {type.label}
                 </SelectItem>
@@ -116,7 +116,7 @@ export default function ShopInformation({
             id="shop-address"
             value={formData.business_address}
             onChange={(e) => onFormChange("business_address", e.target.value)}
-            className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+            className="bg-dark-gray border-primary/30 "
             placeholder="Enter your shop address"
           />
         </div>
@@ -130,7 +130,7 @@ export default function ShopInformation({
             id="shop-phone"
             value={formData.phone}
             onChange={(e) => onFormChange("phone", e.target.value)}
-            className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+            className="bg-dark-gray border-primary/30 "
             placeholder="03XX-XXXXXXX"
           />
         </div>
@@ -146,16 +146,16 @@ export default function ShopInformation({
           >
             <SelectTrigger
               id="currency"
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="bg-dark-gray border-primary/30 "
             >
               <SelectValue placeholder="Select currency" />
             </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-[#D4AF37]/30">
+            <SelectContent className="bg-dark-gray border-primary/30">
               {currencyOptions.map((currency) => (
                 <SelectItem
                   key={currency.value}
                   value={currency.value}
-                  className="text-white hover:bg-[#D4AF37]/20 focus:bg-[#D4AF37]/20"
+                  className=" hover:bg-primary/20 focus:bg-primary/20"
                 >
                   {currency.label}
                 </SelectItem>

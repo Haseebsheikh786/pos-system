@@ -73,17 +73,17 @@ function Login() {
           throw new Error("Invalid email or password. Please try again.");
         } else if (authError.message.includes("Email not confirmed")) {
           throw new Error(
-            "Please confirm your email address before logging in."
+            "Please confirm your email address before logging in.",
           );
         } else if (authError.message.includes("User not found")) {
           throw new Error("No account found with this email address.");
         } else if (authError.message.includes("rate limit")) {
           throw new Error(
-            "Too many attempts. Please try again in a few minutes."
+            "Too many attempts. Please try again in a few minutes.",
           );
         } else {
           throw new Error(
-            authError.message || "Login failed. Please try again."
+            authError.message || "Login failed. Please try again.",
           );
         }
       }
@@ -142,19 +142,19 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-black">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 bg-[#D4AF37] rounded flex items-center justify-center">
-            <span className="text-black font-bold text-2xl">P</span>
+          <div className="w-10 h-10 bg-primary rounded flex items-center justify-center">
+            <span className="text-background font-bold text-2xl">P</span>
           </div>
-          <span className="text-white font-bold text-2xl">POS System</span>
+          <span className=" font-bold text-2xl">POS System</span>
         </Link>
 
-        <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+        <Card className="bg-card border-primary">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-white text-center">
+            <CardTitle className="text-2xl font-bold  text-center">
               Welcome Back
             </CardTitle>
             <CardDescription className="text-gray-400 text-center">
@@ -176,7 +176,7 @@ function Login() {
                 type="button"
                 onClick={handleGoogleSignIn}
                 variant="outline"
-                className="w-full border-[#D4AF37]/30 text-white hover:bg-[#D4AF37]/10 bg-[#1A1A1A] flex items-center justify-center gap-3"
+                className="w-full border-primary/30  hover:bg-primary/10 bg-dark-gray flex items-center justify-center gap-3"
                 disabled={isLoading}
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -202,10 +202,10 @@ function Login() {
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-[#D4AF37]/30" />
+                  <span className="w-full border-t border-primary/30" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-[#0A0A0A] px-2 text-gray-500">
+                  <span className="bg-card px-2 text-gray-500">
                     or continue with email
                   </span>
                 </div>
@@ -224,10 +224,10 @@ function Login() {
                     handleInputChange("email");
                     register("email").onChange(e);
                   }}
-                  className={`bg-[#1A1A1A] border text-white placeholder:text-gray-500 focus:border-[#D4AF37] ${
+                  className={`bg-dark-gray border  placeholder:text-gray-500 focus:border-primary ${
                     errors.email
                       ? "border-red-500 focus:border-red-500"
-                      : "border-[#D4AF37]/30"
+                      : "border-primary/30"
                   }`}
                   disabled={isLoading}
                 />
@@ -252,17 +252,17 @@ function Login() {
                       handleInputChange("password");
                       register("password").onChange(e);
                     }}
-                    className={`bg-[#1A1A1A] border text-white placeholder:text-gray-500 focus:border-[#D4AF37] pr-10 ${
+                    className={`bg-dark-gray border  placeholder:text-gray-500 focus:border-primary pr-10 ${
                       errors.password
                         ? "border-red-500 focus:border-red-500"
-                        : "border-[#D4AF37]/30"
+                        : "border-primary/30"
                     }`}
                     disabled={isLoading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary"
                     disabled={isLoading}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -289,7 +289,7 @@ function Login() {
                           field.onChange(e.target.checked);
                           handleInputChange("remember");
                         }}
-                        className="w-4 h-4 rounded border-[#D4AF37] bg-[#1A1A1A] text-[#D4AF37] focus:ring-[#D4AF37]"
+                        className="w-4 h-4 rounded border-primary bg-dark-gray text-primary focus:ring-primary"
                         disabled={isLoading}
                       />
                     )}
@@ -303,7 +303,7 @@ function Login() {
                 </div>
                 <Link
                   href="/reset-password"
-                  className="text-sm text-[#D4AF37] hover:text-[#D4AF37]/80"
+                  className="text-sm text-primary hover:text-primary/80"
                 >
                   Forgot password?
                 </Link>
@@ -311,7 +311,7 @@ function Login() {
 
               <Button
                 type="submit"
-                className="w-full bg-[#8E7525] hover:bg-[#A38A2E] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full  disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
               >
                 {isLoading ? "Signing in..." : "Sign In"}
@@ -323,23 +323,23 @@ function Login() {
               Don't have an account?{" "}
               <Link
                 href="/signup"
-                className="text-[#D4AF37] hover:text-[#D4AF37]/80 font-semibold"
+                className="text-primary hover:text-primary/80 font-semibold"
               >
                 Sign up
               </Link>
             </div>
             <div className="relative w-full">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-[#D4AF37]/30" />
+                <span className="w-full border-t border-primary/30" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-[#0A0A0A] px-2 text-gray-500">or</span>
+                <span className="bg-card px-2 text-gray-500">or</span>
               </div>
             </div>
             <Link href="/" className="w-full">
               <Button
                 variant="outline"
-                className="w-full border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 bg-transparent"
+                className="w-full border-primary text-primary hover:bg-primary/10 bg-transparent"
                 disabled={isLoading}
               >
                 Back to Home

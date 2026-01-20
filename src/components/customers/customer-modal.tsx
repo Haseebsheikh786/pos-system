@@ -40,9 +40,9 @@ export default function CustomerModal({
   };
 
   return (
-    <DialogContent className="bg-[#0a0a0a] border-[#D4AF37] max-h-[90vh] overflow-y-auto">
+    <DialogContent className="bg-card border-primary max-h-[90vh] overflow-y-auto">
       <DialogHeader>
-        <DialogTitle className="text-white">{title}</DialogTitle>
+        <DialogTitle className="">{title}</DialogTitle>
       </DialogHeader>
       <div className="space-y-4 py-4">
         <div className="space-y-2">
@@ -54,7 +54,7 @@ export default function CustomerModal({
             placeholder="Enter customer name"
             value={formData.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
-            className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+            className="bg-dark-gray border-primary/30 "
             required
           />
         </div>
@@ -67,7 +67,7 @@ export default function CustomerModal({
             placeholder="03XX-XXXXXXX"
             value={formData.phone}
             onChange={(e) => handleInputChange("phone", e.target.value)}
-            className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+            className="bg-dark-gray border-primary/30 "
             required
           />
         </div>
@@ -80,7 +80,7 @@ export default function CustomerModal({
             placeholder="Enter customer address"
             value={formData.address}
             onChange={(e) => handleInputChange("address", e.target.value)}
-            className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white min-h-[80px]"
+            className="bg-dark-gray border-primary/30  min-h-[80px]"
             rows={3}
           />
         </div>
@@ -89,16 +89,12 @@ export default function CustomerModal({
         <Button
           variant="outline"
           onClick={onCancel}
-          className="border-[#D4AF37]/30 text-gray-300"
+          className="border-primary/30 text-gray-300"
           disabled={isSubmitting}
         >
           Cancel
         </Button>
-        <Button
-          onClick={onSubmit}
-          className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
-          disabled={isSubmitting}
-        >
+        <Button onClick={onSubmit} className="" disabled={isSubmitting}>
           {isSubmitting ? "Processing..." : submitButtonText}
         </Button>
       </DialogFooter>

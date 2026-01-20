@@ -17,7 +17,7 @@ const ContactForm = () => {
   const [error, setError] = useState("");
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({
       ...formData,
@@ -47,11 +47,9 @@ const ContactForm = () => {
   };
   return (
     <div className="lg:col-span-2">
-      <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardContent className="p-8">
-          <h2 className="text-2xl font-bold text-white mb-6">
-            Send Us a Message
-          </h2>
+          <h2 className="text-2xl font-bold  mb-6">Send Us a Message</h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {success && (
@@ -83,7 +81,7 @@ const ContactForm = () => {
                   placeholder="John Doe"
                   value={formData.name}
                   onChange={handleChange}
-                  className="bg-[#1A1A1A] border-[#D4AF37]/30 text-white placeholder:text-gray-500 focus:border-[#D4AF37]"
+                  className="bg-dark-gray border-primary/30  placeholder:text-gray-500 focus:border-primary"
                   required
                 />
               </div>
@@ -99,7 +97,7 @@ const ContactForm = () => {
                   placeholder="john@example.com"
                   value={formData.email}
                   onChange={handleChange}
-                  className="bg-[#1A1A1A] border-[#D4AF37]/30 text-white placeholder:text-gray-500 focus:border-[#D4AF37]"
+                  className="bg-dark-gray border-primary/30  placeholder:text-gray-500 focus:border-primary"
                   required
                 />
               </div>
@@ -116,7 +114,7 @@ const ContactForm = () => {
                 placeholder="How can we help?"
                 value={formData.subject}
                 onChange={handleChange}
-                className="bg-[#1A1A1A] border-[#D4AF37]/30 text-white placeholder:text-gray-500 focus:border-[#D4AF37]"
+                className="bg-dark-gray border-primary/30  placeholder:text-gray-500 focus:border-primary"
                 required
               />
             </div>
@@ -132,15 +130,12 @@ const ContactForm = () => {
                 value={formData.message}
                 onChange={handleChange}
                 rows={6}
-                className="bg-[#1A1A1A] border-[#D4AF37]/30 text-white placeholder:text-gray-500 focus:border-[#D4AF37] resize-none"
+                className="bg-dark-gray border-primary/30  placeholder:text-gray-500 focus:border-primary resize-none"
                 required
               />
             </div>
 
-            <Button
-              type="submit"
-              className="w-full bg-[#8E7525] hover:bg-[#A38A2E] text-white"
-            >
+            <Button type="submit" className="w-full ">
               Send Message
             </Button>
           </form>

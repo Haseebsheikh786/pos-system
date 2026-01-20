@@ -37,11 +37,11 @@ export default function PaymentModal({
   invoice,
   shopId,
   onPaymentSuccess,
-  profile
+  profile,
 }: PaymentModalProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { saving, saveError } = useSelector(
-    (state: RootState) => state.payment
+    (state: RootState) => state.payment,
   );
 
   const [paymentAmount, setPaymentAmount] = useState<string>("");
@@ -91,7 +91,7 @@ export default function PaymentModal({
 
     if (amount > maxPayableAmount) {
       setValidationError(
-        `Amount cannot exceed due amount of {currencySymbol}${maxPayableAmount.toLocaleString()}`
+        `Amount cannot exceed due amount of {currencySymbol}${maxPayableAmount.toLocaleString()}`,
       );
       return false;
     }
@@ -155,10 +155,10 @@ export default function PaymentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-[#0a0a0a] border-[#D4AF37] text-white sm:max-w-md">
+      <DialogContent className="bg-card border-primary  sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-[#D4AF37] text-xl">
+            <DialogTitle className="text-primary text-xl">
               Add Payment
             </DialogTitle>
           </div>
@@ -169,29 +169,32 @@ export default function PaymentModal({
 
         <div className="py-4 space-y-6">
           {/* Invoice Summary */}
-          <div className="space-y-3 p-4 bg-[#1a1a1a] rounded-lg border border-[#D4AF37]/30">
+          <div className="space-y-3 p-4 bg-dark-gray rounded-lg border border-primary/30">
             <div className="flex justify-between items-center">
               <span className="text-gray-400">Total Amount:</span>
-              <span className="text-white font-medium">
-                {currencySymbol}{totalAmount.toLocaleString()}
+              <span className=" font-medium">
+                {currencySymbol}
+                {totalAmount.toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-400">Amount Paid:</span>
               <span className="text-green-400">
-                {currencySymbol}{amountPaid.toLocaleString()}
+                {currencySymbol}
+                {amountPaid.toLocaleString()}
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-400">Due Amount:</span>
               <span className="text-orange-400 font-medium">
-                {currencySymbol}{maxPayableAmount.toLocaleString()}
+                {currencySymbol}
+                {maxPayableAmount.toLocaleString()}
               </span>
             </div>
             <div className="pt-2 border-t border-gray-700">
               <div className="flex justify-between items-center">
                 <span className="text-gray-400">Customer:</span>
-                <span className="text-white">
+                <span className="">
                   {invoice.customer_name || "Walk-in Customer"}
                 </span>
               </div>
@@ -233,7 +236,7 @@ export default function PaymentModal({
                 <p className="text-green-400 text-sm">After this payment:</p>
                 <div className="mt-1 flex justify-between">
                   <span className="text-gray-300">New Balance:</span>
-                  <span className="text-white font-medium">
+                  <span className=" font-medium">
                     {(
                       maxPayableAmount - parseFloat(paymentAmount || "0")
                     ).toLocaleString(undefined, {
@@ -251,14 +254,14 @@ export default function PaymentModal({
                   type="button"
                   variant="outline"
                   onClick={handleClose}
-                  className="flex-1 bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
+                  className="flex-1 bg-transparent border-gray-700 text-gray-300 hover:bg-gray-800 hover:"
                   disabled={saving}
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-[#D4AF37] text-black hover:bg-[#c5a030] font-medium"
+                  className="flex-1 bg-primary text-background hover:bg-[#c5a030] font-medium"
                   disabled={
                     saving || !paymentAmount || parseFloat(paymentAmount) <= 0
                   }

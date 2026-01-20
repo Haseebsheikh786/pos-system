@@ -15,7 +15,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-   const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     checkAuth();
@@ -69,17 +69,17 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="flex h-screen bg-black">
+    <div className="flex h-screen bg-background">
       <div className="hidden lg:block">
         <PosSidebar />
       </div>
 
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 bg-black border-b border-[#D4AF37] flex items-center justify-between px-4">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 bg-background border-b border-primary flex items-center justify-between px-4">
         <div className="flex items-center gap-2 ml-4">
-          <div className="w-8 h-8 bg-[#D4AF37] rounded flex items-center justify-center">
-            <span className="text-black font-bold text-xl">P</span>
+          <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
+            <span className="text-background font-bold text-xl">P</span>
           </div>
-          <span className="text-white font-bold text-xl">POS System</span>
+          <span className=" font-bold text-xl">POS System</span>
         </div>
 
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -87,7 +87,7 @@ export default function DashboardLayout({
             <Button
               variant="ghost"
               size="icon"
-              className="text-[#D4AF37] hover:bg-[#1a1a1a] w-12 h-12"
+              className="text-primary hover:bg-dark-gray w-12 h-12"
             >
               <Menu className="w-7 h-7" />
               <span className="sr-only">Open menu</span>
@@ -96,7 +96,7 @@ export default function DashboardLayout({
 
           <SheetContent
             side="right"
-            className="p-0 w-64 bg-black border-[#D4AF37]"
+            className="p-0 w-64 bg-background border-primary"
           >
             <PosSidebar onNavigate={() => setMobileMenuOpen(false)} />
           </SheetContent>

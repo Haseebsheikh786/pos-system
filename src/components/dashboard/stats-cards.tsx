@@ -24,15 +24,15 @@ const StatsCards = ({ stats, profile }: StatsProps) => {
     <>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
         {/* Today's Sales */}
-        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+        <Card className="bg-card border-primary">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">
               Today's Sales
             </CardTitle>
-            <DollarSign className="h-5 w-5 text-[#D4AF37]" />
+            <DollarSign className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">
+            <div className="text-2xl font-bold ">
               {currencySymbol}
               {stats.todaysSales.toLocaleString()}
             </div>
@@ -40,15 +40,15 @@ const StatsCards = ({ stats, profile }: StatsProps) => {
         </Card>
 
         {/* Today's Profit */}
-        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+        <Card className="bg-card border-primary">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">
               Today's Profit
             </CardTitle>
-            <TrendingUp className="h-5 w-5 text-[#D4AF37]" />
+            <TrendingUp className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">
+            <div className="text-2xl font-bold ">
               {currencySymbol}
               {stats.todaysProfit.toLocaleString()}
             </div>
@@ -56,12 +56,12 @@ const StatsCards = ({ stats, profile }: StatsProps) => {
         </Card>
 
         {/* Credit Balance (Udhaar) */}
-        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+        <Card className="bg-card border-primary">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">
               Credit Balance (Udhaar)
             </CardTitle>
-            <CreditCard className="h-5 w-5 text-[#D4AF37]" />
+            <CreditCard className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-orange-400">
@@ -72,17 +72,15 @@ const StatsCards = ({ stats, profile }: StatsProps) => {
         </Card>
 
         {/* Total Products */}
-        <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+        <Card className="bg-card border-primary">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">
               Total Products
             </CardTitle>
-            <Package className="h-5 w-5 text-[#D4AF37]" />
+            <Package className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">
-              {stats.totalProducts}
-            </div>
+            <div className="text-2xl font-bold ">{stats.totalProducts}</div>
           </CardContent>
         </Card>
       </div>

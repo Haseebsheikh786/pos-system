@@ -179,19 +179,17 @@ export default function InventoryTab({
         {summaryCards.map((card, index) => {
           const Icon = card.icon;
           return (
-            <Card key={index} className={`bg-[#0a0a0a] border-[#D4AF37]`}>
+            <Card key={index} className={`bg-card border-primary`}>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-gray-400">
                   {card.title}
                 </CardTitle>
-                <div className="p-2 rounded-full bg-[#1a1a1a]">
-                  <Icon className="h-4 w-4 text-[#D4AF37]" />
+                <div className="p-2 rounded-full bg-dark-gray">
+                  <Icon className="h-4 w-4 text-primary" />
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white mb-1">
-                  {card.value}
-                </div>
+                <div className="text-2xl font-bold  mb-1">{card.value}</div>
                 <p className="text-sm text-gray-400">{card.description}</p>
               </CardContent>
             </Card>
@@ -200,7 +198,7 @@ export default function InventoryTab({
       </div>
 
       {/* Filters */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardContent className="pt-6">
           <div className="flex items-center gap-4">
             <Label className="text-gray-300">Stock Status:</Label>
@@ -208,10 +206,10 @@ export default function InventoryTab({
               value={stockFilter}
               onValueChange={(value) => setStockFilter(value as StockFilter)}
             >
-              <SelectTrigger className="w-48 bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+              <SelectTrigger className="w-48 bg-dark-gray border-primary/30 ">
                 <SelectValue placeholder="All Status" />
               </SelectTrigger>
-              <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] text-white">
+              <SelectContent className="bg-card border-primary ">
                 <SelectItem value="all">
                   All Status ({products.length})
                 </SelectItem>
@@ -230,9 +228,9 @@ export default function InventoryTab({
       </Card>
 
       {/* Stock Alert Table */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardHeader>
-          <CardTitle className="text-white">
+          <CardTitle className="">
             {stockFilter === "all"
               ? "All Products"
               : stockFilter === "out"
@@ -256,26 +254,20 @@ export default function InventoryTab({
             ) : (
               <Table>
                 <TableHeader>
-                  <TableRow className="border-[#D4AF37]/30">
-                    <TableHead className="text-[#D4AF37]">
-                      Product Name
-                    </TableHead>
-                    <TableHead className="text-[#D4AF37]">
+                  <TableRow className="border-primary/30">
+                    <TableHead className="text-primary">Product Name</TableHead>
+                    <TableHead className="text-primary">
                       Current Stock
                     </TableHead>
-                    <TableHead className="text-[#D4AF37]">
+                    <TableHead className="text-primary">
                       Minimum Stock
                     </TableHead>
-                    <TableHead className="text-[#D4AF37]">
-                      Stock Status
-                    </TableHead>
-                    <TableHead className="text-[#D4AF37]">Cost Price</TableHead>
-                    <TableHead className="text-[#D4AF37]">
+                    <TableHead className="text-primary">Stock Status</TableHead>
+                    <TableHead className="text-primary">Cost Price</TableHead>
+                    <TableHead className="text-primary">
                       Selling Price
                     </TableHead>
-                    <TableHead className="text-[#D4AF37]">
-                      Stock Value
-                    </TableHead>
+                    <TableHead className="text-primary">Stock Value</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -286,11 +278,8 @@ export default function InventoryTab({
                     const minStock = product.min_stock_level || 5;
 
                     return (
-                      <TableRow
-                        key={product.id}
-                        className="border-[#D4AF37]/30"
-                      >
-                        <TableCell className="text-white font-medium">
+                      <TableRow key={product.id} className="border-primary/30">
+                        <TableCell className=" font-medium">
                           <div>
                             {product.name || "Unnamed Product"}
                             {product.category && (

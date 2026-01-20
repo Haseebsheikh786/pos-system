@@ -40,8 +40,8 @@ export default function InventoryStats({
       title: "Total Items",
       value: loading ? "-" : stats?.totalItems || 0,
       icon: Package,
-      iconColor: "text-[#D4AF37]",
-      valueColor: "text-white",
+      iconColor: "text-primary",
+      valueColor: "",
       description: "Active products",
     },
     {
@@ -93,7 +93,7 @@ export default function InventoryStats({
       {statCards.map((stat, index) => {
         const Icon = stat.icon;
         return (
-          <Card key={index} className="bg-[#0a0a0a] border-[#D4AF37]">
+          <Card key={index} className="bg-card border-primary">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-gray-400">
                 {stat.title}

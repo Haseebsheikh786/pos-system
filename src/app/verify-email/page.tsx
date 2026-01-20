@@ -5,7 +5,7 @@ import LoadingSpinner from "@/components/ui/loading-spinner";
 
 export default function VerifyEmailPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-black">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
       <SEO
         title="Verify Your Email | FreshPrep POS Account Activation"
         description="Confirm your email address to activate your FreshPrep POS account. Check your inbox for the verification link to start your free trial and access dashboard."

@@ -183,10 +183,10 @@ export default function InvoicePreview({
   const paymentStatus = getPaymentStatus();
 
   return (
-    <DialogContent className="bg-[#0a0a0a] border-[#D4AF37] max-w-4xl max-h-[90vh] overflow-y-auto">
+    <DialogContent className="bg-card border-primary max-w-4xl max-h-[90vh] overflow-y-auto">
       <DialogHeader>
-        <DialogTitle className="text-white flex items-center gap-2">
-          <CheckCircle className="h-5 w-5 text-[#D4AF37]" />
+        <DialogTitle className=" flex items-center gap-2">
+          <CheckCircle className="h-5 w-5 text-primary" />
           Complete Invoice
         </DialogTitle>
         <DialogDescription className="text-gray-400">
@@ -214,10 +214,10 @@ export default function InvoicePreview({
 
       <div className="py-4 space-y-6" id="invoice-content">
         {/* Invoice Header */}
-        <div className="border-b border-[#D4AF37] pb-4">
+        <div className="border-b border-primary pb-4">
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-2xl font-bold text-[#D4AF37]">INVOICE</h2>
+              <h2 className="text-2xl font-bold text-primary">INVOICE</h2>
               <div className="mt-2 space-y-1">
                 <p className="text-gray-400 text-sm">
                   Invoice #{invoiceNumber}
@@ -232,50 +232,47 @@ export default function InvoicePreview({
         <div className="grid grid-cols-2 gap-6">
           <div>
             <Label className="text-gray-400 text-sm">Customer</Label>
-            <p className="text-white font-medium mt-1">
+            <p className=" font-medium mt-1">
               {customerName || "Walk-in Customer"}
             </p>
           </div>
           <div className="text-right">
             <Label className="text-gray-400 text-sm">Total Amount</Label>
-            <p className="text-2xl font-bold text-[#D4AF37] mt-1">
-              {currencySymbol}{total.toLocaleString()}
+            <p className="text-2xl font-bold text-primary mt-1">
+              {currencySymbol}
+              {total.toLocaleString()}
             </p>
           </div>
         </div>
 
         {/* Invoice Items */}
-        <div className="border border-[#D4AF37]/30 rounded-lg overflow-hidden">
+        <div className="border border-primary/30 rounded-lg overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-[#D4AF37]/30 bg-[#1a1a1a]">
-                <TableHead className="text-[#D4AF37]">Item</TableHead>
-                <TableHead className="text-[#D4AF37] text-right">
-                  Price
-                </TableHead>
-                <TableHead className="text-[#D4AF37] text-right">Qty</TableHead>
-                <TableHead className="text-[#D4AF37] text-right">
-                  Total
-                </TableHead>
+              <TableRow className="border-primary/30 bg-dark-gray">
+                <TableHead className="text-primary">Item</TableHead>
+                <TableHead className="text-primary text-right">Price</TableHead>
+                <TableHead className="text-primary text-right">Qty</TableHead>
+                <TableHead className="text-primary text-right">Total</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {billItems.map((item) => (
                 <TableRow
                   key={item.id}
-                  className="border-[#D4AF37]/30 hover:bg-[#1a1a1a]"
+                  className="border-primary/30 hover:bg-dark-gray"
                 >
-                  <TableCell className="text-white">
-                    {item.productName}
-                  </TableCell>
+                  <TableCell className="">{item.productName}</TableCell>
                   <TableCell className="text-gray-300 text-right">
-                    {currencySymbol}{item.price}
+                    {currencySymbol}
+                    {item.price}
                   </TableCell>
                   <TableCell className="text-gray-300 text-right">
                     {item.quantity}
                   </TableCell>
-                  <TableCell className="text-white text-right">
-                    {currencySymbol}{item.total.toLocaleString()}
+                  <TableCell className=" text-right">
+                    {currencySymbol}
+                    {item.total.toLocaleString()}
                   </TableCell>
                 </TableRow>
               ))}
@@ -287,19 +284,23 @@ export default function InvoicePreview({
         <div className="space-y-2">
           <div className="flex justify-between text-gray-300">
             <span>Subtotal:</span>
-            <span>{currencySymbol}{subtotal.toLocaleString()}</span>
+            <span>
+              {currencySymbol}
+              {subtotal.toLocaleString()}
+            </span>
           </div>
-          <div className="flex justify-between text-white text-lg font-bold">
+          <div className="flex justify-between  text-lg font-bold">
             <span>Total Amount:</span>
-            <span className="text-[#D4AF37]">{currencySymbol}{total.toLocaleString()}</span>
+            <span className="text-primary">
+              {currencySymbol}
+              {total.toLocaleString()}
+            </span>
           </div>
         </div>
 
         {/* Payment Section */}
-        <div className="border-t border-[#D4AF37]/30 pt-4">
-          <h3 className="text-lg font-semibold text-white mb-4">
-            Payment Details
-          </h3>
+        <div className="border-t border-primary/30 pt-4">
+          <h3 className="text-lg font-semibold  mb-4">Payment Details</h3>
 
           {/* Payment Amount */}
           <div className="grid   gap-4 mb-4">
@@ -317,7 +318,7 @@ export default function InvoicePreview({
                 max={total}
                 value={paymentAmount}
                 onChange={(e) => setPaymentAmount(e.target.value)}
-                className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+                className="bg-dark-gray border-primary/30 "
                 disabled={isSaving || saving}
               />
               <p className="text-xs text-gray-400 mt-1">
@@ -327,18 +328,20 @@ export default function InvoicePreview({
           </div>
 
           {/* Payment Summary */}
-          <div className="bg-[#1a1a1a] border border-[#D4AF37]/30 rounded-lg p-4 mb-6">
+          <div className="bg-dark-gray border border-primary/30 rounded-lg p-4 mb-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-gray-400 text-sm">Total Amount</p>
-                <p className="text-white text-xl font-bold">
-                  {currencySymbol}{total.toLocaleString()}
+                <p className=" text-xl font-bold">
+                  {currencySymbol}
+                  {total.toLocaleString()}
                 </p>
               </div>
               <div>
                 <p className="text-gray-400 text-sm">Payment</p>
-                <p className="text-white text-xl font-bold">
-                  {currencySymbol}{(parseFloat(paymentAmount) || 0).toLocaleString()}
+                <p className=" text-xl font-bold">
+                  {currencySymbol}
+                  {(parseFloat(paymentAmount) || 0).toLocaleString()}
                 </p>
               </div>
               <div>
@@ -350,7 +353,8 @@ export default function InvoicePreview({
                       : "text-green-400"
                   }`}
                 >
-                  {currencySymbol}{(total - (parseFloat(paymentAmount) || 0)).toLocaleString()}
+                  {currencySymbol}
+                  {(total - (parseFloat(paymentAmount) || 0)).toLocaleString()}
                 </p>
               </div>
               <div>
@@ -364,11 +368,11 @@ export default function InvoicePreview({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3 pt-4 border-t border-[#D4AF37]/30">
+        <div className="flex gap-3 pt-4 border-t border-primary/30">
           <Button
             onClick={onDownload}
             variant="outline"
-            className="flex-1 border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10"
+            className="flex-1 border-primary text-primary hover:bg-primary/10"
             disabled={isSaving || saving}
           >
             <Download className="mr-2 h-4 w-4" />
@@ -376,7 +380,7 @@ export default function InvoicePreview({
           </Button>
           <Button
             onClick={handleSaveInvoice}
-            className="flex-1 bg-[#8E7525] hover:bg-[#A38A2E] text-white"
+            className="flex-1 "
             disabled={isSaving || saving}
           >
             {isSaving || saving ? (
@@ -394,7 +398,7 @@ export default function InvoicePreview({
           <Button
             onClick={onClose}
             variant="outline"
-            className="flex-1 border-gray-600 text-gray-300 hover:text-white"
+            className="flex-1 border-gray-600 text-gray-300 hover:"
             disabled={isSaving || saving}
           >
             Cancel

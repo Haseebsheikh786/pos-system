@@ -2,74 +2,24 @@
  @tailwind components;
  @tailwind utilities;
 
- @custom-variant dark (&:is(.dark *));
-
  :root {
-   /* Custom black and gold theme for POS system */
-   --background: #000000;
-   --foreground: #e5e5e5;
-   --card: #0a0a0a;
-   --card-foreground: #e5e5e5;
-   --popover: #0a0a0a;
-   --popover-foreground: #e5e5e5;
-   --primary: #d4af37;
-   --primary-foreground: #000000;
-   --secondary: #1a1a1a;
-   --secondary-foreground: #ffffff;
-   --muted: #1a1a1a;
-   --muted-foreground: #a0a0a0;
-   --accent: #d4af37;
-   --accent-foreground: #000000;
-   --destructive: oklch(0.577 0.245 27.325);
-   --destructive-foreground: oklch(0.985 0 0);
-   --border: #d4af37;
-   --input: #1a1a1a;
-   --ring: #d4af37;
-   --chart-1: oklch(0.646 0.222 41.116);
-   --chart-2: oklch(0.6 0.118 184.704);
-   --chart-3: oklch(0.398 0.07 227.392);
-   --chart-4: oklch(0.828 0.189 84.429);
-   --chart-5: oklch(0.769 0.188 70.08);
+   --background: 0 0% 0%;
+   --foreground: 0 0% 100%;
+   --text-background: 0 0% 0%;
+   --card: 0 0% 4%;
+   --card-foreground: 0 0% 95%;
+   --primary: 45 65% 52%;
+   --primary-foreground: 0 0% 0%;
+   --button-bg: 44 65% 35%;
+   --muted-foreground: 0 0% 65%;
+   --gray-300: 210 16% 86%;
+   --gray-400: 210 12% 71%;
+   --gray-700: 210 14% 35%;
+   --gray-800: 220 14% 17%;
+   --dark-gray: 0 0% 10%;
+   --border: 45 65% 52%;
+   --ring: 45 65% 52%;
    --radius: 0.5rem;
-
-   /* Button specific colors */
-   --button-bg: #8e7525;
-   --button-hover: #a38a2e;
- }
-
- .dark {
-   --background: oklch(0.145 0 0);
-   --foreground: oklch(0.985 0 0);
-   --card: oklch(0.145 0 0);
-   --card-foreground: oklch(0.985 0 0);
-   --popover: oklch(0.145 0 0);
-   --popover-foreground: oklch(0.985 0 0);
-   --primary: oklch(0.985 0 0);
-   --primary-foreground: oklch(0.205 0 0);
-   --secondary: oklch(0.269 0 0);
-   --secondary-foreground: oklch(0.985 0 0);
-   --muted: oklch(0.269 0 0);
-   --muted-foreground: oklch(0.708 0 0);
-   --accent: oklch(0.269 0 0);
-   --accent-foreground: oklch(0.985 0 0);
-   --destructive: oklch(0.396 0.141 25.723);
-   --destructive-foreground: oklch(0.637 0.237 25.331);
-   --border: oklch(0.269 0 0);
-   --input: oklch(0.269 0 0);
-   --ring: oklch(0.439 0 0);
-   --chart-1: oklch(0.488 0.243 264.376);
-   --chart-2: oklch(0.696 0.17 162.48);
-   --chart-3: oklch(0.769 0.188 70.08);
-   --chart-4: oklch(0.627 0.265 303.9);
-   --chart-5: oklch(0.645 0.246 16.439);
-   --sidebar: oklch(0.205 0 0);
-   --sidebar-foreground: oklch(0.985 0 0);
-   --sidebar-primary: oklch(0.488 0.243 264.376);
-   --sidebar-primary-foreground: oklch(0.985 0 0);
-   --sidebar-accent: oklch(0.269 0 0);
-   --sidebar-accent-foreground: oklch(0.985 0 0);
-   --sidebar-border: oklch(0.269 0 0);
-   --sidebar-ring: oklch(0.439 0 0);
  }
 
  @theme inline {
@@ -119,8 +69,7 @@
    }
 
    body {
-     background-color: var(--background);
-     color: var(--foreground);
+     @apply bg-background text-foreground;
    }
 
 

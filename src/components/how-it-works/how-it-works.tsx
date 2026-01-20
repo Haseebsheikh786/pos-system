@@ -35,9 +35,9 @@ function HowItWorksPage() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto mb-8">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
-              Start in <span className="text-[#D4AF37]">10 Minutes</span>, Not
-              10 Days
+            <h1 className="text-5xl md:text-6xl font-bold  mb-6 leading-tight text-balance">
+              Start in <span className="text-primary">10 Minutes</span>, Not 10
+              Days
             </h1>
             <p className="text-xl text-gray-400 leading-relaxed text-pretty">
               Get started in minutes with our simple three-step process. No
@@ -56,22 +56,20 @@ function HowItWorksPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="order-2 md:order-1">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-black font-bold text-xl">1</span>
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-background font-bold text-xl">1</span>
                   </div>
-                  <h2 className="text-3xl font-bold text-white">
-                    Sign Up Free
-                  </h2>
+                  <h2 className="text-3xl font-bold ">Sign Up Free</h2>
                 </div>
                 <p className="text-gray-400 text-lg leading-relaxed ml-16">
                   Just enter your name and email. Start your 14-day free trial
                   instantly.
                 </p>
               </div>
-              <Card className="bg-[#0A0A0A] border-[#D4AF37] order-1 md:order-2">
+              <Card className="bg-card border-primary order-1 md:order-2">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-center">
-                    <UserPlus className="text-[#D4AF37]" size={80} />
+                    <UserPlus className="text-primary" size={80} />
                   </div>
                 </CardContent>
               </Card>
@@ -79,11 +77,11 @@ function HowItWorksPage() {
 
             {/* Step 2 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+              <Card className="bg-card border-primary">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-center">
                     <svg
-                      className="w-20 h-20 text-[#D4AF37]"
+                      className="w-20 h-20 text-primary"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -94,12 +92,10 @@ function HowItWorksPage() {
               </Card>
               <div>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-black font-bold text-xl">2</span>
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-background font-bold text-xl">2</span>
                   </div>
-                  <h2 className="text-3xl font-bold text-white">
-                    Setup Your Shop
-                  </h2>
+                  <h2 className="text-3xl font-bold ">Setup Your Shop</h2>
                 </div>
                 <p className="text-gray-400 text-lg leading-relaxed ml-16">
                   Add shop name, phone, address, and logo. These will appear on
@@ -112,22 +108,20 @@ function HowItWorksPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="order-2 md:order-1">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-black font-bold text-xl">3</span>
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-background font-bold text-xl">3</span>
                   </div>
-                  <h2 className="text-3xl font-bold text-white">
-                    Add Your Products
-                  </h2>
+                  <h2 className="text-3xl font-bold ">Add Your Products</h2>
                 </div>
                 <p className="text-gray-400 text-lg leading-relaxed ml-16">
                   Type product names and prices. Or upload Excel if you have
                   many.
                 </p>
               </div>
-              <Card className="bg-[#0A0A0A] border-[#D4AF37] order-1 md:order-2">
+              <Card className="bg-card border-primary order-1 md:order-2">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-center">
-                    <Settings className="text-[#D4AF37]" size={80} />
+                    <Settings className="text-primary" size={80} />
                   </div>
                 </CardContent>
               </Card>
@@ -135,21 +129,19 @@ function HowItWorksPage() {
 
             {/* Step 4 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+              <Card className="bg-card border-primary">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-center">
-                    <Rocket className="text-[#D4AF37]" size={80} />
+                    <Rocket className="text-primary" size={80} />
                   </div>
                 </CardContent>
               </Card>
               <div>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-black font-bold text-xl">4</span>
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-background font-bold text-xl">4</span>
                   </div>
-                  <h2 className="text-3xl font-bold text-white">
-                    Create First Bill
-                  </h2>
+                  <h2 className="text-3xl font-bold ">Create First Bill</h2>
                 </div>
                 <p className="text-gray-400 text-lg leading-relaxed ml-16">
                   Click products → Set quantity → Add customer → Print/Send
@@ -160,21 +152,19 @@ function HowItWorksPage() {
           </div>
 
           {/* Features Overview */}
-          <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8 md:p-12 mb-12">
-            <h2 className="text-3xl font-bold text-white mb-8 text-center">
+          <div className="bg-card border border-primary rounded-lg p-8 md:p-12 mb-12">
+            <h2 className="text-3xl font-bold  mb-8 text-center">
               What You Get Immediately
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {features.map((feature, index) => (
                 <div key={index} className="flex items-start gap-3">
                   <CheckCircle2
-                    className="text-[#D4AF37] flex-shrink-0 mt-1"
+                    className="text-primary flex-shrink-0 mt-1"
                     size={20}
                   />
                   <div>
-                    <h3 className="text-white font-semibold mb-1">
-                      {feature.title}
-                    </h3>
+                    <h3 className=" font-semibold mb-1">{feature.title}</h3>
                     <p className="text-gray-400 text-sm">
                       {feature.description}
                     </p>
@@ -189,7 +179,7 @@ function HowItWorksPage() {
                 <p className="text-gray-300 mb-2 font-medium">
                   "Common question: 'Can my assistant also use it?'"
                 </p>
-                <p className="text-[#D4AF37] font-semibold">
+                <p className="text-primary font-semibold">
                   Answer: Yes! Add multiple users free.
                 </p>
               </div>
@@ -198,17 +188,12 @@ function HowItWorksPage() {
 
           {/* CTA */}
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Ready to Get Started?
-            </h2>
+            <h2 className="text-3xl font-bold  mb-4">Ready to Get Started?</h2>
             <p className="text-gray-400 mb-8 text-lg">
               Join thousands of businesses using our POS system
             </p>
             <Link href="/signup">
-              <Button
-                size="lg"
-                className="bg-[#8E7525] hover:bg-[#A38A2E] text-white text-lg px-8 py-6"
-              >
+              <Button size="lg" className=" text-lg px-8 py-6">
                 Start Your Free Trial
                 <ArrowRight className="ml-2" size={20} />
               </Button>

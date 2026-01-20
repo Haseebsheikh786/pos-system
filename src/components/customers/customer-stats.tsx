@@ -33,7 +33,7 @@ export default function CustomerStats({
     {
       title: "Total Customers",
       value: loading ? "-" : totalCustomers,
-      color: "text-white",
+      color: "",
       description: "",
     },
     {
@@ -58,7 +58,7 @@ export default function CustomerStats({
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6">
       {stats.map((stat, index) => (
-        <Card key={index} className="bg-[#0a0a0a] border-[#D4AF37]">
+        <Card key={index} className="bg-card border-primary">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">
               {stat.title}

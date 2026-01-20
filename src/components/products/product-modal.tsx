@@ -33,9 +33,9 @@ export default function ProductModal({
   };
 
   return (
-    <DialogContent className="bg-[#0a0a0a] border-[#D4AF37] max-h-[90vh] overflow-y-auto">
+    <DialogContent className="bg-card border-primary max-h-[90vh] overflow-y-auto">
       <DialogHeader>
-        <DialogTitle className="text-white">{title}</DialogTitle>
+        <DialogTitle className="">{title}</DialogTitle>
       </DialogHeader>
       <div className="space-y-4 py-4">
         <div className="grid grid-cols-1 gap-4">
@@ -48,7 +48,7 @@ export default function ProductModal({
               placeholder="Enter product name"
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="bg-dark-gray border-primary/30 "
               required
             />
           </div>
@@ -61,7 +61,7 @@ export default function ProductModal({
               placeholder="Enter barcode"
               value={formData.barcode}
               onChange={(e) => handleInputChange("barcode", e.target.value)}
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="bg-dark-gray border-primary/30 "
               required
             />
           </div>
@@ -80,7 +80,7 @@ export default function ProductModal({
               placeholder="Enter selling price"
               value={formData.price}
               onChange={(e) => handleInputChange("price", e.target.value)}
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="bg-dark-gray border-primary/30 "
               required
             />
           </div>
@@ -96,7 +96,7 @@ export default function ProductModal({
               placeholder="Enter cost price"
               value={formData.cost_price}
               onChange={(e) => handleInputChange("cost_price", e.target.value)}
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="bg-dark-gray border-primary/30 "
             />
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function ProductModal({
               placeholder="Enter stock quantity"
               value={formData.stock}
               onChange={(e) => handleInputChange("stock", e.target.value)}
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="bg-dark-gray border-primary/30 "
               required
             />
           </div>
@@ -130,7 +130,7 @@ export default function ProductModal({
               onChange={(e) =>
                 handleInputChange("min_stock_level", e.target.value)
               }
-              className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+              className="bg-dark-gray border-primary/30 "
               required
             />
           </div>
@@ -140,16 +140,12 @@ export default function ProductModal({
         <Button
           variant="outline"
           onClick={onCancel}
-          className="border-[#D4AF37]/30 text-gray-300"
+          className="border-primary/30 text-gray-300"
           disabled={isSubmitting}
         >
           Cancel
         </Button>
-        <Button
-          onClick={onSubmit}
-          className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
-          disabled={isSubmitting}
-        >
+        <Button onClick={onSubmit} className="" disabled={isSubmitting}>
           {isSubmitting ? "Processing..." : submitButtonText}
         </Button>
       </DialogFooter>

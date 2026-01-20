@@ -43,13 +43,13 @@ export function PosSidebar({ onNavigate }: PosSidebarProps = {}) {
   };
 
   return (
-    <div className="flex h-screen w-64 flex-col bg-black border-r border-[#D4AF37]">
+    <div className="flex h-screen w-64 flex-col bg-background border-r border-primary">
       {/* Logo */}
-      <div className="flex h-16 items-center gap-2 border-b border-[#D4AF37] px-6">
-        <div className="w-8 h-8 bg-[#D4AF37] rounded flex items-center justify-center">
-          <span className="text-black font-bold text-xl">P</span>
+      <div className="flex h-16 items-center gap-2 border-b border-primary px-6">
+        <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
+          <span className="text-background font-bold text-xl">P</span>
         </div>
-        <span className="text-white font-bold text-xl">POS System</span>
+        <span className=" font-bold text-xl">POS System</span>
       </div>
 
       {/* Navigation */}
@@ -64,8 +64,8 @@ export function PosSidebar({ onNavigate }: PosSidebarProps = {}) {
               onClick={onNavigate}
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 isActive
-                  ? "bg-[#D4AF37] text-black"
-                  : "text-gray-300 hover:bg-[#1a1a1a] hover:text-[#D4AF37]"
+                  ? "bg-primary text-background"
+                  : "text-gray-300 hover:bg-dark-gray hover:text-primary"
               }`}
             >
               <Icon className="h-5 w-5" />
@@ -76,10 +76,10 @@ export function PosSidebar({ onNavigate }: PosSidebarProps = {}) {
       </nav>
 
       {/* Logout */}
-      <div className="border-t border-[#D4AF37] p-3">
+      <div className="border-t border-primary p-3">
         <Button
           variant="ghost"
-          className="w-full justify-start text-gray-300 hover:bg-[#1a1a1a] hover:text-red-500"
+          className="w-full justify-start text-gray-300 hover:bg-dark-gray hover:text-red-500"
           onClick={handleLogout}
         >
           <LogOut className="mr-3 h-5 w-5" />

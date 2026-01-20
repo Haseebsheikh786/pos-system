@@ -87,8 +87,8 @@ const FAQ = () => {
     <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
-            Frequently Asked <span className="text-[#D4AF37]">Questions</span>
+          <h1 className="text-5xl md:text-6xl font-bold  mb-6 leading-tight text-balance">
+            Frequently Asked <span className="text-primary">Questions</span>
           </h1>
           <p className="text-xl text-gray-400 leading-relaxed text-pretty">
             Find answers to common questions about our POS system. Can't find
@@ -100,18 +100,16 @@ const FAQ = () => {
         <div className="space-y-8">
           {faqs.map((section, idx) => (
             <div key={idx}>
-              <h2 className="text-2xl font-bold text-white mb-4">
-                {section.category}
-              </h2>
-              <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+              <h2 className="text-2xl font-bold  mb-4">{section.category}</h2>
+              <Card className="bg-card border-primary">
                 <Accordion type="single" collapsible className="w-full">
                   {section.questions.map((faq, qIdx) => (
                     <AccordionItem
                       key={qIdx}
                       value={`item-${idx}-${qIdx}`}
-                      className="border-[#D4AF37]/30"
+                      className="border-primary/30"
                     >
-                      <AccordionTrigger className="text-left text-white hover:text-[#D4AF37] px-6 py-4">
+                      <AccordionTrigger className="text-left  hover:text-primary px-6 py-4">
                         {faq.question}
                       </AccordionTrigger>
                       <AccordionContent className="text-gray-400 px-6 pb-4 leading-relaxed">
@@ -126,22 +124,18 @@ const FAQ = () => {
         </div>
 
         {/* Still Have Questions CTA */}
-        <Card className="bg-[#0A0A0A] border-[#D4AF37] mt-12">
+        <Card className="bg-card border-primary mt-12">
           <div className="p-8 text-center">
-            <div className="w-16 h-16 bg-[#D4AF37]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <MessageCircle className="text-[#D4AF37]" size={32} />
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <MessageCircle className="text-primary" size={32} />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">
-              Still Have Questions?
-            </h3>
+            <h3 className="text-2xl font-bold  mb-2">Still Have Questions?</h3>
             <p className="text-gray-400 mb-6 leading-relaxed">
               Our support team is here to help. Get in touch and we'll answer
               your questions.
             </p>
             <Link href="/contact">
-              <Button className="bg-[#8E7525] hover:bg-[#A38A2E] text-white">
-                Contact Support
-              </Button>
+              <Button className="">Contact Support</Button>
             </Link>
           </div>
         </Card>

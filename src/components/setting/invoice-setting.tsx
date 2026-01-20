@@ -15,10 +15,10 @@ export default function InvoiceSettings({
   onInvoiceFooterChange,
 }: InvoiceSettingsProps) {
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+    <Card className="bg-card border-primary">
       <CardHeader className="flex flex-row items-center gap-2">
-        <FileText className="h-5 w-5 text-[#D4AF37]" />
-        <CardTitle className="text-white">Invoice Settings</CardTitle>
+        <FileText className="h-5 w-5 text-primary" />
+        <CardTitle className="">Invoice Settings</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
@@ -30,7 +30,7 @@ export default function InvoiceSettings({
             value={invoiceFooterText}
             onChange={(e) => onInvoiceFooterChange(e.target.value)}
             placeholder="Thank you for your business!"
-            className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white min-h-[100px]"
+            className="bg-dark-gray border-primary/30  min-h-[100px]"
           />
           <p className="text-xs text-gray-500">
             This message will appear at the bottom of all invoices.

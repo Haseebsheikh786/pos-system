@@ -301,15 +301,13 @@ export default function BillingPage() {
     <div className="p-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">
-          Billing System (POS)
-        </h1>
+        <h1 className="text-3xl font-bold  mb-2">Billing System (POS)</h1>
         <p className="text-gray-400">Create invoices and process payments.</p>
       </div>
 
       {/* Loading States */}
       {(productsLoading || customersLoading) && (
-        <div className="mb-6 p-4 bg-[#1a1a1a] rounded-lg border border-[#D4AF37]/30">
+        <div className="mb-6 p-4 bg-dark-gray rounded-lg border border-primary/30">
           <p className="text-gray-400">
             Loading {productsLoading ? "products" : ""}{" "}
             {productsLoading && customersLoading ? "and" : ""}{" "}
@@ -322,9 +320,9 @@ export default function BillingPage() {
         {/* Left: Add Items */}
         <div className="lg:col-span-2 space-y-6">
           {/* Add Product Section */}
-          <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+          <Card className="bg-card border-primary">
             <CardHeader>
-              <CardTitle className="text-white">Add Products to Bill</CardTitle>
+              <CardTitle className="">Add Products to Bill</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-3">
@@ -337,7 +335,7 @@ export default function BillingPage() {
                     onValueChange={setSelectedProduct}
                     disabled={productsLoading}
                   >
-                    <SelectTrigger className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+                    <SelectTrigger className="bg-dark-gray border-primary/30 ">
                       <SelectValue
                         placeholder={
                           productsLoading
@@ -348,7 +346,7 @@ export default function BillingPage() {
                         }
                       />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] max-h-60">
+                    <SelectContent className="bg-card border-primary max-h-60">
                       {availableProducts.length === 0 ? (
                         <SelectItem
                           value="no-products"
@@ -364,7 +362,7 @@ export default function BillingPage() {
                           <SelectItem
                             key={product.id}
                             value={product.id}
-                            className="text-white hover:bg-[#1a1a1a]"
+                            className=" hover:bg-dark-gray"
                           >
                             <div className="flex flex-col">
                               <span>{product.name}</span>
@@ -393,7 +391,7 @@ export default function BillingPage() {
                       min="1"
                       value={quantity}
                       onChange={(e) => setQuantity(e.target.value)}
-                      className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white"
+                      className="bg-dark-gray border-primary/30 "
                       onKeyPress={(e) => {
                         if (e.key === "Enter") {
                           addItemToBill();
@@ -402,7 +400,7 @@ export default function BillingPage() {
                     />
                     <Button
                       onClick={addItemToBill}
-                      className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
+                      className=""
                       disabled={!selectedProduct}
                     >
                       <Plus className="h-4 w-4" />
@@ -426,9 +424,9 @@ export default function BillingPage() {
 
         {/* Right: Bill Summary */}
         <div className="space-y-6">
-          <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+          <Card className="bg-card border-primary">
             <CardHeader>
-              <CardTitle className="text-white">Customer Info</CardTitle>
+              <CardTitle className="">Customer Info</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -440,7 +438,7 @@ export default function BillingPage() {
                   onValueChange={handleCustomerSelect}
                   disabled={customersLoading}
                 >
-                  <SelectTrigger className="bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+                  <SelectTrigger className="bg-dark-gray border-primary/30 ">
                     <SelectValue
                       placeholder={
                         customersLoading
@@ -449,18 +447,15 @@ export default function BillingPage() {
                       }
                     />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] max-h-60">
-                    <SelectItem
-                      value="walk-in"
-                      className="text-white hover:bg-[#1a1a1a]"
-                    >
+                  <SelectContent className="bg-card border-primary max-h-60">
+                    <SelectItem value="walk-in" className=" hover:bg-dark-gray">
                       Walk-in Customer
                     </SelectItem>
                     {customers.map((customer) => (
                       <SelectItem
                         key={customer.id}
                         value={customer.id}
-                        className="text-white hover:bg-[#1a1a1a]"
+                        className=" hover:bg-dark-gray"
                       >
                         <div className="flex flex-col">
                           <span>{customer.name}</span>
@@ -485,8 +480,8 @@ export default function BillingPage() {
                   <Label className="text-gray-300 mb-2 block">
                     Selected Customer
                   </Label>
-                  <div className="p-3 bg-[#1a1a1a] rounded-lg border border-[#D4AF37]/30">
-                    <p className="text-white">{customerName}</p>
+                  <div className="p-3 bg-dark-gray rounded-lg border border-primary/30">
+                    <p className="">{customerName}</p>
                     <p className="text-gray-400 text-sm mt-1">
                       {customers.find((c) => c.id === selectedCustomer)
                         ?.phone || ""}
@@ -505,9 +500,9 @@ export default function BillingPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+          <Card className="bg-card border-primary">
             <CardHeader>
-              <CardTitle className="text-white">Bill Summary</CardTitle>
+              <CardTitle className="">Bill Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -527,7 +522,7 @@ export default function BillingPage() {
                 ))}
               </div>
 
-              <div className="h-px bg-[#D4AF37]/30" />
+              <div className="h-px bg-primary/30" />
 
               <div className="flex justify-between text-gray-300">
                 <span>Subtotal:</span>
@@ -543,10 +538,10 @@ export default function BillingPage() {
                   {tax}
                 </span>
               </div>
-              <div className="h-px bg-[#D4AF37]/30" />
-              <div className="flex justify-between text-white text-xl font-bold">
+              <div className="h-px bg-primary/30" />
+              <div className="flex justify-between  text-xl font-bold">
                 <span>Total:</span>
-                <span className="text-[#D4AF37]">
+                <span className="text-primary">
                   {currencySymbol}
                   {total.toLocaleString()}
                 </span>
@@ -561,7 +556,7 @@ export default function BillingPage() {
               <div className="space-y-2 pt-4">
                 <Button
                   onClick={handleGenerateInvoice}
-                  className="w-full bg-[#8E7525] hover:bg-[#A38A2E] text-white"
+                  className="w-full "
                   disabled={billItems.length === 0}
                 >
                   Generate Invoice
@@ -571,7 +566,7 @@ export default function BillingPage() {
                   <Button
                     onClick={handleClearBill}
                     variant="outline"
-                    className="w-full border-[#D4AF37]/30 text-gray-300 hover:text-white"
+                    className="w-full border-primary/30 text-gray-300 hover:"
                   >
                     Clear Bill
                   </Button>

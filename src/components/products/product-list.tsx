@@ -38,18 +38,18 @@ export default function ProductList({
   };
 
   return (
-    <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+    <Card className="bg-card border-primary">
       <CardContent className="pt-6">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="border-[#D4AF37]/30">
-                <TableHead className="text-[#D4AF37]">Name</TableHead>
-                <TableHead className="text-[#D4AF37]">Price</TableHead>
-                <TableHead className="text-[#D4AF37]">Cost</TableHead>
-                <TableHead className="text-[#D4AF37]">Barcode</TableHead>
-                <TableHead className="text-[#D4AF37]">Stock</TableHead>
-                <TableHead className="text-[#D4AF37] text-right">
+              <TableRow className="border-primary/30">
+                <TableHead className="text-primary">Name</TableHead>
+                <TableHead className="text-primary">Price</TableHead>
+                <TableHead className="text-primary">Cost</TableHead>
+                <TableHead className="text-primary">Barcode</TableHead>
+                <TableHead className="text-primary">Stock</TableHead>
+                <TableHead className="text-primary text-right">
                   Actions
                 </TableHead>
               </TableRow>
@@ -68,13 +68,11 @@ export default function ProductList({
                 products.map((product) => (
                   <TableRow
                     key={product.id}
-                    className="border-[#D4AF37]/30 hover:bg-[#1a1a1a]"
+                    className="border-primary/30 hover:bg-dark-gray"
                   >
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="text-white font-medium">
-                          {product.name}
-                        </span>
+                        <span className=" font-medium">{product.name}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-gray-300">
@@ -89,7 +87,7 @@ export default function ProductList({
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="text-white font-medium">
+                        <span className=" font-medium">
                           {product.barcode || "-"}
                         </span>
                       </div>
@@ -112,7 +110,7 @@ export default function ProductList({
                           variant="ghost"
                           size="sm"
                           onClick={() => onEdit(product)}
-                          className="text-[#D4AF37] hover:bg-[#D4AF37]/10"
+                          className="text-primary hover:bg-primary/10"
                           title="Edit"
                         >
                           <Pencil className="h-4 w-4" />

@@ -204,19 +204,17 @@ export default function PaymentsDuesTab({
         {summaryCards.map((card, index) => {
           const Icon = card.icon;
           return (
-            <Card key={index} className={`bg-[#0a0a0a] border-[#D4AF37]`}>
+            <Card key={index} className={`bg-card border-primary`}>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-gray-400">
                   {card.title}
                 </CardTitle>
-                <div className="p-2 rounded-full bg-[#1a1a1a]">
-                  <Icon className="h-4 w-4 text-[#D4AF37]" />
+                <div className="p-2 rounded-full bg-dark-gray">
+                  <Icon className="h-4 w-4 text-primary" />
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white mb-1">
-                  {card.value}
-                </div>
+                <div className="text-2xl font-bold  mb-1">{card.value}</div>
                 <p className="text-sm text-gray-400">{card.description}</p>
               </CardContent>
             </Card>
@@ -225,16 +223,16 @@ export default function PaymentsDuesTab({
       </div>
 
       {/* Filters */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div className="flex items-center gap-2">
               <Label className="text-gray-300">Customer:</Label>
               <Select value={customerFilter} onValueChange={setCustomerFilter}>
-                <SelectTrigger className="w-48 bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+                <SelectTrigger className="w-48 bg-dark-gray border-primary/30 ">
                   <SelectValue placeholder="All Customers" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] text-white">
+                <SelectContent className="bg-card border-primary ">
                   <SelectItem value="all">
                     All Customers ({invoices.length})
                   </SelectItem>
@@ -251,10 +249,10 @@ export default function PaymentsDuesTab({
             <div className="flex items-center gap-2">
               <Label className="text-gray-300">Status:</Label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-48 bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+                <SelectTrigger className="w-48 bg-dark-gray border-primary/30 ">
                   <SelectValue placeholder="All Status" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] text-white">
+                <SelectContent className="bg-card border-primary ">
                   <SelectItem value="all">
                     All Status ({invoices.length})
                   </SelectItem>
@@ -285,9 +283,9 @@ export default function PaymentsDuesTab({
       </Card>
 
       {/* Payments Table (All Invoices) */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37]">
+      <Card className="bg-card border-primary">
         <CardHeader>
-          <CardTitle className="text-white">
+          <CardTitle className="">
             {statusFilter === "all"
               ? "All Invoices"
               : statusFilter === "paid"
@@ -313,34 +311,30 @@ export default function PaymentsDuesTab({
             ) : (
               <Table>
                 <TableHeader>
-                  <TableRow className="border-[#D4AF37]/30">
-                    <TableHead className="text-[#D4AF37]">Invoice #</TableHead>
-                    <TableHead className="text-[#D4AF37]">
+                  <TableRow className="border-primary/30">
+                    <TableHead className="text-primary">Invoice #</TableHead>
+                    <TableHead className="text-primary">
                       Customer Name
                     </TableHead>
-                    <TableHead className="text-[#D4AF37]">
+                    <TableHead className="text-primary">
                       Invoice Total
                     </TableHead>
-                    <TableHead className="text-[#D4AF37]">
-                      Paid Amount
-                    </TableHead>
-                    <TableHead className="text-[#D4AF37]">Due Amount</TableHead>
-                    <TableHead className="text-[#D4AF37]">
-                      Invoice Date
-                    </TableHead>
-                    <TableHead className="text-[#D4AF37]">Status</TableHead>
+                    <TableHead className="text-primary">Paid Amount</TableHead>
+                    <TableHead className="text-primary">Due Amount</TableHead>
+                    <TableHead className="text-primary">Invoice Date</TableHead>
+                    <TableHead className="text-primary">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredInvoices.map((invoice) => (
                     <TableRow
                       key={invoice.id}
-                      className="border-[#D4AF37]/30 hover:bg-[#1a1a1a] cursor-pointer"
+                      className="border-primary/30 hover:bg-dark-gray cursor-pointer"
                       onClick={() => {
                         router.push(`/dashboard/invoices/${invoice.id}`);
                       }}
                     >
-                      <TableCell className="text-white font-medium">
+                      <TableCell className=" font-medium">
                         {invoice.invoice_number ||
                           `INV-${invoice.id.slice(0, 8)}`}
                       </TableCell>

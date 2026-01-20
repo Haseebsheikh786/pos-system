@@ -53,32 +53,30 @@ export default function ReportsPage() {
     <div className="p-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">
-          Reports & Analytics
-        </h1>
+        <h1 className="text-3xl font-bold  mb-2">Reports & Analytics</h1>
         <p className="text-gray-400">
           View sales, profit, payments, and inventory insights.
         </p>
       </div>
 
       {/* Global Controls */}
-      <Card className="bg-[#0a0a0a] border-[#D4AF37] mb-6">
+      <Card className="bg-card border-primary mb-6">
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             {/* Left Side: Date Range */}
             <div className="flex flex-col md:flex-row md:items-center gap-4">
               <div className="flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-[#D4AF37]" />
+                <Calendar className="h-5 w-5 text-primary" />
                 <Label className="text-gray-300">Date Range:</Label>
               </div>
               <Select
                 value={dateRange}
                 onValueChange={(value) => setDateRange(value as DateRange)}
               >
-                <SelectTrigger className="w-64 bg-[#1a1a1a] border-[#D4AF37]/30 text-white">
+                <SelectTrigger className="w-64 bg-dark-gray border-primary/30 ">
                   <SelectValue placeholder="Select date range" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#0a0a0a] border-[#D4AF37] text-white">
+                <SelectContent className="bg-card border-primary ">
                   <SelectItem value="today">Today</SelectItem>
                   <SelectItem value="yesterday">Yesterday</SelectItem>
                   <SelectItem value="last-7-days">Last 7 Days</SelectItem>
@@ -93,7 +91,7 @@ export default function ReportsPage() {
               <Button
                 variant="outline"
                 onClick={() => handleExport("pdf")}
-                className="border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10"
+                className="border-primary text-primary hover:bg-primary/10"
               >
                 <Download className="h-4 w-4 mr-2" />
                 Export PDF
@@ -109,22 +107,22 @@ export default function ReportsPage() {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <TabsList className="bg-[#0a0a0a] border  border-[#D4AF37]/30 p-1">
+        <TabsList className="bg-card border  border-primary/30 p-1">
           <TabsTrigger
             value="sales-profit"
-            className="data-[state=active]:bg-[#D4AF37] data-[state=active]:text-black text-gray-300"
+            className="data-[state=active]:bg-primary data-[state=active]:text-background text-gray-300"
           >
             Sales & Profit
           </TabsTrigger>
           <TabsTrigger
             value="payments-dues"
-            className="data-[state=active]:bg-[#D4AF37] data-[state=active]:text-black text-gray-300"
+            className="data-[state=active]:bg-primary data-[state=active]:text-background text-gray-300"
           >
             Payments & Dues
           </TabsTrigger>
           <TabsTrigger
             value="inventory"
-            className="data-[state=active]:bg-[#D4AF37] data-[state=active]:text-black text-gray-300"
+            className="data-[state=active]:bg-primary data-[state=active]:text-background text-gray-300"
           >
             Inventory Report
           </TabsTrigger>

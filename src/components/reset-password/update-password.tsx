@@ -33,7 +33,7 @@ const updatePasswordSchema = z
       .regex(/[0-9]/, "Password must contain at least one number")
       .regex(
         /[^A-Za-z0-9]/,
-        "Password must contain at least one special character"
+        "Password must contain at least one special character",
       ),
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })
@@ -82,11 +82,11 @@ function UpdatePassword() {
       if (updateError) {
         if (updateError.message.includes("weak")) {
           throw new Error(
-            "Password is too weak. Please use a stronger password."
+            "Password is too weak. Please use a stronger password.",
           );
         } else if (updateError.message.includes("session")) {
           throw new Error(
-            "Reset session expired. Please request a new password reset."
+            "Reset session expired. Please request a new password reset.",
           );
         } else {
           throw new Error(updateError.message || "Failed to update password.");
@@ -121,23 +121,23 @@ function UpdatePassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-black">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 bg-[#D4AF37] rounded flex items-center justify-center">
-            <span className="text-black font-bold text-2xl">P</span>
+          <div className="w-10 h-10 bg-primary rounded flex items-center justify-center">
+            <span className="text-background font-bold text-2xl">P</span>
           </div>
-          <span className="text-white font-bold text-2xl">POS System</span>
+          <span className=" font-bold text-2xl">POS System</span>
         </Link>{" "}
-        <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+        <Card className="bg-card border-primary">
           <CardHeader className="space-y-1">
             <div className="flex justify-center">
-              <div className="w-16 h-16 bg-[#D4AF37]/10 rounded-full flex items-center justify-center">
-                <ShieldCheck className="text-[#D4AF37]" size={32} />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <ShieldCheck className="text-primary" size={32} />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold text-white text-center">
+            <CardTitle className="text-2xl font-bold  text-center">
               Update Password
             </CardTitle>
             <CardDescription className="text-gray-400 text-center">
@@ -171,17 +171,17 @@ function UpdatePassword() {
                       handleInputChange("password");
                       register("password").onChange(e);
                     }}
-                    className={`bg-[#1A1A1A] border text-white placeholder:text-gray-500 focus:border-[#D4AF37] pr-10 ${
+                    className={`bg-dark-gray border  placeholder:text-gray-500 focus:border-primary pr-10 ${
                       errors.password
                         ? "border-red-500 focus:border-red-500"
-                        : "border-[#D4AF37]/30"
+                        : "border-primary/30"
                     }`}
                     disabled={isLoading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary"
                     disabled={isLoading}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -208,17 +208,17 @@ function UpdatePassword() {
                       handleInputChange("confirmPassword");
                       register("confirmPassword").onChange(e);
                     }}
-                    className={`bg-[#1A1A1A] border text-white placeholder:text-gray-500 focus:border-[#D4AF37] pr-10 ${
+                    className={`bg-dark-gray border  placeholder:text-gray-500 focus:border-primary pr-10 ${
                       errors.confirmPassword
                         ? "border-red-500 focus:border-red-500"
-                        : "border-[#D4AF37]/30"
+                        : "border-primary/30"
                     }`}
                     disabled={isLoading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary"
                     disabled={isLoading}
                   >
                     {showConfirmPassword ? (
@@ -237,7 +237,7 @@ function UpdatePassword() {
 
               <Button
                 type="submit"
-                className="w-full bg-[#8E7525] hover:bg-[#A38A2E] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full  disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
               >
                 {isLoading ? "Updating Password..." : "Update Password"}
@@ -249,23 +249,23 @@ function UpdatePassword() {
               Remember your password?{" "}
               <Link
                 href="/login"
-                className="text-[#D4AF37] hover:text-[#D4AF37]/80 font-semibold"
+                className="text-primary hover:text-primary/80 font-semibold"
               >
                 Sign in instead
               </Link>
             </div>
             <div className="relative w-full">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-[#D4AF37]/30" />
+                <span className="w-full border-t border-primary/30" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-[#0A0A0A] px-2 text-gray-500">or</span>
+                <span className="bg-card px-2 text-gray-500">or</span>
               </div>
             </div>
             <Link href="/login" className="w-full">
               <Button
                 variant="outline"
-                className="w-full border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 bg-transparent"
+                className="w-full border-primary text-primary hover:bg-primary/10 bg-transparent"
                 disabled={isLoading}
               >
                 <ArrowLeft className="mr-2" size={16} />

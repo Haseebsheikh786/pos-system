@@ -161,9 +161,7 @@ export default function InvoicePage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Invoice Management
-          </h1>
+          <h1 className="text-3xl font-bold  mb-2">Invoice Management</h1>
           <p className="text-gray-400">
             View and manage all invoices and payments.
           </p>
@@ -171,12 +169,9 @@ export default function InvoicePage() {
         <Link
           href={`/dashboard/billing`}
           prefetch={true}
-          className="font-medium text-white hover:text-[#D4AF37] transition-colors"
+          className="font-medium  hover:text-primary transition-colors"
         >
-          <Button
-            className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
-            disabled={loading}
-          >
+          <Button className="" disabled={loading}>
             <Plus className="mr-2 h-4 w-4" />
             Create New Invoice
           </Button>
@@ -184,7 +179,11 @@ export default function InvoicePage() {
       </div>
 
       {/* Stats Grid */}
-      <InvoiceStats invoices={filteredInvoices} loading={loading} profile={profile || { currency: "pkr" }}/>
+      <InvoiceStats
+        invoices={filteredInvoices}
+        loading={loading}
+        profile={profile || { currency: "pkr" }}
+      />
 
       {/* Filters */}
       <InvoiceFilters
@@ -205,9 +204,7 @@ export default function InvoicePage() {
       <div className="mb-4 flex items-center justify-between">
         <div className="text-gray-400">
           Showing{" "}
-          <span className="text-white font-medium">
-            {filteredInvoices.length}
-          </span>{" "}
+          <span className=" font-medium">{filteredInvoices.length}</span>{" "}
           invoice(s)
         </div>
         <div className="text-sm text-gray-400">
@@ -218,7 +215,7 @@ export default function InvoicePage() {
       {/* Invoices Table */}
       {loading && filteredInvoices.length === 0 ? (
         <div className="flex justify-center items-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-[#D4AF37]" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <span className="ml-3 text-gray-400">Loading invoices...</span>
         </div>
       ) : (
@@ -246,9 +243,7 @@ export default function InvoicePage() {
       {!loading && filteredInvoices.length === 0 && (
         <div className="text-center py-12">
           <FileText className="h-12 w-12 text-gray-600 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-white mb-2">
-            No invoices found
-          </h3>
+          <h3 className="text-lg font-medium  mb-2">No invoices found</h3>
           <p className="text-gray-400 mb-6">
             {searchQuery ||
             paymentStatus !== "all" ||
@@ -260,12 +255,9 @@ export default function InvoicePage() {
           <Link
             href={`/dashboard/billing`}
             prefetch={true}
-            className="font-medium text-white hover:text-[#D4AF37] transition-colors"
+            className="font-medium  hover:text-primary transition-colors"
           >
-            <Button
-              className="bg-[#8E7525] hover:bg-[#A38A2E] text-white"
-              disabled={loading}
-            >
+            <Button className="" disabled={loading}>
               <Plus className="mr-2 h-4 w-4" />
               Create First Invoice
             </Button>

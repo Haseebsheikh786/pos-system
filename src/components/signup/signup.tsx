@@ -42,7 +42,7 @@ const signupSchema = z
       .regex(/[0-9]/, "Password must contain at least one number")
       .regex(
         /[^A-Za-z0-9]/,
-        "Password must contain at least one special character"
+        "Password must contain at least one special character",
       ),
     confirmPassword: z.string().min(1, "Please confirm your password"),
     terms: z.boolean().refine((val) => val === true, {
@@ -101,17 +101,17 @@ function Signup() {
         // Handle specific Supabase errors
         if (authError.message.includes("already registered")) {
           throw new Error(
-            "An account with this email already exists. Please sign in instead."
+            "An account with this email already exists. Please sign in instead.",
           );
         } else if (authError.message.includes("password")) {
           throw new Error(
-            "Password requirements not met. Please try a stronger password."
+            "Password requirements not met. Please try a stronger password.",
           );
         } else if (authError.message.includes("email")) {
           throw new Error("Please enter a valid email address.");
         } else {
           throw new Error(
-            authError.message || "Signup failed. Please try again."
+            authError.message || "Signup failed. Please try again.",
           );
         }
       }
@@ -119,7 +119,7 @@ function Signup() {
       // Check if email confirmation is required
       if (authData?.user?.identities?.length === 0) {
         throw new Error(
-          "An account with this email already exists. Please sign in instead."
+          "An account with this email already exists. Please sign in instead.",
         );
       }
 
@@ -191,19 +191,19 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-black">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
       <div className="w-full max-w-md">
         {/* Logo */}
         <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 bg-[#D4AF37] rounded flex items-center justify-center">
-            <span className="text-black font-bold text-2xl">P</span>
+          <div className="w-10 h-10 bg-primary rounded flex items-center justify-center">
+            <span className="text-background font-bold text-2xl">P</span>
           </div>
-          <span className="text-white font-bold text-2xl">POS System</span>
+          <span className=" font-bold text-2xl">POS System</span>
         </Link>
 
-        <Card className="bg-[#0A0A0A] border-[#D4AF37]">
+        <Card className="bg-card border-primary">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-white text-center">
+            <CardTitle className="text-2xl font-bold  text-center">
               Create Account
             </CardTitle>
             <CardDescription className="text-gray-400 text-center">
@@ -225,7 +225,7 @@ function Signup() {
                 type="button"
                 onClick={handleGoogleSignUp}
                 variant="outline"
-                className="w-full border-[#D4AF37]/30 text-white hover:bg-[#D4AF37]/10 bg-[#1A1A1A] flex items-center justify-center gap-3"
+                className="w-full border-primary/30  hover:bg-primary/10 bg-dark-gray flex items-center justify-center gap-3"
                 disabled={isLoading}
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -251,10 +251,10 @@ function Signup() {
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-[#D4AF37]/30" />
+                  <span className="w-full border-t border-primary/30" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-[#0A0A0A] px-2 text-gray-500">
+                  <span className="bg-card px-2 text-gray-500">
                     or continue with email
                   </span>
                 </div>
@@ -273,10 +273,10 @@ function Signup() {
                     handleInputChange("businessName");
                     register("businessName").onChange(e);
                   }}
-                  className={`bg-[#1A1A1A] border text-white placeholder:text-gray-500 focus:border-[#D4AF37] ${
+                  className={`bg-dark-gray border  placeholder:text-gray-500 focus:border-primary ${
                     errors.businessName
                       ? "border-red-500 focus:border-red-500"
-                      : "border-[#D4AF37]/30"
+                      : "border-primary/30"
                   }`}
                   disabled={isLoading}
                 />
@@ -300,10 +300,10 @@ function Signup() {
                     handleInputChange("email");
                     register("email").onChange(e);
                   }}
-                  className={`bg-[#1A1A1A] border text-white placeholder:text-gray-500 focus:border-[#D4AF37] ${
+                  className={`bg-dark-gray border  placeholder:text-gray-500 focus:border-primary ${
                     errors.email
                       ? "border-red-500 focus:border-red-500"
-                      : "border-[#D4AF37]/30"
+                      : "border-primary/30"
                   }`}
                   disabled={isLoading}
                 />
@@ -328,17 +328,17 @@ function Signup() {
                       handleInputChange("password");
                       register("password").onChange(e);
                     }}
-                    className={`bg-[#1A1A1A] border text-white placeholder:text-gray-500 focus:border-[#D4AF37] pr-10 ${
+                    className={`bg-dark-gray border  placeholder:text-gray-500 focus:border-primary pr-10 ${
                       errors.password
                         ? "border-red-500 focus:border-red-500"
-                        : "border-[#D4AF37]/30"
+                        : "border-primary/30"
                     }`}
                     disabled={isLoading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary"
                     disabled={isLoading}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -365,17 +365,17 @@ function Signup() {
                       handleInputChange("confirmPassword");
                       register("confirmPassword").onChange(e);
                     }}
-                    className={`bg-[#1A1A1A] border text-white placeholder:text-gray-500 focus:border-[#D4AF37] pr-10 ${
+                    className={`bg-dark-gray border  placeholder:text-gray-500 focus:border-primary pr-10 ${
                       errors.confirmPassword
                         ? "border-red-500 focus:border-red-500"
-                        : "border-[#D4AF37]/30"
+                        : "border-primary/30"
                     }`}
                     disabled={isLoading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary"
                     disabled={isLoading}
                   >
                     {showConfirmPassword ? (
@@ -405,7 +405,7 @@ function Signup() {
                         field.onChange(e.target.checked);
                         handleInputChange("terms");
                       }}
-                      className="w-4 h-4 mt-1 rounded border-[#D4AF37] bg-[#1A1A1A] text-[#D4AF37] focus:ring-[#D4AF37]"
+                      className="w-4 h-4 mt-1 rounded border-primary bg-dark-gray text-primary focus:ring-primary"
                       disabled={isLoading}
                     />
                   )}
@@ -417,7 +417,7 @@ function Signup() {
                   I agree to the{" "}
                   <Link
                     href="/terms"
-                    className="text-[#D4AF37] hover:text-[#D4AF37]/80"
+                    className="text-primary hover:text-primary/80"
                     onClick={(e) => e.preventDefault()}
                   >
                     Terms & Conditions
@@ -425,7 +425,7 @@ function Signup() {
                   and{" "}
                   <Link
                     href="/privacy"
-                    className="text-[#D4AF37] hover:text-[#D4AF37]/80"
+                    className="text-primary hover:text-primary/80"
                     onClick={(e) => e.preventDefault()}
                   >
                     Privacy Policy
@@ -440,7 +440,7 @@ function Signup() {
 
               <Button
                 type="submit"
-                className="w-full bg-[#8E7525] hover:bg-[#A38A2E] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full  disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
               >
                 {isLoading ? "Creating Account..." : "Create Account"}
@@ -452,23 +452,23 @@ function Signup() {
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="text-[#D4AF37] hover:text-[#D4AF37]/80 font-semibold"
+                className="text-primary hover:text-primary/80 font-semibold"
               >
                 Sign in
               </Link>
             </div>
             <div className="relative w-full">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-[#D4AF37]/30" />
+                <span className="w-full border-t border-primary/30" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-[#0A0A0A] px-2 text-gray-500">or</span>
+                <span className="bg-card px-2 text-gray-500">or</span>
               </div>
             </div>
             <Link href="/" className="w-full">
               <Button
                 variant="outline"
-                className="w-full border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 bg-transparent"
+                className="w-full border-primary text-primary hover:bg-primary/10 bg-transparent"
                 disabled={isLoading}
               >
                 Back to Home

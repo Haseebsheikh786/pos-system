@@ -24,8 +24,8 @@ export default function TermsPage() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
-              Terms & <span className="text-[#D4AF37]">Conditions</span>
+            <h1 className="text-5xl md:text-6xl font-bold  mb-6 leading-tight text-balance">
+              Terms & <span className="text-primary">Conditions</span>
             </h1>
             <p className="text-gray-400 text-lg">
               Last updated: December 14, 2024
@@ -33,8 +33,8 @@ export default function TermsPage() {
           </div>
 
           <div className="prose prose-invert max-w-none space-y-8">
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 1. Acceptance of Terms
               </h2>
               <p className="text-gray-400 leading-relaxed">
@@ -45,10 +45,8 @@ export default function TermsPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                2. Use License
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">2. Use License</h2>
               <p className="text-gray-400 leading-relaxed mb-4">
                 Permission is granted to temporarily access and use the Service
                 for personal or commercial use. This license shall automatically
@@ -79,10 +77,8 @@ export default function TermsPage() {
               </ul>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                3. User Accounts
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">3. User Accounts</h2>
               <p className="text-gray-400 leading-relaxed mb-4">
                 When you create an account with us, you must provide information
                 that is accurate, complete, and current at all times. Failure to
@@ -98,10 +94,8 @@ export default function TermsPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                4. Payment Terms
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">4. Payment Terms</h2>
               <p className="text-gray-400 leading-relaxed mb-4">
                 If you register for a paid subscription, you agree to pay all
                 fees and charges associated with your account in accordance with
@@ -121,8 +115,8 @@ export default function TermsPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 5. Service Availability
               </h2>
               <p className="text-gray-400 leading-relaxed">
@@ -134,8 +128,8 @@ export default function TermsPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 6. Intellectual Property
               </h2>
               <p className="text-gray-400 leading-relaxed">
@@ -148,8 +142,8 @@ export default function TermsPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">
                 7. Limitation of Liability
               </h2>
               <p className="text-gray-400 leading-relaxed">
@@ -162,10 +156,8 @@ export default function TermsPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                8. Termination
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">8. Termination</h2>
               <p className="text-gray-400 leading-relaxed">
                 We may terminate or suspend your account immediately, without
                 prior notice or liability, for any reason whatsoever, including
@@ -174,10 +166,8 @@ export default function TermsPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                9. Changes to Terms
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">9. Changes to Terms</h2>
               <p className="text-gray-400 leading-relaxed">
                 We reserve the right to modify or replace these Terms at any
                 time. If a revision is material, we will provide at least 30
@@ -187,15 +177,13 @@ export default function TermsPage() {
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-[#D4AF37] rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                10. Contact Us
-              </h2>
+            <div className="bg-card border border-primary rounded-lg p-8">
+              <h2 className="text-2xl font-bold  mb-4">10. Contact Us</h2>
               <p className="text-gray-400 leading-relaxed">
                 If you have any questions about these Terms, please contact us
                 at:
               </p>
-              <div className="mt-4 text-[#D4AF37]">
+              <div className="mt-4 text-primary">
                 <p>Email: legal@possystem.com</p>
                 <p>Address: 123 Business Street, San Francisco, CA 94103</p>
               </div>

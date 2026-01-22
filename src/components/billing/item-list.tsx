@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2, X } from "lucide-react";
 import type { Product } from "@/types/product";
 import { getCurrencySymbol } from "@/lib/currency";
+import { getStatusBadge } from "@/lib/badges";
 
 type BillItem = {
   id: number;
@@ -49,10 +50,11 @@ export default function ItemList({
 
     const remainingStock = product.stock - item.quantity;
 
-    if (remainingStock <= 0) return "out-of-stock";
-    if (remainingStock <= product.min_stock_level) return "low-stock";
-    return "available";
+    if (remainingStock <= 0) return "out_of_stock";
+    if (remainingStock <= product.min_stock_level) return "low_stock";
+    return "good_stock";
   };
+
   const currencySymbol = profile?.currency
     ? getCurrencySymbol(profile.currency)
     : "Rs.";
@@ -155,23 +157,7 @@ export default function ItemList({
                         {currencySymbol}
                         {item.total.toLocaleString()}
                       </TableCell>
-                      <TableCell>
-                        <span
-                          className={`text-xs px-2 py-1 rounded ${
-                            stockStatus === "out-of-stock"
-                              ? "bg-red-500/10 text-red-400"
-                              : stockStatus === "low-stock"
-                                ? "bg-orange-500/10 text-orange-400"
-                                : "bg-green-500/10 text-green-400"
-                          }`}
-                        >
-                          {stockStatus === "out-of-stock"
-                            ? "No Stock"
-                            : stockStatus === "low-stock"
-                              ? "Low Stock"
-                              : "Available"}
-                        </span>
-                      </TableCell>
+                      <TableCell>{getStatusBadge(stockStatus)}</TableCell>
                       <TableCell>
                         <Button
                           variant="ghost"

@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Trash2, Pencil } from "lucide-react";
 import { Customer } from "@/types/customer";
 import { getCurrencySymbol } from "@/lib/currency";
+import { getStatusBadge } from "@/lib/badges";
 
 interface CustomerListProps {
   customers: Customer[];
@@ -91,15 +92,13 @@ export default function CustomerList({
                       {customer.address}
                     </TableCell>
                     <TableCell>
-                      {customer.total_due_amount > 0 ? (
-                        <Badge className="bg-orange-500/10 text-orange-400 border-orange-500">
-                          {currencySymbol}
-                          {customer.total_due_amount.toLocaleString()}
-                        </Badge>
-                      ) : (
-                        <Badge className="bg-green-500/10 text-green-400 border-green-500">
-                          No Dues
-                        </Badge>
+                      {getStatusBadge(
+                        customer.total_due_amount > 0
+                          ? "pending_dues"
+                          : "zero_dues",
+                        customer.total_due_amount > 0
+                          ? `${currencySymbol}${customer.total_due_amount.toLocaleString()}`
+                          : "$0",
                       )}
                     </TableCell>
                     <TableCell className="text-gray-300">

@@ -21,6 +21,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Package, AlertTriangle, TrendingDown, DollarSign } from "lucide-react";
 import { getCurrencySymbol } from "@/lib/currency";
+import { getStatusBadge } from "@/lib/badges";
 
 interface InventoryTabProps {
   dateRange: string;
@@ -111,33 +112,10 @@ export default function InventoryTab({
       });
   }, [products, stockFilter]);
 
-  const getStockStatusBadge = (status: StockStatus) => {
-    switch (status) {
-      case "out":
-        return (
-          <Badge className="bg-red-500/20 text-red-400 border-red-500">
-            Out of Stock
-          </Badge>
-        );
-      case "low":
-        return (
-          <Badge className="bg-orange-500/20 text-orange-400 border-orange-500">
-            Low Stock
-          </Badge>
-        );
-      case "good":
-        return (
-          <Badge className="bg-green-500/20 text-green-400 border-green-500">
-            Good Stock
-          </Badge>
-        );
-      default:
-        return (
-          <Badge className="bg-gray-500/20 text-gray-400 border-gray-500">
-            Unknown
-          </Badge>
-        );
-    }
+  const getStockStatus = (stock: number, minStock: number) => {
+    if (stock === 0) return "out_of_stock";
+    if (stock <= minStock) return "low_stock";
+    return "good_stock";
   };
 
   // Summary cards data (dynamic)
@@ -304,7 +282,9 @@ export default function InventoryTab({
                           {minStock} units
                         </TableCell>
                         <TableCell>
-                          {getStockStatusBadge(stockStatus)}
+                          {getStatusBadge(
+                            getStockStatus(product.stock, product.min_stock_level),
+                          )}
                         </TableCell>
                         <TableCell className="text-gray-300">
                           {product.cost_price

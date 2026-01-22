@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Trash2, Eye } from "lucide-react";
 import { Product } from "@/types/product";
 import { getCurrencySymbol } from "@/lib/currency";
+import { getStatusBadge } from "@/lib/badges";
 
 interface ProductListProps {
   products: Product[];
@@ -30,11 +31,10 @@ export default function ProductList({
   const currencySymbol = profile?.currency
     ? getCurrencySymbol(profile.currency)
     : "Rs.";
-  const getStockColor = (stock: number, minStock: number) => {
-    if (stock === 0) return "bg-red-500/20 text-red-400 border-red-500/30";
-    if (stock <= minStock)
-      return "bg-orange-500/20 text-orange-400 border-orange-500/30";
-    return "bg-green-500/20 text-green-400 border-green-500/30";
+  const getStockStatus = (stock: number, minStock: number) => {
+    if (stock === 0) return "out_of_stock";
+    if (stock <= minStock) return "low_stock";
+    return "good_stock";
   };
 
   return (
@@ -93,16 +93,10 @@ export default function ProductList({
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="">
-                        <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getStockColor(
-                            product.stock,
-                            product.min_stock_level,
-                          )}`}
-                        >
-                          {product.stock} units
-                        </span>
-                      </div>
+                      {getStatusBadge(
+                        getStockStatus(product.stock, product.min_stock_level),
+                        `${product.stock} units`,
+                      )}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">

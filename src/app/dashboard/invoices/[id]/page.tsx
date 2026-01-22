@@ -50,6 +50,7 @@ import { fetchInvoicePayments } from "@/store/paymentSlice";
 import { fetchProfile } from "@/store/profileSlice";
 import { useInvoiceDownloader } from "@/hooks/useInvoiceDownloader";
 import { getCurrencySymbol } from "@/lib/currency";
+import { getStatusBadge } from "@/lib/badges";
 
 export default function InvoiceDetailPage() {
   const params = useParams();
@@ -93,38 +94,6 @@ export default function InvoiceDetailPage() {
       dispatch(clearCurrentInvoice());
     };
   }, [invoiceId, shopId, dispatch]);
-
-  const getPaymentStatusBadge = (status: string) => {
-    switch (status) {
-      case "paid":
-        return (
-          <Badge className="bg-green-500/10 text-green-400 border-green-500/30 px-3 py-1.5">
-            <CheckCircle className="h-3.5 w-3.5 mr-2" />
-            Paid
-          </Badge>
-        );
-      case "partial":
-        return (
-          <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/30 px-3 py-1.5">
-            <AlertCircle className="h-3.5 w-3.5 mr-2" />
-            Partial
-          </Badge>
-        );
-      case "pending":
-        return (
-          <Badge className="bg-red-500/10 text-red-400 border-red-500/30 px-3 py-1.5">
-            <Info className="h-3.5 w-3.5 mr-2" />
-            Pending
-          </Badge>
-        );
-      default:
-        return (
-          <Badge className="bg-gray-500/10 text-gray-400 border-gray-500/30 px-3 py-1.5">
-            Unknown
-          </Badge>
-        );
-    }
-  };
 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
@@ -234,7 +203,7 @@ export default function InvoiceDetailPage() {
                     Invoice #
                     {invoice.invoice_number || `INV-${invoice.id.slice(0, 8)}`}
                   </h1>
-                  {getPaymentStatusBadge(invoice.payment_status)}
+                  {getStatusBadge(invoice.payment_status)}
                 </div>
                 <div className="flex items-center gap-4 mt-2 text-gray-400">
                   <div className="flex items-center gap-2">

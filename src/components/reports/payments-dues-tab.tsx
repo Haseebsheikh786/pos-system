@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label";
 import { Invoice } from "@/types/invoice";
 import { useRouter } from "next/navigation";
 import { getCurrencySymbol } from "@/lib/currency";
+import { getStatusBadge } from "@/lib/badges";
 
 interface PaymentsDuesTabProps {
   dateRange: string;
@@ -59,36 +60,6 @@ export default function PaymentsDuesTab({
   // Format currency
   const formatCurrency = (amount: number) => {
     return `${currencySymbol}${amount.toLocaleString()}`;
-  };
-
-  // Get status badge
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "paid":
-        return (
-          <Badge className="bg-green-500/20 text-green-400 border-green-500">
-            Paid
-          </Badge>
-        );
-      case "partial":
-        return (
-          <Badge className="bg-orange-500/20 text-orange-400 border-orange-500">
-            Partial
-          </Badge>
-        );
-      case "pending":
-        return (
-          <Badge className="bg-red-500/20 text-red-400 border-red-500">
-            Due
-          </Badge>
-        );
-      default:
-        return (
-          <Badge className="bg-gray-500/20 text-gray-400 border-gray-500">
-            Unknown
-          </Badge>
-        );
-    }
   };
 
   // Calculate summary statistics from invoices
@@ -361,6 +332,7 @@ export default function PaymentsDuesTab({
                       </TableCell>
                       <TableCell>
                         {getStatusBadge(invoice.payment_status)}
+                        
                       </TableCell>
                     </TableRow>
                   ))}

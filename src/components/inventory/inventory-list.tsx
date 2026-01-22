@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@/types/product";
+import { getStatusBadge } from "@/lib/badges";
 
 interface InventoryListProps {
   inventory: Product[];
@@ -21,49 +22,10 @@ export default function InventoryList({
   inventory,
   loading = false,
 }: InventoryListProps) {
-  const getStockStatus = (item: Product) => {
-    if (item.stock === 0) return "out-of-stock";
-    if (item.stock < 10) return "critical";
-    if (item.stock <= item.min_stock_level) return "low";
-    if (item.stock / item.min_stock_level < 1.5) return "normal";
-    return "good";
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "out-of-stock":
-        return (
-          <Badge className="bg-red-500/20 text-red-400 border-red-500">
-            Out of Stock
-          </Badge>
-        );
-      case "critical":
-        return (
-          <Badge className="bg-red-500/10 text-red-400 border-red-500">
-            Critical
-          </Badge>
-        );
-      case "low":
-        return (
-          <Badge className="bg-orange-500/10 text-orange-400 border-orange-500">
-            Low Stock
-          </Badge>
-        );
-      case "normal":
-        return (
-          <Badge className="bg-blue-500/10 text-blue-400 border-blue-500">
-            Normal
-          </Badge>
-        );
-      case "good":
-        return (
-          <Badge className="bg-green-500/10 text-green-400 border-green-500">
-            Good Stock
-          </Badge>
-        );
-      default:
-        return null;
-    }
+  const getStockStatus = (stock: number, minStock: number) => {
+    if (stock === 0) return "out_of_stock";
+    if (stock <= minStock) return "low_stock";
+    return "good_stock";
   };
 
   const formatDate = (dateString: string) => {
@@ -125,7 +87,10 @@ export default function InventoryList({
                 </TableRow>
               ) : (
                 inventory.map((item) => {
-                  const status = getStockStatus(item);
+                  const status = getStockStatus(
+                    item.stock,
+                    item.min_stock_level,
+                  );
                   const stockPercentage =
                     item.min_stock_level > 0
                       ? (item.stock / item.min_stock_level) * 100
@@ -154,10 +119,9 @@ export default function InventoryList({
                           <div className="w-full bg-gray-700 rounded-full h-1.5 mt-1">
                             <div
                               className={`h-1.5 rounded-full ${
-                                status === "out-of-stock" ||
-                                status === "critical"
+                                status === "out_of_stock"
                                   ? "bg-red-500"
-                                  : status === "low"
+                                  : status === "low_stock"
                                     ? "bg-orange-500"
                                     : "bg-green-500"
                               }`}
@@ -171,7 +135,11 @@ export default function InventoryList({
                       <TableCell className="text-gray-400">
                         {item.min_stock_level} units
                       </TableCell>
-                      <TableCell>{getStatusBadge(status)}</TableCell>
+                      <TableCell>
+                        {getStatusBadge(
+                          getStockStatus(item.stock, item.min_stock_level),
+                        )}
+                      </TableCell>
                       <TableCell className="text-gray-400 text-sm">
                         {formatDate(item.updated_at)}
                       </TableCell>

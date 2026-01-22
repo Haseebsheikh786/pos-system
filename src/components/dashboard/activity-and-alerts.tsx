@@ -8,6 +8,7 @@ import { getCurrencySymbol } from "@/lib/currency";
 import type { Invoice } from "@/types/invoice";
 import type { Product } from "@/types/product";
 import type { Profile } from "@/types/profile";
+import { getStatusBadge } from "@/lib/badges";
 
 interface ActivityAndAlertsProps {
   invoices: Invoice[];
@@ -75,17 +76,7 @@ const ActivityAndAlerts = ({
                           {invoice.invoice_number ||
                             `INV-${invoice.id.slice(0, 8)}`}
                         </div>
-                        <span
-                          className={`text-xs px-2 py-1 rounded-full ${
-                            invoice.payment_status === "paid"
-                              ? "bg-green-500/20 text-green-400"
-                              : invoice.payment_status === "partial"
-                                ? "bg-orange-500/20 text-orange-400"
-                                : "bg-red-500/20 text-red-400"
-                          }`}
-                        >
-                          {invoice.payment_status}
-                        </span>
+                         {getStatusBadge(invoice.payment_status)}
                       </div>
                       <div className="text-sm text-gray-400 mt-1 flex items-center gap-2">
                         <span className="truncate">

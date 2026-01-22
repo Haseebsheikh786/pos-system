@@ -15,6 +15,7 @@ import { Eye, PlusCircle, Download } from "lucide-react";
 import type { Invoice } from "@/types/invoice";
 import Link from "next/link";
 import { getCurrencySymbol } from "@/lib/currency";
+import { getStatusBadge } from "@/lib/badges";
 
 interface InvoiceListProps {
   invoices: Invoice[];
@@ -35,35 +36,6 @@ export default function InvoiceList({
   onPrintInvoice,
   profile,
 }: InvoiceListProps) {
-  const getPaymentStatusBadge = (status: string) => {
-    switch (status) {
-      case "paid":
-        return (
-          <Badge className="bg-green-500/10 text-green-400 border-green-500">
-            Paid
-          </Badge>
-        );
-      case "partial":
-        return (
-          <Badge className="bg-orange-500/10 text-orange-400 border-orange-500">
-            Partial
-          </Badge>
-        );
-      case "pending":
-        return (
-          <Badge className="bg-red-500/10 text-red-400 border-red-500">
-            Pending
-          </Badge>
-        );
-      default:
-        return (
-          <Badge className="bg-gray-500/10 text-gray-400 border-gray-500">
-            Unknown
-          </Badge>
-        );
-    }
-  };
-
   const currencySymbol = profile?.currency
     ? getCurrencySymbol(profile.currency)
     : "Rs.";
@@ -177,7 +149,7 @@ export default function InvoiceList({
                       )}
                     </TableCell>
                     <TableCell>
-                      {getPaymentStatusBadge(invoice.payment_status)}
+                      {getStatusBadge(invoice.payment_status)}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">

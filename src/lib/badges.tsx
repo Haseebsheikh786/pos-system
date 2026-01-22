@@ -1,6 +1,5 @@
 import React from "react";
 import { Badge } from "../components/ui/badge";
-
 import {
   CheckCircle2,
   AlertTriangle,
@@ -13,35 +12,63 @@ import {
   Wallet,
 } from "lucide-react";
 
-export const badgeIcons: Record<string, React.ReactNode> = {
-  // ───── Payment ─────
-  paid: <CheckCircle2 className="h-3.5 w-3.5" />, // ✅ Clear success
-  partial: <Wallet className="h-3.5 w-3.5" />, // 💳 Partial payment
-  pending: <Clock className="h-3.5 w-3.5" />, // ⏳ Waiting
+/* ──────────────────────────────────────
+   1️⃣ Variants supported by STATUS logic
+────────────────────────────────────── */
+export type StatusVariant =
+  | "paid"
+  | "partial"
+  | "pending"
+  | "pending_dues"
+  | "zero_dues"
+  | "out_of_stock"
+  | "critical_stock"
+  | "low_stock"
+  | "normal_stock"
+  | "good_stock";
 
-  // ───── Dues ─────
-  pending_dues: <AlertTriangle className="h-3.5 w-3.5" />, // ⚠️ Attention needed
-  zero_dues: <CheckCircle2 className="h-3.5 w-3.5" />, // ✅ Clear
+/* ──────────────────────────────────────
+   2️⃣ Icons (strictly typed)
+────────────────────────────────────── */
+export const badgeIcons: Record<StatusVariant, React.ReactNode> = {
+  paid: <CheckCircle2 className="h-3.5 w-3.5" />,
+  partial: <Wallet className="h-3.5 w-3.5" />,
+  pending: <Clock className="h-3.5 w-3.5" />,
 
-  // ───── Stock ─────
-  out_of_stock: <PackageX className="h-3.5 w-3.5" />, // 📦❌ No inventory
-  critical_stock: <AlertTriangle className="h-3.5 w-3.5" />, // 🚨 Very low
-  low_stock: <PackageMinus className="h-3.5 w-3.5" />, // 📉 Low
-  normal_stock: <PackagePlus className="h-3.5 w-3.5" />, // 📈 Normal
-  good_stock: <PackageCheck className="h-3.5 w-3.5" />, // 📦✅ Healthy
+  pending_dues: <AlertTriangle className="h-3.5 w-3.5" />,
+  zero_dues: <CheckCircle2 className="h-3.5 w-3.5" />,
 
-  unknown: <Info className="h-3.5 w-3.5" />, // ℹ️ Fallback
+  out_of_stock: <PackageX className="h-3.5 w-3.5" />,
+  critical_stock: <AlertTriangle className="h-3.5 w-3.5" />,
+  low_stock: <PackageMinus className="h-3.5 w-3.5" />,
+  normal_stock: <PackagePlus className="h-3.5 w-3.5" />,
+  good_stock: <PackageCheck className="h-3.5 w-3.5" />,
 };
 
+/* ──────────────────────────────────────
+   3️⃣ Helpers
+────────────────────────────────────── */
 const formatLabel = (status: string) =>
-  status.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+  status.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
-// Helper function to render Badge by status
+const isStatusVariant = (value: string): value is StatusVariant =>
+  value in badgeIcons;
+
+/* ──────────────────────────────────────
+   4️⃣ Public API (SAFE + CLEAN)
+────────────────────────────────────── */
 export const getStatusBadge = (status: string, label?: string) => {
-  const icon = badgeIcons[status] || null;
+  if (!isStatusVariant(status)) {
+    return (
+      <Badge variant="default" icon={<Info className="h-3.5 w-3.5" />}>
+        {label ?? "Unknown"}
+      </Badge>
+    );
+  }
+
   return (
-    <Badge variant={status as any} icon={icon}>
-      {label ?? formatLabel(status)}{" "}
+    <Badge variant={status} icon={badgeIcons[status]}>
+      {label ?? formatLabel(status)}
     </Badge>
   );
 };
